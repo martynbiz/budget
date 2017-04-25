@@ -1,0 +1,14 @@
+{
+    "src": [
+        "app/templates"
+    ],
+    "dest": "app/languages/{lang}.php",
+    "pattern": [
+        "/\\$this->translate\\s*\\(\\s*[\\'|\\\"]([A-Za-z0-9_\\-\\.]*)[\\'|\\\"]/",
+        "/\\$this->plural\\s*\\(\\s*[\\'|\\\"]([A-Za-z0-9_\\-\\.]*)[\\'|\\\"]/"
+    ],
+    "adapter": "php",
+    "languages": [
+        "en"
+    ]
+}

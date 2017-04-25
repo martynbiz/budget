@@ -1,0 +1,1 @@
+{"virtualbox":{"/var/www/budget":{"owner":"ubuntu","group":"www-data","guestpath":"/var/www/budget","hostpath":"/var/www/budget","disabled":false,"__vagrantfile":true}}}
