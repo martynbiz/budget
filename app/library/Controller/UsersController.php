@@ -8,7 +8,7 @@ class UsersController extends BaseController
 {
     public function register($request, $response, $args)
     {
-        // if errors found from post, this will contain data 
+        // if errors found from post, this will contain data
         $params = $request->getParams();
 
         return $this->render('users/register', [
@@ -47,7 +47,7 @@ class UsersController extends BaseController
         $validator->check('password')
             ->isNotEmpty($message)
             ->hasLowerCase($message)
-            ->hasUpperCase($message)
+            // ->hasUpperCase($message)
             ->isMinimumLength($message, 8);
 
         // agreement

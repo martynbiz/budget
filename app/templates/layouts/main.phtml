@@ -9,58 +9,55 @@
         <title><?= $this->title ?></title>
 
         <?php $this->section('head') ?>
-            <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-            <link rel="stylesheet" type="text/css" href="/css/app.css">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/css/app.css">
         <?php $this->stop() ?>
     </head>
     <body>
         <h1 class="show-for-sr">Budget</h1>
-
         <div class="top-bar">
-          <div class="top-bar-left">
-            <ul class="dropdown menu" data-dropdown-menu>
-              <li class="menu-text">Site Title</li>
-            </ul>
-          </div>
-          <div class="top-bar-right">
-              <?php if ($this->currentUser): ?>
-                  <ul class="dropdown menu" data-dropdown-menu>
-                      <li class="menu-text">Martyn</li>
-                      <li>
-                          <form id="logout_form_navbar" method="post" action="<?= $this->pathFor('logout_post') ?>"><input type="hidden" name="_METHOD" value="DELETE"></form>
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li class="menu-text">Site Title</li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <?php if ($this->currentUser): ?>
+                    <form id="logout_form" method="post" action="<?= $this->pathFor('logout_post') ?>"><input type="hidden" name="_METHOD" value="DELETE"></form>
 
-                          <a href="#"><?= $this->currentUser->first_name ?></a>
-                          <ul>
-                              <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#delete_form').submit(); return false;">Logout</a></li>
-                          </ul>
-                      </li>
-                  </ul>
-              <?php else: ?>
-                  <ul class="menu">
-                      <li><a href="<?= $this->pathFor('register') ?>">Register</a></li>
-                      <li><a href="<?= $this->pathFor('login') ?>">Login</a></li>
-                  </ul>
-              <?php endif; ?>
-          </div>
+                    <ul class="dropdown menu" data-dropdown-menu>
+                        <li>
+                            <a href="#"><?= $this->currentUser->first_name ?></a>
+                            <ul class="menu vertical">
+                                <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                <?php else: ?>
+                    <ul class="menu">
+                        <li><a href="<?= $this->pathFor('register') ?>">Register</a></li>
+                        <li><a href="<?= $this->pathFor('login') ?>">Login</a></li>
+                    </ul>
+                <?php endif; ?>
+            </div>
         </div>
-
         <div class="row">
             <div class="small-12 columns">
 
                 <?php if (isset($this->messages['success'])): ?>
-                    <div class="alert alert-success">
-                        <?=$this->messages['success']; ?>
-                    </div>
+                <div class="success callout">
+                    <?=$this->messages['success']; ?>
+                </div>
                 <?php endif; ?>
 
                 <?php if (isset($this->messages['errors'])): ?>
-                    <div class="alert alert-danger alert-important">
-                        <ul>
-                            <?php foreach ($this->messages['errors'] as $error): ?>
-                                <li><?= $error ?></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </div>
+                <div class="alert callout">
+                    <ul>
+                        <?php foreach ($this->messages['errors'] as $error): ?>
+                        <li><?= $error ?></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
                 <?php endif; ?>
 
                 <?php $this->section('content') ?>
@@ -69,7 +66,7 @@
         </div>
 
         <?php $this->section('scripts') ?>
-            <script src="/js/app.js" type="text/javascript"></script>
+        <script src="/js/app.js" type="text/javascript"></script>
         <?php $this->stop() ?>
     </body>
 </html>
