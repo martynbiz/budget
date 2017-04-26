@@ -3,5 +3,47 @@
 ]); ?>
 
 <?php $this->section('content') ?>
-    <?= $this->translate('intro') ?>
+    <div class="text-right">
+        <a href="#" class="button">New transaction</a>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-8 columns">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th width="15%">Date</th>
+                        <th width="15%">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Sandwich</td>
+                        <td>12 Mar</td>
+                        <td>&pound;12.50</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ul class="pagination" role="navigation" aria-label="Pagination">
+                <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
+                <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
+                <li><a href="#" aria-label="Page 2">2</a></li>
+                <li><a href="#" aria-label="Page 3">3</a></li>
+                <li><a href="#" aria-label="Page 4">4</a></li>
+                <li class="ellipsis" aria-hidden="true"></li>
+                <li><a href="#" aria-label="Page 12">12</a></li>
+                <li><a href="#" aria-label="Page 13">13</a></li>
+                <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+            </ul>
+        </div>
+        <div class="small-12 medium-4 columns">
+            <div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/data.js"></script>
+    <script src="https://code.highcharts.com/modules/drilldown.js"></script>
 <?php $this->replace() ?>

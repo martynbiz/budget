@@ -33,7 +33,7 @@ keep the resulting css file small(ish)
 // @include foundation-media-object;
 // @include foundation-off-canvas;
 // @include foundation-orbit;
-// @include foundation-pagination;
+@include foundation-pagination;
 // @include foundation-progress-bar;
 // @include foundation-progress-element;
 // @include foundation-meter-element;
@@ -56,3 +56,7 @@ keep the resulting css file small(ish)
 
 // re-usable components that can be used site wide
 @import 'kitchensink';
+
+.top-bar {
+    margin-bottom: 2em;
+}
