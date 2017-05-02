@@ -1,0 +1,23 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+]); ?>
+
+<?php $this->section('content') ?>
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="transaction_form" method="post" action="<?= $this->pathFor('transactions_post') ?>">
+                <?= $this->insert('transactions/partials/form') ?>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('home') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+
+                <?php if(isset($this->params['returnTo'])): ?>
+                    <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">
+                <?php endif ?>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>

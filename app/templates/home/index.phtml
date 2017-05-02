@@ -1,10 +1,23 @@
 <?php $this->layout('layouts/main', [
-    'title' => 'Homepage',
+    'title' => 'Budget',
 ]); ?>
 
 <?php $this->section('content') ?>
-    <div class="text-right">
-        <a href="#" class="button">New transaction</a>
+    <div class="rows">
+        <div class="small-12 medium-2 columns">
+            <form>
+                <label class="show-for-sr">Fund:</label>
+                    <select name="fund_id">
+                        <option value="1">Nationwide</option>
+                    </select>
+                <noscript>
+                    <submit type="submit" class="button">Switch fund</submit>
+                </noscript>
+            </form>
+        </div>
+        <div class="small-12 medium-10 columns text-right">
+            <a href="<?= $this->pathFor('transactions_create') ?>" class="button">New transaction</a>
+        </div>
     </div>
 
     <div class="row">
@@ -19,7 +32,7 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Sandwich</td>
+                        <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => 1]) ?>">Sandwich</a></td>
                         <td>12 Mar</td>
                         <td>&pound;12.50</td>
                     </tr>
