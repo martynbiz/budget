@@ -1,2 +1,3 @@
-settings-development.php
-settings-testing.php
+settings-*.php
+!settings-vagrantdev.php
+!settings-vagranttest.php

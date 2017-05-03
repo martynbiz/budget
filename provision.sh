@@ -45,7 +45,7 @@ sudo bash -c 'cat <<EOT >>/etc/apache2/sites-available/budget.conf
     ServerName budget.vagrant
     DocumentRoot /var/www/budget/public
 
-    SetEnv APPLICATION_ENV "development"
+    SetEnv APPLICATION_ENV "vagrantdev"
 
     <Directory /var/www/budget/public/>
         Options FollowSymLinks
@@ -69,5 +69,5 @@ echo "create database budget_test" | mysql -u root -p$MYSQL_ROOT_PASSWORD
 
 # run migrations
 cd /var/www/budget
-vendor/bin/phinx migrate --environment development
-vendor/bin/phinx migrate --environment testing
+vendor/bin/phinx migrate --environment vagrantdev
+vendor/bin/phinx migrate --environment vagranttest
