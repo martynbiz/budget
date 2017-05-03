@@ -8,7 +8,35 @@
 $ git clone ... budget
 $ cd budget
 $ composer install
-$ chgrp
+$ chgrp?
+```
+
+Create the phinx config file:
+
+```
+$ ./vendor/bin/phinx init
+```
+
+The edit the phinx.yml file with the following credentials:
+
+```yml
+development:
+    adapter: mysql
+    host: localhost
+    name: budget_dev
+    user: root
+    pass: 'vagrant1'
+    port: 3306
+    charset: utf8
+
+testing:
+    adapter: mysql
+    host: localhost
+    name: budget_test
+    user: root
+    pass: 'vagrant1'
+    port: 3306
+    charset: utf8
 ```
 
 Budget uses Vagrant for development to make installation simple. Please install Vagrant for this purpose. Otherwise, please refer to the /provision.sh script to understand dependencies required for other installations.
@@ -20,7 +48,7 @@ $ vagrant up
 Add the following to /etc/hosts
 
 ```
-...     budget.vagrant
+192.168.33.20     budget.vagrant
 ```
 
 ## Testing ##

@@ -43,11 +43,11 @@ sudo apt-get install -y php libapache2-mod-php php-mcrypt php-mysql php-curl php
 sudo bash -c 'cat <<EOT >>/etc/apache2/sites-available/budget.conf
 <VirtualHost *:80>
     ServerName budget.vagrant
-    DocumentRoot /var/www/budget/website/public
+    DocumentRoot /var/www/budget/public
 
     SetEnv APPLICATION_ENV "development"
 
-    <Directory /var/www/budget/website/public/>
+    <Directory /var/www/budget/public/>
         Options FollowSymLinks
         AllowOverride All
     </Directory>
@@ -68,6 +68,6 @@ echo "create database budget_dev" | mysql -u root -p$MYSQL_ROOT_PASSWORD
 echo "create database budget_test" | mysql -u root -p$MYSQL_ROOT_PASSWORD
 
 # run migrations
-cd /var/www/budget/website
+cd /var/www/budget
 vendor/bin/phinx migrate --environment development
 vendor/bin/phinx migrate --environment testing
