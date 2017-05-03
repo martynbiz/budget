@@ -59,13 +59,10 @@ $settings = [
             'valid_attributes' => [
                 'first_name',
                 'last_name',
-                // 'name',
                 'email',
                 'username',
                 'name',
                 'id',
-                'facebook_id',
-                // 'backend',
             ],
 
             'cookie_domain' => null,

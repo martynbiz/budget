@@ -59,7 +59,7 @@ class SessionControllerTest extends BaseTestCase
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertQuery('form#login_form', (string)$response->getBody()); // has form
-        $this->assertQuery('.alert.alert-danger', (string)$response->getBody()); // showing errors
+        $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
     }
 
     public function testGetLogoutShowsFormWhenAuthenticated()

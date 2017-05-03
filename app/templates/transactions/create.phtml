@@ -12,7 +12,7 @@
                     <?= $this->translate('save_button') ?>
                 </button>
 
-                <a href="<?= $this->pathFor('home') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+                <a href="<?= $this->pathFor('transactions') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
 
                 <?php if(isset($this->params['returnTo'])): ?>
                     <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">

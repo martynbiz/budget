@@ -1,0 +1,21 @@
+<ul class="pagination" role="navigation" aria-label="Pagination">
+    <?php if ($this->page > 1): ?>
+        <li class="pagination-previous"><a href="?<?= $this->generateQueryString(['page'=>($this->page-1)]) ?>" aria-label="Next page">Previous <span class="show-for-sr">page</span></a></li>
+    <?php else: ?>
+        <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
+    <?php endif; ?>
+
+    <?php for($p=1; $p <= $this->total_pages; $p++): ?>
+        <?php if ($this->page == $p): ?>
+            <li class="current"><span class="show-for-sr">You're on page</span> <?= $this->page ?></li>
+        <?php else: ?>
+            <li><a href="?<?= $this->generateQueryString(['page'=>$p]) ?>" aria-label="Page <?= $p ?>"><?= $p ?></a></li>
+        <?php endif ?>
+    <?php endfor ?>
+
+    <?php if ($this->page < $this->total_pages): ?>
+        <li class="pagination-next"><a href="?<?= $this->generateQueryString(['page'=>(++$this->page)]) ?>" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
+    <?php else: ?>
+        <li class="pagination-next disabled">Next <span class="show-for-sr">page</span></li>
+    <?php endif; ?>
+</ul>

@@ -9,10 +9,10 @@ class Transaction extends Model
     * @var array
     */
     protected $fillable = array(
-        // 'name',
         'description',
         'amount',
         'purchased_at',
-        'category',
+        'category_id',
+        'user_id',
     );
 }

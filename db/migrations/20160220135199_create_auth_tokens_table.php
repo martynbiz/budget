@@ -25,7 +25,7 @@ class CreateAuthTokensTable extends AbstractMigration
         $table->addColumn('expire', 'datetime');
 
         // timestamps
-        $table->addColumn('created_at', 'datetime', array( 'null' => true));
+        $table->addColumn('created_at', 'datetime');
         $table->addColumn('updated_at', 'datetime', array( 'null' => true));
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true));
 

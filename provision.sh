@@ -71,3 +71,5 @@ echo "create database budget_test" | mysql -u root -p$MYSQL_ROOT_PASSWORD
 cd /var/www/budget
 vendor/bin/phinx migrate --environment vagrantdev
 vendor/bin/phinx migrate --environment vagranttest
+vendor/bin/phinx seed:run --environment vagrantdev
+vendor/bin/phinx seed:run --environment vagranttest

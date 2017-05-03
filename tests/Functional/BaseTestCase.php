@@ -9,7 +9,7 @@ use Slim\Http\Environment;
 use Symfony\Component\DomCrawler\Crawler;
 
 use App\Model\User;
-use App\Model\Meta;
+use App\Model\Transaction;
 use App\Model\AuthToken;
 use App\Model\RecoveryToken;
 
@@ -40,15 +40,15 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      */
     protected $user = null;
 
-    // /**
-    //  * @var App\Model\Meta
-    //  */
-    // protected $meta = null;
-    //
-    // /**
-    //  * @var App\Model\Meta
-    //  */
-    // protected $recoveryToken = null;
+    /**
+     * @var App\Model\Meta
+     */
+    protected $transaction = null;
+
+    /**
+     * @var App\Model\Meta
+     */
+    protected $recoveryToken = null;
 
     /**
      * We wanna also build $app so that we can gain access to container
@@ -100,17 +100,19 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'password' => 'password1',
         ]);
 
-        $this->user = Meta::create([
-            'user_id' => $this->user->id,
-            'name' => 'facebook_id',
-            'value' => '1234567890',
-        ]);
-
-        $this->user = RecoveryToken::create([
+        $this->recoveryToken = RecoveryToken::create([
             'user_id' => $this->user->id,
             'selector' => '1234567890',
             'token' => 'qwertyuiop1234567890',
             'expire' => date('Y-m-d H:i:s', strtotime("+3 months", time())),
+        ]);
+
+        $this->transaction = Transaction::create([
+            'user_id' => $this->user->id,
+            'description' => 'Sandwich',
+            'amount' => '12.50',
+            'purchased_at' => '2017-05-01 00:00:05',
+            'category_id' => '1',
         ]);
     }
 
@@ -139,7 +141,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // clear tables
         User::truncate();
-        Meta::truncate();
+        Transaction::truncate();
         AuthToken::truncate();
         RecoveryToken::truncate();
 
@@ -190,18 +192,20 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         return $response;
     }
 
-    // public function login($user)
-    // {
-    //     // return an identity (eg. email)
-    //     $this->container['auth']
-    //         ->method('getAttributes')
-    //         ->willReturn( $user->toArray() );
-    //
-    //     // by defaut, we'll make isAuthenticated return a false
-    //     $this->container['auth']
-    //         ->method('isAuthenticated')
-    //         ->willReturn(true);
-    // }
+    public function login($user)
+    {
+        $container = $this->app->getContainer();
+
+        // return an identity (eg. email)
+        $container->get('auth')
+            ->method('getAttributes')
+            ->willReturn( $user->toArray() );
+
+        // by defaut, we'll make isAuthenticated return a false
+        $container->get('auth')
+            ->method('isAuthenticated')
+            ->willReturn(true);
+    }
 
     // /**
     //  * Assert response is a redirect

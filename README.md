@@ -1,6 +1,18 @@
 # Budget
 
-...
+TODO
+* funds/*
+* fund switcher
+* transactions - pagination
+* translations
+* test exceptions
+* remove user.findByEmail
+* pie chart
+* reset password
+* categories/*
+* transactions form - date picker, categories autocompleteS
+* date range
+* fund currency symbols (use sprintf)
 
 ## Install the Application ##
 
@@ -56,7 +68,7 @@ Add the following to /etc/hosts
 ```
 $ vagrant ssh
 $ cd /var/www/budget/website
-$ vendor/bin/phpunit tests/
+$ APPLICATION_ENV=vagranttest ./vendor/bin/phpunit tests/
 ```
 
 When writing new tests, some custom controller assertions have been added:

@@ -5,14 +5,16 @@
 <?php $this->section('content') ?>
     <div class="row">
         <div class="small-12 columns">
-            <form id="transaction_form" method="post" action="<?= $this->pathFor('transactions_post') ?>">
+            <form id="transaction_form" method="post" action="<?= $this->pathFor('transactions_update', ['transaction_id' => $this->transaction->id]) ?>">
                 <?= $this->insert('transactions/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
 
                 <button class="button primary" type="submit">
                     <?= $this->translate('save_button') ?>
                 </button>
 
-                <a href="<?= $this->pathFor('home') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+                <a href="<?= $this->pathFor('transactions') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
             </form>
         </div>
     </div>

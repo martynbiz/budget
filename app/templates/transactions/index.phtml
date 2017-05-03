@@ -15,8 +15,8 @@
                 </noscript>
             </form>
         </div>
-        <div class="small-12 medium-10 columns text-right">
-            <a href="<?= $this->pathFor('transactions_create') ?>" class="button">New transaction</a>
+        <div class="small-12 medium-offset-8 medium-2 columns text-right">
+            <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">New transaction</a>
         </div>
     </div>
 
@@ -31,25 +31,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => 1]) ?>">Sandwich</a></td>
-                        <td>12 Mar</td>
-                        <td>&pound;12.50</td>
-                    </tr>
+                    <?php foreach($this->transactions as $transaction): ?>
+                        <tr>
+                            <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => 1]) ?>"><?= $transaction->description ?></a></td>
+                            <td><?= $transaction->purchased_at ?></td>
+                            <td><?= sprintf('&pound;%01.2f', $transaction->amount) ?></td>
+                        </tr>
+                    <?php endforeach ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">Total</td>
+                        <td><?= sprintf('&pound;%01.2f', $this->total) ?></td>
+                    </tr>
+                </tfoot>
             </table>
 
-            <ul class="pagination" role="navigation" aria-label="Pagination">
-                <li class="pagination-previous disabled">Previous <span class="show-for-sr">page</span></li>
-                <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-                <li><a href="#" aria-label="Page 2">2</a></li>
-                <li><a href="#" aria-label="Page 3">3</a></li>
-                <li><a href="#" aria-label="Page 4">4</a></li>
-                <li class="ellipsis" aria-hidden="true"></li>
-                <li><a href="#" aria-label="Page 12">12</a></li>
-                <li><a href="#" aria-label="Page 13">13</a></li>
-                <li class="pagination-next"><a href="#" aria-label="Next page">Next <span class="show-for-sr">page</span></a></li>
-            </ul>
+            <?= $this->insert('partials/pagination') ?>
         </div>
         <div class="small-12 medium-4 columns">
             <div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>

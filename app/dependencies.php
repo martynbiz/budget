@@ -25,6 +25,7 @@ $container['renderer'] = function ($c) {
     $engine->registerFunction('translate', new \App\View\Helper\Translate($c) );
     $engine->registerFunction('pathFor', new \App\View\Helper\PathFor($c) );
     $engine->registerFunction('generateSortQuery', new \App\View\Helper\GenerateSortQuery($c) );
+    $engine->registerFunction('generateQueryString', new \App\View\Helper\GenerateQueryString($c) );
 
     return $engine;
 };
@@ -208,18 +209,22 @@ $capsule->addConnection($container->get('settings')['eloquent']);
 $capsule->bootEloquent();
 $capsule->setAsGlobal();
 
-$container['model.user'] = function ($c) {
+$container['model.user'] = function($c) {
     return new \App\Model\User();
 };
 
-$container['model.meta'] = function ($c) {
+$container['model.meta'] = function($c) {
     return new \App\Model\Meta();
 };
 
-$container['model.auth_token'] = function ($c) {
+$container['model.auth_token'] = function($c) {
     return new \App\Model\AuthToken();
 };
 
-$container['model.recovery_token'] = function ($c) {
+$container['model.recovery_token'] = function($c) {
     return new \App\Model\RecoveryToken();
+};
+
+$container['model.transaction'] = function($c) {
+    return new \App\Model\Transaction();
 };

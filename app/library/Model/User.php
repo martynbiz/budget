@@ -17,27 +17,16 @@ class User extends Model
     * @var array
     */
     protected $fillable = array(
-        // 'name',
         'first_name',
         'last_name',
         'username',
         'email',
         'password',
-        'salt',
-        // 'lang',
-        // 'enabled',
     );
 
-    /**
-     * Requires a matching get*Attribute() method (e.g. getFacebookIdAttribute)
-     */
-    protected $appends = array(
-        'facebook_id',
-    );
-
-    public function meta()
+    public function transactions()
     {
-        return $this->hasMany('App\\Model\\Meta'); //, 'user_id');
+        return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
     }
 
     public function auth_token()
@@ -124,54 +113,6 @@ class User extends Model
     }
 
     /**
-     * This is required for the append
-     */
-    public function getFacebookIdAttribute()
-    {
-        return $this->getMeta('facebook_id');
-    }
-
-    /**
-     * This will look up the value from meta table
-     * @return string
-     */
-    public function getMeta($name)
-    {
-        $meta = $this->meta()
-            ->where('name', $name)
-            ->first();
-
-        return ($meta) ? $meta->value : null;
-    }
-
-    /**
-     * This will look up the value from meta table
-     * @param string $facebookId
-     */
-    public function setMeta($name, $value)
-    {
-        // not sure the best means to whitelist yet, might need to ask on SO
-        // anyway for now, just put in a chack here - should use validation in Meta
-        if (!in_array($name, Meta::$validNames)) {
-            return false;
-        }
-
-        $meta = $this->meta()
-            ->where('name', $name)
-            ->first();
-
-        if ($meta) { // if found, update
-            $meta->value = $value;
-            $meta->save();
-        } else { // otherwise, create
-            $this->meta()->create(array(
-                'name' => $name,
-                'value' => $value,
-            ));
-        }
-    }
-
-    /**
      * Scope a query to find a user by email
      * Makes testing easier when we don't have to chain eloquent methods
      * @param Query? $query
@@ -181,26 +122,6 @@ class User extends Model
     public function findByEmail($email)
     {
         return self::where('email', $email)->first();
-    }
-
-    /**
-     * Scope a query to find a user by email
-     * Makes testing easier when we don't have to chain eloquent methods
-     * @param Query? $query
-     * @param string $email
-     * @return User|null
-     */
-    public function findByFacebookId($facebookId)
-    {
-        $meta = Meta::where('name', 'facebook_id')
-            ->where('value', $facebookId)
-            ->first();
-
-        if ($meta) {
-            return $meta->user;
-        } else {
-            return null;
-        }
     }
 
     /**

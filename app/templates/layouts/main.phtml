@@ -9,7 +9,6 @@
         <title><?= $this->title ?></title>
 
         <?php $this->section('head') ?>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/css/app.css">
         <?php $this->stop() ?>
     </head>
@@ -19,7 +18,7 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li class="menu-text">Budget 80</li>
-                    <li><a href="<?= $this->pathFor('home') ?>">Transactions</a></li>
+                    <li><a href="<?= $this->pathFor('transactions') ?>">Transactions</a></li>
                     <li><a href="<?= $this->pathFor('funds') ?>">Funds</a></li>
                 </ul>
             </div>

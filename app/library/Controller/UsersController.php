@@ -47,7 +47,7 @@ class UsersController extends BaseController
         $validator->check('password')
             ->isNotEmpty($message)
             ->hasLowerCase($message)
-            // ->hasUpperCase($message)
+            ->hasNumber($message)
             ->isMinimumLength($message, 8);
 
         // agreement
@@ -72,10 +72,8 @@ class UsersController extends BaseController
                 // set meta entries (if given)
                 if (isset($params['source'])) $user->setMeta('source', $params['source']);
 
-                // // set session attributes w/ backend (method of signin)
-                // $container->get('auth')->setAttributes( array_merge($user->toArray(), array(
-                //     'backend' => User::BACKEND_JAPANTRAVEL,
-                // )) );
+                // set session attributes w/ backend (method of signin)
+                $container->get('auth')->setAttributes( $user->toArray() );
 
                 // send welcome email
                 $container->get('mail_manager')->sendWelcomeEmail($user);
