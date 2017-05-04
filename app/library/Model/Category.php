@@ -10,7 +10,7 @@ class Category extends Model
     */
     protected $fillable = array(
         'name',
-        'category_group_id',
+        'parent_id',
     );
 
     public function user()
@@ -18,13 +18,13 @@ class Category extends Model
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
     }
 
-    public function category_group()
-    {
-        return $this->belongsTo('App\\Model\\CategoryGroup'); //, 'user_id');
-    }
-
     public function transactions()
     {
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
+    }
+
+    public function parent()
+    {
+        return $this->hasMany('App\\Model\\Category', 'parent_id');
     }
 }

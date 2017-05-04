@@ -12,6 +12,11 @@ class CurrenciesSeeder extends AbstractSeed
                 'format' => '&pound;%01.2f',
                 'created_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'name' => 'JPY',
+                'format' => '&yen;%01.0f',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
         ];
 
         $oauth_clients = $this->table('currencies');

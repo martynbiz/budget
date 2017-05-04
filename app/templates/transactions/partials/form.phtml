@@ -8,7 +8,9 @@
 
 <label><?= $this->translate('category') ?>
     <select name="category_id">
-        <option value="1">Groceries</option>
+        <?php foreach ($this->categories as $category): ?>
+            <option value="<?= $category->id ?>" <?= (@$this->params['category_id'] == $category->id) ? 'selected' : '' ?>><?= $category->name ?></option>
+        <?php endforeach ?>
     </select>
 </label>
 

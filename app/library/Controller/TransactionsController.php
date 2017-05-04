@@ -45,9 +45,15 @@ class TransactionsController extends BaseController
     {
         // if errors found from post, this will contain data
         $params = $request->getParams();
+        $currentUser = $this->getCurrentUser();
+
+        $categories = $currentUser->categories()
+            ->orderBy('parent_id', 'asc')
+            ->get();
 
         return $this->render('transactions/create', [
             'params' => $params,
+            'categories' => $categories,
         ]);
     }
 
@@ -103,15 +109,21 @@ class TransactionsController extends BaseController
 
     public function edit($request, $response, $args)
     {
+        $currentUser = $this->getCurrentUser();
         $container = $this->getContainer();
         $transaction = $this->getCurrentUser()->transactions()->findOrFail((int)$args['transaction_id']);
 
         // if errors found from post, this will contain data
         $params = array_merge($transaction->toArray(), $request->getParams());
 
+        $categories = $currentUser->categories()
+            ->orderBy('parent_id', 'asc')
+            ->get();
+
         return $this->render('transactions/edit', [
             'params' => $params,
             'transaction' => $transaction,
+            'categories' => $categories,
         ]);
     }
 

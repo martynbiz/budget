@@ -8,8 +8,14 @@ class CategoriesSeeder extends AbstractSeed
     {
         $data = [
             [
+                'name' => 'Food',
+                'parent_id' => 0,
+                'user_id' => 1,
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
                 'name' => 'Groceries',
-                // 'category_group_id' => null,
+                'parent_id' => 1,
                 'user_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
             ],

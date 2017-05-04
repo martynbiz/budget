@@ -2,8 +2,11 @@
     <input type="text" name="name" placeholder="<?= $this->translate('name') ?>" value="<?= @$this->params['name'] ?>">
 </label>
 
-<label><?= $this->translate('group') ?>
-    <select name="group_id">
-        <option value="1">Food</option>
+<label><?= $this->translate('parent_category') ?>
+    <select name="parent_id">
+        <option value="0"></option>
+        <?php foreach ($this->parents as $parent): ?>
+            <option value="<?= $parent->id ?>" <?= (@$this->params['parent_id'] == $parent->id) ? 'selected' : '' ?>><?= $parent->name ?></option>
+        <?php endforeach ?>
     </select>
 </label>

@@ -129,13 +129,14 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'fund_id' => $this->fund->id,
         ]);
 
-        $this->category_group = $this->user->category_groups()->create([
-            'name' => 'Food',
+        $this->category1 = $this->user->categories()->create([
+            'name' => 'Groceries',
+            'parent_id' => 0,
         ]);
 
-        $this->category = $this->user->categories()->create([
+        $this->category2 = $this->user->categories()->create([
             'name' => 'Groceries',
-            'category_group_id' => $this->category_group->id,
+            'parent_id' => $this->category1->id,
         ]);
     }
 

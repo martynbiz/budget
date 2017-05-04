@@ -15,12 +15,12 @@ class CategoriesController extends BaseController
         ], $request->getQueryParams());
 
         $page = (int)$options['page'];
-        $limit = 1;
+        $limit = 10;
         $start = ($page-1) * $limit;
 
         // get paginated rows
         $categories = $currentUser->categories()
-            ->with('category_group')
+            ->orderBy('parent_id')
             ->skip($start)
             ->take($limit)
             ->get();
@@ -29,8 +29,13 @@ class CategoriesController extends BaseController
         $totalCategories = $currentUser->categories()->count();
         $totalPages = ($totalCategories > 0) ? ceil($totalCategories/$limit) : 1;
 
+        $parents = $currentUser->categories()
+            ->where('parent_id', 0)
+            ->get();
+
         return $this->render('categories/index', [
             'categories' => $categories,
+            'parent' => $parents,
 
             // pagination
             'total_pages' => $totalPages,
@@ -40,11 +45,18 @@ class CategoriesController extends BaseController
 
     public function create($request, $response, $args)
     {
+        $currentUser = $this->getCurrentUser();
+
         // if errors found from post, this will contain data
         $params = $request->getParams();
 
+        $parents = $currentUser->categories()
+            ->where('parent_id', 0)
+            ->get();
+
         return $this->render('categories/create', [
             'params' => $params,
+            'parents' => $parents,
         ]);
     }
 
@@ -71,7 +83,7 @@ class CategoriesController extends BaseController
             if ($category = $currentUser->categories()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/';
+                isset($params['returnTo']) or $params['returnTo'] = '/categories';
                 return $this->returnTo($params['returnTo']);
 
             } else {
@@ -88,15 +100,23 @@ class CategoriesController extends BaseController
 
     public function edit($request, $response, $args)
     {
+        $currentUser = $this->getCurrentUser();
+
         $container = $this->getContainer();
         $category = $this->getCurrentUser()->categories()->findOrFail((int)$args['category_id']);
 
         // if errors found from post, this will contain data
         $params = array_merge($category->toArray(), $request->getParams());
 
+        $parents = $currentUser->categories()
+            ->where('parent_id', 0)
+            ->where('id', '!=', $category->id)
+            ->get();
+
         return $this->render('categories/edit', [
             'params' => $params,
             'category' => $category,
+            'parents' => $parents,
         ]);
     }
 

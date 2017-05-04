@@ -78,7 +78,7 @@ class CategoriesControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/categories/' . $this->category->id . '/edit');
+        $response = $this->runApp('GET', '/categories/' . $this->category1->id . '/edit');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -98,7 +98,7 @@ class CategoriesControllerTest extends BaseTestCase
             '_METHOD' => 'PUT',
         ];
 
-        $response = $this->runApp('POST', '/categories/' . $this->category->id, $values);
+        $response = $this->runApp('POST', '/categories/' . $this->category1->id, $values);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -115,7 +115,7 @@ class CategoriesControllerTest extends BaseTestCase
         ];
 
         $this->login( $this->user );
-        $response = $this->runApp('DELETE', '/categories/' . $this->category->id);
+        $response = $this->runApp('DELETE', '/categories/' . $this->category1->id);
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -127,7 +127,7 @@ class CategoriesControllerTest extends BaseTestCase
     {
         return array_merge([
             'name' => 'Restaurant',
-            'category_group_id' => 1,
+            'parent_id' => 1,
         ], $values);
     }
 

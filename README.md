@@ -1,18 +1,20 @@
 # Budget
 
 TODO
-* funds/*
+* indent parent categories in select boxes
 * fund switcher
 * translations
 * test exceptions
 * remove user.findByEmail
 * pie chart
 * reset password
-* categories/*
 * fund currency symbols (use sprintf)
 * BaseController.getOptions -- ['start': .., 'limit': .., 'page': .., 'total_pages': ..,]
 * JS - date picker, categories autocomplete
 * date range
+* when deleting a user, does it soft delete child dependencies?
+* when redirect to login, store returnTo
+
 
 ## Install the Application ##
 

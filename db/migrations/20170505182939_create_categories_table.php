@@ -15,7 +15,7 @@ class CreateCategoriesTable extends AbstractMigration
         ));
 
         $table->addColumn('name', 'string', array( 'limit' => 64 ));
-        $table->addColumn('category_group_id', 'integer', array( 'null' => true ));
+        $table->addColumn('parent_id', 'integer');
         $table->addColumn('user_id', 'integer');
 
         // timestamps
@@ -23,10 +23,7 @@ class CreateCategoriesTable extends AbstractMigration
         $table->addColumn('updated_at', 'datetime', array( 'null' => true ));
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true ));
 
-        $table->addForeignKey('category_group_id', 'category_groups', 'id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'));
-        $table->addIndex('category_group_id');
-
-        $table->addForeignKey('user_id', 'users', 'id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'));
+        $table->addIndex('parent_id');
         $table->addIndex('user_id');
 
         $table->save();

@@ -24,7 +24,6 @@ class CreateFundsTable extends AbstractMigration
         $table->addColumn('updated_at', 'datetime', array( 'null' => true ));
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true ));
 
-        $table->addForeignKey('user_id', 'users', 'id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'));
         $table->addIndex('user_id');
 
         $table->save();
