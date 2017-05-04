@@ -64,14 +64,12 @@ class TransactionsControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $userValues = [
+        $response = $this->runApp('POST', '/transactions', [
             'description' => $description,
             'amount' => $amount,
             'purchased_at' => $purchasedAt,
             'category_id' => $categoryId,
-        ];
-
-        $response = $this->runApp('POST', '/transactions', $userValues);
+        ]);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -97,16 +95,14 @@ class TransactionsControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $userValues = [
+        $response = $this->runApp('POST', '/transactions/' . $this->transaction->id, [
             'description' => $description,
             'amount' => $amount,
             'purchased_at' => $purchasedAt,
             'category_id' => $categoryId,
 
             '_METHOD' => 'PUT',
-        ];
-
-        $response = $this->runApp('POST', '/transactions/' . $this->transaction->id, $userValues);
+        ]);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -118,7 +114,7 @@ class TransactionsControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $userValues = [
+        $values = [
             '_METHOD' => 'DELETE',
         ];
 

@@ -1,17 +1,9 @@
-<label><?= $this->translate('description') ?>
-    <input type="text" name="description" placeholder="<?= $this->translate('description') ?>" value="<?= @$this->params['description'] ?>">
+<label><?= $this->translate('name') ?>
+    <input type="text" name="name" placeholder="<?= $this->translate('name') ?>" value="<?= @$this->params['name'] ?>">
 </label>
 
-<label><?= $this->translate('amount') ?>
-    <input type="text" name="amount" placeholder="<?= $this->translate('amount') ?>" value="<?= @$this->params['amount'] ?>">
-</label>
-
-<label><?= $this->translate('category') ?>
-    <select name="category_id">
-        <option value="1">Groceries</option>
+<label><?= $this->translate('group') ?>
+    <select name="group_id">
+        <option value="1">Food</option>
     </select>
-</label>
-
-<label><?= $this->translate('purchased_at') ?>
-    <input type="text" name="purchased_at" placeholder="<?= $this->translate('purchased_at') ?>" value="<?= @$this->params['purchased_at'] ?>">
 </label>

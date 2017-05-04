@@ -20,7 +20,7 @@ class Category extends Model
 
     public function category_group()
     {
-        return $this->belongsTo('App\\Model\\Group'); //, 'user_id');
+        return $this->belongsTo('App\\Model\\CategoryGroup'); //, 'user_id');
     }
 
     public function transactions()

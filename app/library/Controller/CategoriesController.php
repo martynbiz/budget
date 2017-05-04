@@ -20,6 +20,7 @@ class CategoriesController extends BaseController
 
         // get paginated rows
         $categories = $currentUser->categories()
+            ->with('category_group')
             ->skip($start)
             ->take($limit)
             ->get();
@@ -61,20 +62,8 @@ class CategoriesController extends BaseController
         $i18n = $container->get('i18n');
 
         // description
-        $validator->check('description')
-            ->isNotEmpty( $i18n->translate('description_missing') );
-
-        // amount
-        $validator->check('amount')
-            ->isNotEmpty( $i18n->translate('amount_missing') );
-
-        // category
-        $validator->check('category_id')
-            ->isNotEmpty( $i18n->translate('category_missing') );
-
-        // purchased at
-        $validator->check('purchased_at')
-            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+        $validator->check('name')
+            ->isNotEmpty( $i18n->translate('name_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {
