@@ -3,13 +3,13 @@
 TODO
 * indent parent categories in select boxes
 * fund switcher
-* translations
+* translations - make keys more descriptive (e.g. transaction_link), japanese translations
 * test exceptions
 * remove user.findByEmail
 * pie chart
 * reset password
 * fund currency symbols (use sprintf)
-* BaseController.getOptions -- ['start': .., 'limit': .., 'page': .., 'total_pages': ..,]
+* BaseController.getOptions -- ['start': .., 'limit': .., 'page': .., 'total_pages': ..,] .. hide pagiantion if only 1
 * JS - date picker, categories autocomplete
 * date range
 * when deleting a user, does it soft delete child dependencies?
