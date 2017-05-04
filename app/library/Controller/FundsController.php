@@ -28,12 +28,8 @@ class FundsController extends BaseController
         $totalFunds = $currentUser->funds()->count();
         $totalPages = ($totalFunds > 0) ? ceil($totalFunds/$limit) : 1;
 
-        $amounts = $currentUser->funds()->pluck('amount');
-        $total = $amounts->sum();
-
         return $this->render('funds/index', [
             'funds' => $funds,
-            'total' => $total,
 
             // pagination
             'total_pages' => $totalPages,
@@ -45,9 +41,13 @@ class FundsController extends BaseController
     {
         // if errors found from post, this will contain data
         $params = $request->getParams();
+        $container = $this->getContainer();
+
+        $currencies = $container->get('model.currency')->orderBy('name', 'asc')->get();
 
         return $this->render('funds/create', [
             'params' => $params,
+            'currencies' => $currencies,
         ]);
     }
 
@@ -65,20 +65,16 @@ class FundsController extends BaseController
         $i18n = $container->get('i18n');
 
         // description
-        $validator->check('description')
-            ->isNotEmpty( $i18n->translate('description_missing') );
+        $validator->check('name')
+            ->isNotEmpty( $i18n->translate('name_missing') );
 
         // amount
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
         // category
-        $validator->check('category_id')
+        $validator->check('currency_id')
             ->isNotEmpty( $i18n->translate('category_missing') );
-
-        // purchased at
-        $validator->check('purchased_at')
-            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
         // if valid, create fund
         if ($validator->isValid()) {
@@ -109,9 +105,12 @@ class FundsController extends BaseController
         // if errors found from post, this will contain data
         $params = array_merge($fund->toArray(), $request->getParams());
 
+        $currencies = $container->get('model.currency')->orderBy('name', 'asc')->get();
+
         return $this->render('funds/edit', [
             'params' => $params,
             'fund' => $fund,
+            'currencies' => $currencies,
         ]);
     }
 
@@ -184,6 +183,6 @@ class FundsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('create', func_get_args());
+        return $this->forward('index', func_get_args());
     }
 }

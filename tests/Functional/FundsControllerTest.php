@@ -21,99 +21,105 @@ class FundsControllerTest extends BaseTestCase
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#logout_form', (string)$response->getBody());
+        $this->assertQuery('table', (string)$response->getBody());
     }
 
+    public function testGetIndex()
+    {
+        $this->login( $this->user );
+        $response = $this->runApp('GET', '/funds');
 
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('table', (string)$response->getBody()); // has form
+    }
 
+    public function testGetCreate()
+    {
+        $this->login( $this->user );
+        $response = $this->runApp('GET', '/funds/create');
 
-    // public function testGetCreate()
-    // {
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('GET', '/funds/create');
-    //
-    //     // assertions
-    //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertQuery('form#Fund_form', (string)$response->getBody()); // has form
-    // }
-    //
-    // public function testPostFundWithValidData()
-    // {
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('POST', '/funds', static::getFundValues());
-    //
-    //     // assertions
-    //     $this->assertEquals(302, $response->getStatusCode());
-    // }
-    //
-    // /**
-    //  * @dataProvider getInvalidData
-    //  */
-    // public function testPostFundWithInvalidData($description, $amount, $purchasedAt, $categoryId)
-    // {
-    //     $userValues = [
-    //         'description' => $description,
-    //         'amount' => $amount,
-    //         'purchased_at' => $purchasedAt,
-    //         'category_id' => $categoryId,
-    //
-    //         '_METHOD' => 'PUT',
-    //     ];
-    //
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('POST', '/funds/1', $userValues);
-    //
-    //     // assertions
-    //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertQuery('form#Fund_form', (string)$response->getBody()); // has form
-    //     $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
-    // }
-    //
-    // public function testGetEdit()
-    // {
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('GET', '/funds/1/edit');
-    //
-    //     // assertions
-    //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertQuery('form#Fund_form', (string)$response->getBody()); // has form
-    // }
-    //
-    // /**
-    //  * @dataProvider getInvalidData
-    //  */
-    // public function testPutFundWithInvalidData($description, $amount, $purchasedAt, $categoryId)
-    // {
-    //     $userValues = [
-    //         'description' => $description,
-    //         'amount' => $amount,
-    //         'purchased_at' => $purchasedAt,
-    //         'category_id' => $categoryId,
-    //
-    //         '_METHOD' => 'PUT',
-    //     ];
-    //
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('PUT', '/funds/1', $userValues);
-    //
-    //     // assertions
-    //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertQuery('form#Fund_form', (string)$response->getBody()); // has form
-    //     $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
-    // }
-    //
-    // public function testDeleteFund()
-    // {
-    //     $userValues = [
-    //         '_METHOD' => 'DELETE',
-    //     ];
-    //
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('DELETE', '/funds/1');
-    //
-    //     // assertions
-    //     $this->assertEquals(302, $response->getStatusCode());
-    // }
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#fund_form', (string)$response->getBody()); // has form
+    }
+
+    public function testPostFundWithValidData()
+    {
+        $this->login( $this->user );
+        $response = $this->runApp('POST', '/funds', static::getFundValues());
+
+        // assertions
+        $this->assertEquals(302, $response->getStatusCode());
+    }
+
+    /**
+     * @dataProvider getInvalidData
+     */
+    public function testPostFundWithInvalidData($name, $currencyId, $amount)
+    {
+        $this->login( $this->user );
+        $userValues = [
+            'name' => $name,
+            'currency_id' => $currencyId,
+            'amount' => $amount,
+        ];
+
+        $this->login( $this->user );
+        $response = $this->runApp('POST', '/funds', $userValues);
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#fund_form', (string)$response->getBody()); // has form
+        $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
+    }
+
+    public function testGetEdit()
+    {
+        $this->login( $this->user );
+        $response = $this->runApp('GET', '/funds/' . $this->fund->id . '/edit');
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#fund_form', (string)$response->getBody()); // has form
+    }
+
+    /**
+     * @dataProvider getInvalidData
+     */
+    public function testPutFundWithInvalidData($name, $currencyId, $amount)
+    {
+        $this->login( $this->user );
+        $userValues = [
+            'name' => $name,
+            'currency_id' => $currencyId,
+            'amount' => $amount,
+
+            '_METHOD' => 'PUT',
+        ];
+
+        $this->login( $this->user );
+        $response = $this->runApp('POST', '/funds/' . $this->fund->id, $userValues);
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#fund_form', (string)$response->getBody()); // has form
+        $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
+    }
+
+    public function testDeleteFund()
+    {
+        $this->login( $this->user );
+        $userValues = [
+            '_METHOD' => 'DELETE',
+        ];
+
+        $this->login( $this->user );
+        $response = $this->runApp('DELETE', '/funds/' . $this->fund->id);
+
+        // assertions
+        $this->assertEquals(302, $response->getStatusCode());
+    }
 
 
 
@@ -130,8 +136,8 @@ class FundsControllerTest extends BaseTestCase
     {
         return [
             static::getFundValues(['name' => '']),
-            static::getFundValues(['currency_id' => '']),
-            static::getFundValues(['amount' => '']),
+            // static::getFundValues(['amount' => '']),
+            // static::getFundValues(['currency_id' => '']),
         ];
     }
 

@@ -17,6 +17,7 @@ class TransactionsControllerTest extends BaseTestCase
     public function testIndexShowsLogoutMenuWhenAuthenticated()
     {
         $this->login( $this->user );
+
         $response = $this->runApp('GET', '/');
 
         // assertions
@@ -24,9 +25,21 @@ class TransactionsControllerTest extends BaseTestCase
         $this->assertQuery('form#logout_form', (string)$response->getBody());
     }
 
+    public function testGetIndex()
+    {
+        $this->login( $this->user );
+
+        $response = $this->runApp('GET', '/transactions');
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('table', (string)$response->getBody()); // has form
+    }
+
     public function testGetCreate()
     {
         $this->login( $this->user );
+
         $response = $this->runApp('GET', '/transactions/create');
 
         // assertions
@@ -37,6 +50,7 @@ class TransactionsControllerTest extends BaseTestCase
     public function testPostTransactionWithValidData()
     {
         $this->login( $this->user );
+
         $response = $this->runApp('POST', '/transactions', static::getTransactionValues());
 
         // assertions
@@ -48,6 +62,8 @@ class TransactionsControllerTest extends BaseTestCase
      */
     public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
     {
+        $this->login( $this->user );
+
         $userValues = [
             'description' => $description,
             'amount' => $amount,
@@ -55,8 +71,7 @@ class TransactionsControllerTest extends BaseTestCase
             'category_id' => $categoryId,
         ];
 
-        $this->login( $this->user );
-        $response = $this->runApp('POST', '/transactions/1', $userValues);
+        $response = $this->runApp('POST', '/transactions', $userValues);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -67,7 +82,8 @@ class TransactionsControllerTest extends BaseTestCase
     public function testGetEdit()
     {
         $this->login( $this->user );
-        $response = $this->runApp('GET', '/transactions/1/edit');
+
+        $response = $this->runApp('GET', '/transactions/' . $this->transaction->id . '/edit');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -79,6 +95,8 @@ class TransactionsControllerTest extends BaseTestCase
      */
     public function testPutTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
     {
+        $this->login( $this->user );
+
         $userValues = [
             'description' => $description,
             'amount' => $amount,
@@ -88,8 +106,7 @@ class TransactionsControllerTest extends BaseTestCase
             '_METHOD' => 'PUT',
         ];
 
-        $this->login( $this->user );
-        $response = $this->runApp('POST', '/transactions/1', $userValues);
+        $response = $this->runApp('POST', '/transactions/' . $this->transaction->id, $userValues);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -99,12 +116,14 @@ class TransactionsControllerTest extends BaseTestCase
 
     public function testDeleteTransaction()
     {
+        $this->login( $this->user );
+
         $userValues = [
             '_METHOD' => 'DELETE',
         ];
 
         $this->login( $this->user );
-        $response = $this->runApp('DELETE', '/transactions/1');
+        $response = $this->runApp('DELETE', '/transactions/' . $this->transaction->id);
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -127,7 +146,6 @@ class TransactionsControllerTest extends BaseTestCase
         return [
             static::getTransactionValues(['description' => '']),
             static::getTransactionValues(['amount' => '']),
-            // static::getTransactionValues(['amount' => 0]),
             static::getTransactionValues(['purchased_at' => '']),
             static::getTransactionValues(['category_id' => '']),
         ];

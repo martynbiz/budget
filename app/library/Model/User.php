@@ -29,6 +29,21 @@ class User extends Model
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
     }
 
+    public function funds()
+    {
+        return $this->hasMany('App\\Model\\Fund'); //, 'user_id');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany('App\\Model\\Category'); //, 'user_id');
+    }
+
+    public function category_groups()
+    {
+        return $this->hasMany('App\\Model\\CategoryGroup'); //, 'user_id');
+    }
+
     public function auth_token()
     {
         return $this->hasOne('App\\Model\\AuthToken'); //, 'user_id');

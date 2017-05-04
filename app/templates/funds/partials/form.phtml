@@ -2,8 +2,14 @@
     <input type="text" name="name" placeholder="<?= $this->translate('name') ?>" value="<?= @$this->params['name'] ?>">
 </label>
 
+<label><?= $this->translate('amount') ?>
+    <input type="text" name="amount" placeholder="<?= $this->translate('amount') ?>" value="<?= (isset($this->params['amount'])) ? $this->params['amount'] : 0 ?>">
+</label>
+
 <label><?= $this->translate('currency') ?>
     <select name="currency_id">
-        <option value="1">GBP</option>
+        <?php foreach ($this->currencies as $currency): ?>
+            <option value="<?= $currency->id ?>"><?= $currency->name ?></option>
+        <?php endforeach ?>
     </select>
 </label>

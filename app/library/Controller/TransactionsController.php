@@ -184,6 +184,6 @@ class TransactionsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('create', func_get_args());
+        return $this->forward('index', func_get_args());
     }
 }

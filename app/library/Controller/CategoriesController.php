@@ -28,12 +28,8 @@ class CategoriesController extends BaseController
         $totalCategories = $currentUser->categories()->count();
         $totalPages = ($totalCategories > 0) ? ceil($totalCategories/$limit) : 1;
 
-        $amounts = $currentUser->categories()->pluck('amount');
-        $total = $amounts->sum();
-
         return $this->render('categories/index', [
             'categories' => $categories,
-            'total' => $total,
 
             // pagination
             'total_pages' => $totalPages,

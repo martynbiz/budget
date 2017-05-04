@@ -1,7 +1,6 @@
 <?php
 
 use Phinx\Seed\AbstractSeed;
-use App\Model\User;
 
 class UsersSeeder extends AbstractSeed
 {
@@ -20,6 +19,6 @@ class UsersSeeder extends AbstractSeed
 
         $oauth_clients = $this->table('users');
         $oauth_clients->insert($data)
-              ->save();
+            ->save();
     }
 }

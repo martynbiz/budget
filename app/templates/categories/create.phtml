@@ -5,14 +5,14 @@
 <?php $this->section('content') ?>
     <div class="row">
         <div class="small-12 columns">
-            <form id="fund_form" method="post" action="<?= $this->pathFor('funds_post') ?>">
-                <?= $this->insert('funds/partials/form') ?>
+            <form id="transaction_form" method="post" action="<?= $this->pathFor('transactions_post') ?>">
+                <?= $this->insert('transactions/partials/form') ?>
 
                 <button class="button primary" type="submit">
                     <?= $this->translate('save_button') ?>
                 </button>
 
-                <a href="<?= $this->pathFor('funds') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+                <a href="<?= $this->pathFor('transactions') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
 
                 <?php if(isset($this->params['returnTo'])): ?>
                     <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">

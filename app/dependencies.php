@@ -228,3 +228,15 @@ $container['model.recovery_token'] = function($c) {
 $container['model.transaction'] = function($c) {
     return new \App\Model\Transaction();
 };
+
+$container['model.fund'] = function($c) {
+    return new \App\Model\Fund();
+};
+
+$container['model.currency'] = function($c) {
+    return new \App\Model\Currency();
+};
+
+$container['model.category'] = function($c) {
+    return new \App\Model\Category();
+};

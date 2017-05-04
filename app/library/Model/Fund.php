@@ -10,7 +10,8 @@ class Fund extends Model
     */
     protected $fillable = array(
         'name',
-        'currency',
+        'amount',
+        'currency_id',
     );
 
     public function user()

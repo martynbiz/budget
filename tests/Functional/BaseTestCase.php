@@ -12,6 +12,10 @@ use App\Model\User;
 use App\Model\Transaction;
 use App\Model\AuthToken;
 use App\Model\RecoveryToken;
+use App\Model\Fund;
+use App\Model\Category;
+use App\Model\CategoryGroup;
+use App\Model\Currency;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -100,19 +104,38 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'password' => 'password1',
         ]);
 
-        $this->recoveryToken = RecoveryToken::create([
-            'user_id' => $this->user->id,
+        $this->currency = Currency::create([
+            'name' => 'JPY',
+            'format' => '&yen;%01.0f',
+        ]);
+
+        $this->recoveryToken = $this->user->recovery_token()->create([
             'selector' => '1234567890',
             'token' => 'qwertyuiop1234567890',
             'expire' => date('Y-m-d H:i:s', strtotime("+3 months", time())),
         ]);
 
-        $this->transaction = Transaction::create([
-            'user_id' => $this->user->id,
+        $this->fund = $this->user->funds()->create([
+            'name' => 'Bank of Scotland',
+            'amount' => '100',
+            'currency_id' => $this->currency->id,
+        ]);
+
+        $this->transaction = $this->user->transactions()->create([
             'description' => 'Sandwich',
             'amount' => '12.50',
             'purchased_at' => '2017-05-01 00:00:05',
             'category_id' => '1',
+            'fund_id' => $this->fund->id,
+        ]);
+
+        $this->category_group = $this->user->category_groups()->create([
+            'name' => 'Food',
+        ]);
+
+        $this->category = $this->user->categories()->create([
+            'name' => 'Groceries',
+            'category_group_id' => $this->category_group->id,
         ]);
     }
 

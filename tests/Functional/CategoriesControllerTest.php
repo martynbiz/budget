@@ -3,44 +3,55 @@ namespace Tests\Functional;
 
 class CategoriesControllerTest extends BaseTestCase
 {
-    /**
-     * @dataProvider getProtectedPaths
-     */
-    public function testRedirectsWhenNotAuthenticated($path, $method)
-    {
-        $response = $this->runApp($method, $path);
-
-        // assertions
-        $this->assertEquals(302, $response->getStatusCode());
-    }
-
-    public function testIndexShowsLogoutMenuWhenAuthenticated()
-    {
-        $this->login( $this->user );
-        $response = $this->runApp('GET', '/');
-
-        // assertions
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#logout_form', (string)$response->getBody());
-    }
-
-
-
-
-    // public function testGetCreate()
+    // /**
+    //  * @dataProvider getProtectedPaths
+    //  */
+    // public function testRedirectsWhenNotAuthenticated($path, $method)
+    // {
+    //     $response = $this->runApp($method, $path);
+    //
+    //     // assertions
+    //     $this->assertEquals(302, $response->getStatusCode());
+    // }
+    //
+    // public function testIndexShowsLogoutMenuWhenAuthenticated()
     // {
     //     $this->login( $this->user );
-    //     $response = $this->runApp('GET', '/categories/create');
+    //
+    //     $response = $this->runApp('GET', '/');
     //
     //     // assertions
     //     $this->assertEquals(200, $response->getStatusCode());
-    //     $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
+    //     $this->assertQuery('form#logout_form', (string)$response->getBody());
     // }
-    //
-    // public function testPostCategoryWithValidData()
+
+    public function testGetIndex()
+    {
+        $this->login( $this->user );
+
+        $response = $this->runApp('GET', '/categories');
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('table', (string)$response->getBody()); // has form
+    }
+
+    public function testGetCreate()
+    {
+        $this->login( $this->user );
+
+        $response = $this->runApp('GET', '/categories/create');
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
+    }
+
+    // public function testPostTransactionWithValidData()
     // {
     //     $this->login( $this->user );
-    //     $response = $this->runApp('POST', '/categories', static::getCategoryValues());
+    //
+    //     $response = $this->runApp('POST', '/categories', static::getTransactionValues());
     //
     //     // assertions
     //     $this->assertEquals(302, $response->getStatusCode());
@@ -49,8 +60,10 @@ class CategoriesControllerTest extends BaseTestCase
     // /**
     //  * @dataProvider getInvalidData
     //  */
-    // public function testPostCategoryWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    // public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
     // {
+    //     $this->login( $this->user );
+    //
     //     $userValues = [
     //         'description' => $description,
     //         'amount' => $amount,
@@ -58,8 +71,7 @@ class CategoriesControllerTest extends BaseTestCase
     //         'category_id' => $categoryId,
     //     ];
     //
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('POST', '/categories/1', $userValues);
+    //     $response = $this->runApp('POST', '/categories', $userValues);
     //
     //     // assertions
     //     $this->assertEquals(200, $response->getStatusCode());
@@ -70,7 +82,8 @@ class CategoriesControllerTest extends BaseTestCase
     // public function testGetEdit()
     // {
     //     $this->login( $this->user );
-    //     $response = $this->runApp('GET', '/categories/1/edit');
+    //
+    //     $response = $this->runApp('GET', '/categories/' . $this->category->id . '/edit');
     //
     //     // assertions
     //     $this->assertEquals(200, $response->getStatusCode());
@@ -80,8 +93,10 @@ class CategoriesControllerTest extends BaseTestCase
     // /**
     //  * @dataProvider getInvalidData
     //  */
-    // public function testPutCategoryWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    // public function testPutTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
     // {
+    //     $this->login( $this->user );
+    //
     //     $userValues = [
     //         'description' => $description,
     //         'amount' => $amount,
@@ -91,8 +106,7 @@ class CategoriesControllerTest extends BaseTestCase
     //         '_METHOD' => 'PUT',
     //     ];
     //
-    //     $this->login( $this->user );
-    //     $response = $this->runApp('POST', '/categories/1', $userValues);
+    //     $response = $this->runApp('POST', '/categories/' . $this->category->id, $userValues);
     //
     //     // assertions
     //     $this->assertEquals(200, $response->getStatusCode());
@@ -100,14 +114,16 @@ class CategoriesControllerTest extends BaseTestCase
     //     $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
     // }
     //
-    // public function testDeleteCategory()
+    // public function testDeleteTransaction()
     // {
+    //     $this->login( $this->user );
+    //
     //     $userValues = [
     //         '_METHOD' => 'DELETE',
     //     ];
     //
     //     $this->login( $this->user );
-    //     $response = $this->runApp('DELETE', '/categories/1');
+    //     $response = $this->runApp('DELETE', '/categories/' . $this->category->id);
     //
     //     // assertions
     //     $this->assertEquals(302, $response->getStatusCode());
@@ -115,19 +131,18 @@ class CategoriesControllerTest extends BaseTestCase
 
 
 
-    private static function getCategoryValues($values=array())
+    private static function getTransactionValues($values=array())
     {
         return array_merge([
-            'name' => 'Eating out',
-            'category_group_id' => '1',
+            'name' => 'Restaurant',
+            'category_group_id' => $this->category_group->id,
         ], $values);
     }
 
     public function getInvalidData()
     {
         return [
-            static::getCategoryValues(['name' => '']),
-            static::getCategoryValues(['category_group_id' => '']),
+            static::getTransactionValues(['name' => '']),
         ];
     }
 
