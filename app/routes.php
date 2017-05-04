@@ -19,7 +19,6 @@ $app->delete('/logout', '\App\Controller\SessionController:delete')->setName('lo
 $app->get('/register', '\App\Controller\UsersController:register')->setName('register');
 $app->post('/register', '\App\Controller\UsersController:post')->setName('register_post');
 
-// transactions routes
 $app->group('/transactions', function() {
     $this->get('', '\App\Controller\TransactionsController:index')->setName('transactions');
     $this->get('/create', '\App\Controller\TransactionsController:create')->setName('transactions_create');
@@ -27,6 +26,16 @@ $app->group('/transactions', function() {
     $this->get('/{transaction_id}/edit', '\App\Controller\TransactionsController:edit')->setName('transactions_edit');
     $this->put('/{transaction_id}', '\App\Controller\TransactionsController:update')->setName('transactions_update');
     $this->delete('/{transaction_id}', '\App\Controller\TransactionsController:delete')->setName('transactions_delete');
+})->add($requireAuth);
+
+// transactions routes
+$app->group('/categories', function() {
+    $this->get('', '\App\Controller\CategoriesController:index')->setName('categories');
+    $this->get('/create', '\App\Controller\CategoriesController:create')->setName('categories_create');
+    $this->post('', '\App\Controller\CategoriesController:post')->setName('categories_post');
+    $this->get('/{category_id}/edit', '\App\Controller\CategoriesController:edit')->setName('categories_edit');
+    $this->put('/{category_id}', '\App\Controller\CategoriesController:update')->setName('categories_update');
+    $this->delete('/{category_id}', '\App\Controller\CategoriesController:delete')->setName('categories_delete');
 })->add($requireAuth);
 
 // funds routes

@@ -8,7 +8,37 @@ class FundsController extends BaseController
 {
     public function index($request, $response, $args)
     {
-        return $this->render('funds/index');
+        $currentUser = $this->getCurrentUser();
+
+        $options = array_merge([
+            'page' => 1,
+        ], $request->getQueryParams());
+
+        $page = (int)$options['page'];
+        $limit = 1;
+        $start = ($page-1) * $limit;
+
+        // get paginated rows
+        $funds = $currentUser->funds()
+            ->skip($start)
+            ->take($limit)
+            ->get();
+
+        // TODO needs to be set against date range
+        $totalFunds = $currentUser->funds()->count();
+        $totalPages = ($totalFunds > 0) ? ceil($totalFunds/$limit) : 1;
+
+        $amounts = $currentUser->funds()->pluck('amount');
+        $total = $amounts->sum();
+
+        return $this->render('funds/index', [
+            'funds' => $funds,
+            'total' => $total,
+
+            // pagination
+            'total_pages' => $totalPages,
+            'page' => $page,
+        ]);
     }
 
     public function create($request, $response, $args)
@@ -22,6 +52,70 @@ class FundsController extends BaseController
     }
 
     public function post($request, $response, $args)
+    {
+        $params = $request->getParams();
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+
+        // validate form data
+
+        // our simple custom validator for the form
+        $validator = new Validator();
+        $validator->setData($params);
+        $i18n = $container->get('i18n');
+
+        // description
+        $validator->check('description')
+            ->isNotEmpty( $i18n->translate('description_missing') );
+
+        // amount
+        $validator->check('amount')
+            ->isNotEmpty( $i18n->translate('amount_missing') );
+
+        // category
+        $validator->check('category_id')
+            ->isNotEmpty( $i18n->translate('category_missing') );
+
+        // purchased at
+        $validator->check('purchased_at')
+            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+
+        // if valid, create fund
+        if ($validator->isValid()) {
+
+            if ($fund = $currentUser->funds()->create($params)) {
+
+                // redirect
+                isset($params['returnTo']) or $params['returnTo'] = '/';
+                return $this->returnTo($params['returnTo']);
+
+            } else {
+                $errors = $fund->errors();
+            }
+
+        } else {
+            $errors = $validator->getErrors();
+        }
+
+        $container->get('flash')->addMessage('errors', $errors);
+        return $this->forward('create', func_get_args());
+    }
+
+    public function edit($request, $response, $args)
+    {
+        $container = $this->getContainer();
+        $fund = $this->getCurrentUser()->funds()->findOrFail((int)$args['fund_id']);
+
+        // if errors found from post, this will contain data
+        $params = array_merge($fund->toArray(), $request->getParams());
+
+        return $this->render('funds/edit', [
+            'params' => $params,
+            'fund' => $fund,
+        ]);
+    }
+
+    public function update($request, $response, $args)
     {
         $params = $request->getParams();
         $container = $this->getContainer();
@@ -42,25 +136,26 @@ class FundsController extends BaseController
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
         // category
-        $validator->check('category')
+        $validator->check('category_id')
             ->isNotEmpty( $i18n->translate('category_missing') );
 
         // purchased at
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
-        // if valid, create transaction
-
+        // if valid, create fund
         if ($validator->isValid()) {
 
-            if ($transaction = $container->get('model.transaction')->create($params)) {
+            $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
+
+            if ($fund->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/';
+                isset($params['returnTo']) or $params['returnTo'] = '/funds';
                 return $this->returnTo($params['returnTo']);
 
             } else {
-                $errors = $transaction->errors();
+                $errors = $fund->errors();
             }
 
         } else {
@@ -71,15 +166,24 @@ class FundsController extends BaseController
         return $this->forward('create', func_get_args());
     }
 
-    public function edit($request, $response, $args)
+    public function delete($request, $response, $args)
     {
-        $id = $args['fund_id'];
-
-        // if errors found from post, this will contain data
         $params = $request->getParams();
+        $container = $this->getContainer();
 
-        return $this->render('funds/edit', [
-            'params' => $params,
-        ]);
+        $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
+
+        if ($fund->delete()) {
+
+            // redirect
+            isset($params['returnTo']) or $params['returnTo'] = '/funds';
+            return $this->returnTo($params['returnTo']);
+
+        } else {
+            $errors = $fund->errors();
+        }
+
+        $container->get('flash')->addMessage('errors', $errors);
+        return $this->forward('create', func_get_args());
     }
 }

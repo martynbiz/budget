@@ -3,17 +3,14 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class CategoryGroup extends Model
 {
     /**
     * @var array
     */
     protected $fillable = array(
-        'description',
-        'amount',
-        'purchased_at',
-        'category_id',
-        'user_id',
+        'name',
+        'currency',
     );
 
     public function user()
@@ -21,8 +18,8 @@ class Transaction extends Model
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
     }
 
-    public function fund()
+    public function categories()
     {
-        return $this->belongsTo('App\\Model\\Fund'); //, 'user_id');
+        return $this->hasMany('App\\Model\\Category'); //, 'user_id');
     }
 }

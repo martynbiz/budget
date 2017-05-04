@@ -43,6 +43,27 @@ class TransactionsControllerTest extends BaseTestCase
         $this->assertEquals(302, $response->getStatusCode());
     }
 
+    /**
+     * @dataProvider getInvalidData
+     */
+    public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    {
+        $userValues = [
+            'description' => $description,
+            'amount' => $amount,
+            'purchased_at' => $purchasedAt,
+            'category_id' => $categoryId,
+        ];
+
+        $this->login( $this->user );
+        $response = $this->runApp('POST', '/transactions/1', $userValues);
+
+        // assertions
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertQuery('form#transaction_form', (string)$response->getBody()); // has form
+        $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
+    }
+
     public function testGetEdit()
     {
         $this->login( $this->user );
@@ -56,7 +77,7 @@ class TransactionsControllerTest extends BaseTestCase
     /**
      * @dataProvider getInvalidData
      */
-    public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    public function testPutTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
     {
         $userValues = [
             'description' => $description,
@@ -68,7 +89,7 @@ class TransactionsControllerTest extends BaseTestCase
         ];
 
         $this->login( $this->user );
-        $response = $this->runApp('PUT', '/transactions/1', $userValues);
+        $response = $this->runApp('POST', '/transactions/1', $userValues);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());

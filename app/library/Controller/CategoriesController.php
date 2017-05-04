@@ -1,10 +1,10 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Transactions;
+use App\Model\Categories;
 use App\Validator;
 
-class TransactionsController extends BaseController
+class CategoriesController extends BaseController
 {
     public function index($request, $response, $args)
     {
@@ -19,21 +19,21 @@ class TransactionsController extends BaseController
         $start = ($page-1) * $limit;
 
         // get paginated rows
-        $transactions = $currentUser->transactions()
+        $categories = $currentUser->categories()
             ->skip($start)
             ->take($limit)
             ->get();
 
         // TODO needs to be set against date range
-        $totalTransactions = $currentUser->transactions()->count();
-        $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions/$limit) : 1;
+        $totalCategories = $currentUser->categories()->count();
+        $totalPages = ($totalCategories > 0) ? ceil($totalCategories/$limit) : 1;
 
-        $amounts = $currentUser->transactions()->pluck('amount');
-        $totalAmount = $amounts->sum();
+        $amounts = $currentUser->categories()->pluck('amount');
+        $total = $amounts->sum();
 
-        return $this->render('transactions/index', [
-            'transactions' => $transactions,
-            'total_amount' => $totalAmount,
+        return $this->render('categories/index', [
+            'categories' => $categories,
+            'total' => $total,
 
             // pagination
             'total_pages' => $totalPages,
@@ -46,7 +46,7 @@ class TransactionsController extends BaseController
         // if errors found from post, this will contain data
         $params = $request->getParams();
 
-        return $this->render('transactions/create', [
+        return $this->render('categories/create', [
             'params' => $params,
         ]);
     }
@@ -80,17 +80,17 @@ class TransactionsController extends BaseController
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
-        // if valid, create transaction
+        // if valid, create category
         if ($validator->isValid()) {
 
-            if ($transaction = $currentUser->transactions()->create($params)) {
+            if ($category = $currentUser->categories()->create($params)) {
 
                 // redirect
                 isset($params['returnTo']) or $params['returnTo'] = '/';
                 return $this->returnTo($params['returnTo']);
 
             } else {
-                $errors = $transaction->errors();
+                $errors = $category->errors();
             }
 
         } else {
@@ -104,14 +104,14 @@ class TransactionsController extends BaseController
     public function edit($request, $response, $args)
     {
         $container = $this->getContainer();
-        $transaction = $this->getCurrentUser()->transactions()->findOrFail((int)$args['transaction_id']);
+        $category = $this->getCurrentUser()->categories()->findOrFail((int)$args['category_id']);
 
         // if errors found from post, this will contain data
-        $params = array_merge($transaction->toArray(), $request->getParams());
+        $params = array_merge($category->toArray(), $request->getParams());
 
-        return $this->render('transactions/edit', [
+        return $this->render('categories/edit', [
             'params' => $params,
-            'transaction' => $transaction,
+            'category' => $category,
         ]);
     }
 
@@ -143,19 +143,19 @@ class TransactionsController extends BaseController
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
-        // if valid, create transaction
+        // if valid, create category
         if ($validator->isValid()) {
 
-            $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
+            $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
 
-            if ($transaction->update($params)) {
+            if ($category->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/transactions';
+                isset($params['returnTo']) or $params['returnTo'] = '/categories';
                 return $this->returnTo($params['returnTo']);
 
             } else {
-                $errors = $transaction->errors();
+                $errors = $category->errors();
             }
 
         } else {
@@ -171,16 +171,16 @@ class TransactionsController extends BaseController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
+        $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
 
-        if ($transaction->delete()) {
+        if ($category->delete()) {
 
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/transactions';
+            isset($params['returnTo']) or $params['returnTo'] = '/categories';
             return $this->returnTo($params['returnTo']);
 
         } else {
-            $errors = $transaction->errors();
+            $errors = $category->errors();
         }
 
         $container->get('flash')->addMessage('errors', $errors);

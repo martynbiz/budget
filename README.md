@@ -3,16 +3,16 @@
 TODO
 * funds/*
 * fund switcher
-* transactions - pagination
 * translations
 * test exceptions
 * remove user.findByEmail
 * pie chart
 * reset password
 * categories/*
-* transactions form - date picker, categories autocompleteS
-* date range
 * fund currency symbols (use sprintf)
+* BaseController.getOptions -- ['start': .., 'limit': .., 'page': .., 'total_pages': ..,]
+* JS - date picker, categories autocomplete
+* date range
 
 ## Install the Application ##
 
