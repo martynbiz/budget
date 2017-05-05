@@ -21,7 +21,7 @@ class TransactionsController extends BaseController
        // ensure we have a fund before dong any transaction related stuff
        if (!$fundId = $container->get('session')->get('current_fund_id')) {
            $this->currentFund = $currentUser->funds()->first();
-           $container->get('session')->set('current_fund_id', $currentFund->id);
+           $container->get('session')->set('current_fund_id', $this->currentFund->id);
        } else {
            $this->currentFund = $currentUser->funds()->find($fundId);
        }

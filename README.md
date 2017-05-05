@@ -1,7 +1,7 @@
 # Budget
 
 TODO
-* JS - date picker, categories autocomplete
+* JS - categories autocomplete
 * pie chart
 * when deleting a user, does it soft delete child dependencies?
 * when redirect to login, store returnTo

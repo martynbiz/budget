@@ -51,6 +51,12 @@ $app->group('/categories', function() {
 })->add($requireAuth);
 
 // transactions routes
+$app->group('/data', function() {
+    $this->get('/categories', '\App\Controller\DataController:categories')->setName('data_categories');
+    $this->get('/groups', '\App\Controller\DataController:groups')->setName('data_groups');
+})->add($requireAuth);
+
+// transactions routes
 $app->group('/groups', function() {
     $this->get('', '\App\Controller\GroupsController:index')->setName('groups');
     $this->get('/create', '\App\Controller\GroupsController:create')->setName('groups_create');

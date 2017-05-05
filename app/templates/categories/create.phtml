@@ -21,3 +21,17 @@
         </div>
     </div>
 <?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+    $(function() {
+
+        // init the autocomplete
+        $.getJSON("/data/groups", function(data) {
+            $("input[name='group']").autocomplete({
+                source: data
+            });
+        });
+    });
+    </script>
+<?php $this->append() ?>

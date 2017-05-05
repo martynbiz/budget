@@ -84,7 +84,7 @@ $container['session'] = function ($c) {
     $settings = $c->get('settings')['session'];
 
     $session_factory = new \Aura\Session\SessionFactory;
-    $session = $session_factory->newInstance($_SESSION);
+    $session = $session_factory->newInstance((isset($_SESSION)) ? $_SESSION : []);
 
     // return session segment
     return $session->getSegment('__budget');

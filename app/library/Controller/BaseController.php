@@ -67,6 +67,23 @@ class BaseController
     }
 
     /**
+     * Render the html and attach to the response
+     * @param string $file Name of the template/ view to render
+     * @param array $args Additional variables to pass to the view
+     * @param Response?
+     */
+    public function renderJSON($data=array())
+    {
+        $container = $this->getContainer();
+
+        // put the json in the response object
+        $response = $container->get('response');
+        $response->getBody()->write(json_encode($data));
+
+        return $response;
+    }
+
+    /**
      * Get the current sign in user user
      */
     protected function getCurrentUser()

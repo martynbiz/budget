@@ -47,7 +47,7 @@ gulp.task('css', function() {
     // Will compile all styles into a single file. Add files to the array,
     // styles will be compiled in that order.
     var scripts = [
-        'bower_components/jquery-ui/themes/smoothness/jquery-ui.css',
+        'bower_components/jquery-ui/themes/base/jquery-ui.css',
         //...
         'src/css/app.css' // compiled app.sass (includes foundation css)
     ];
@@ -69,6 +69,9 @@ gulp.task('js', function() {
         'bower_components/jquery-ui/jquery-ui.js',
         'bower_components/what-input/dist/what-input.js',
         'bower_components/foundation-sites/dist/js/foundation.js',
+        'bower_components/highcharts/highcharts.js',
+        'bower_components/highcharts/modules/data.js',
+        'bower_components/highcharts/modules/drilldown.js',
         //...
         'src/js/app.js'
     ];

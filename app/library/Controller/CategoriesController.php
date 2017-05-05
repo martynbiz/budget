@@ -19,6 +19,7 @@ class CategoriesController extends BaseController
         $start = ($page-1) * $limit;
 
         $categories = $currentUser->categories()
+            ->with('group')
             ->orderBy('name')
             ->skip($start)
             ->take($limit)
@@ -113,7 +114,9 @@ class CategoriesController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         $container = $this->getContainer();
-        $category = $this->getCurrentUser()->categories()->findOrFail((int)$args['category_id']);
+        $category = $this->getCurrentUser()->categories()
+            ->with('group')
+            ->findOrFail((int)$args['category_id']);
 
         // if errors found from post, this will contain data
         $params = array_merge($category->toArray(), $request->getParams());

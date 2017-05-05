@@ -21,3 +21,22 @@
         </div>
     </div>
 <?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+    $(function() {
+
+        // init the datepicker
+        $("input[name='purchased_at']").datepicker({
+            dateFormat: "yy-mm-dd"
+        });
+
+        // init the autocomplete
+        $.getJSON("/data/categories", function(data) {
+            $("input[name='category']").autocomplete({
+                source: data
+            });
+        });
+    });
+    </script>
+<?php $this->append() ?>

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-use App\Model\User;
+// use App\Model\User;
 
 class SessionController extends BaseController
 {
