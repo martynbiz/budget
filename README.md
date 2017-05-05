@@ -2,13 +2,13 @@
 
 TODO
 * bug! start/end not setting
-* pie chart data
 * cat/group case insensitive
 * deletes - all
 * when deleting a user, does it soft delete child dependencies?
+
 * setup bytemark, dns martyn.biz, install apache, etc
 
-* allow category to be an option
+* allow category to be an option - or just auto create an uncatogorized when empty?
 * create new fund - switch fund to new one
 * when redirect to login, store returnTo
 * reset password
@@ -18,7 +18,8 @@ TODO
 * can auth use aura for sessions?
 * Use tabs for trans, funds, cats menu as budget80 does
 * switch to aura session for flash messages
-* test exceptions
+* test exceptions, pie chart data,
+* notices with aura/session when testing
 
 
 ## Install the Application
@@ -68,6 +69,21 @@ Add the following to /etc/hosts
 
 ```
 192.168.33.20     budget.vagrant
+```
+
+NPM and Bower are used to manage assets:
+
+```
+$ npm install
+$ bower install
+```
+
+## Assets
+
+To make Gulp run everytime a scss/css/js file is saved:
+
+```
+$ gulp watch
 ```
 
 ## Testing

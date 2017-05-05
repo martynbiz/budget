@@ -48,6 +48,7 @@ gulp.task('css', function() {
     // styles will be compiled in that order.
     var scripts = [
         'bower_components/jquery-ui/themes/base/jquery-ui.css',
+        // 'bower_components/fontawesome/css/font-awesome.css',
         //...
         'src/css/app.css' // compiled app.sass (includes foundation css)
     ];
@@ -81,6 +82,11 @@ gulp.task('js', function() {
         .pipe(gulpif(options.env === 'production', uglify()))
         .pipe(gulp.dest('public/js'))
         .pipe(browserSync.stream());
+});
+
+gulp.task('icons', function() { 
+    return gulp.src('./bower_components/fontawesome/fonts/**.*') 
+        .pipe(gulp.dest('./public/fonts')); 
 });
 
 gulp.task('default', function() {
