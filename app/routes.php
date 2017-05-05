@@ -54,6 +54,9 @@ $app->group('/categories', function() {
 $app->group('/data', function() {
     $this->get('/categories', '\App\Controller\DataController:categories')->setName('data_categories');
     $this->get('/groups', '\App\Controller\DataController:groups')->setName('data_groups');
+
+    // highcharts
+    $this->get('/expenses', '\App\Controller\DataController:expenses')->setName('data_groups');
 })->add($requireAuth);
 
 // transactions routes

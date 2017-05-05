@@ -13,26 +13,9 @@ class TransactionsController extends BaseController
      */
     protected $currentFund;
 
-    public function __construct(Container $container) {
-       parent::__construct($container);
-
-       $currentUser = $this->getCurrentUser();
-
-       // ensure we have a fund before dong any transaction related stuff
-       if (!$fundId = $container->get('session')->get('current_fund_id')) {
-           $this->currentFund = $currentUser->funds()->first();
-           $container->get('session')->set('current_fund_id', $this->currentFund->id);
-       } else {
-           $this->currentFund = $currentUser->funds()->find($fundId);
-       }
-
-       if (!$this->currentFund) {
-           $container->get('flash')->addMessage('errors', [
-               'Fund not found. Please create one.'
-           ]);
-           return $this->returnTo('/funds/create');
-       }
-    }
+    // public function __construct(Container $container) {
+    //    parent::__construct($container);
+    // }
 
     public function index($request, $response, $args)
     {
@@ -57,25 +40,30 @@ class TransactionsController extends BaseController
         //     $endDate = $container->get('session')->get('transactions__end_date')
         // }
 
-        if (isset($options['start_date'])) {
-            $container->get('session')->set('transactions__start_date', $options['start_date']);
-        }
-        if (!$startDate = $container->get('session')->get('transactions__start_date')) {
-            $startDate = date("Y-m-d", strtotime("-1 month"));
-        }
+        // if (isset($options['start_date'])) {
+        //     $container->get('session')->set('transactions__start_date', $options['start_date']);
+        // }
+        // if (!$startDate = $container->get('session')->get('transactions__start_date')) {
+        //     $container->get('session')->set('transactions__start_date', date("Y-m-d", strtotime("-1 month")));
+        //     $startDate = $container->get('session')->get('transactions__start_date');
+        // }
+        //
+        // if (isset($options['end_date'])) {
+        //     $container->get('session')->set('transactions__end_date', $options['end_date']);
+        // }
+        // if (!$endDate = $container->get('session')->get('transactions__end_date')) {
+        //     $container->get('session')->set('transactions__end_date', date("Y-m-d"));
+        //     $endDate = $container->get('session')->get('transactions__end_date');
+        // }
 
-        if (isset($options['end_date'])) {
-            $container->get('session')->set('transactions__end_date', $options['end_date']);
-        }
-        if (!$endDate = $container->get('session')->get('transactions__end_date')) {
-            $endDate = date("Y-m-d");
-        }
+        $startDate = $container->get('session')->get('transactions__start_date');
+        $endDate = $container->get('session')->get('transactions__end_date');
 
         // base query will be used for both transactions and totalTransactions
-        $baseQuery = $currentUser->transactions()
+        $baseQuery = $this->currentFund->transactions()
             ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
-            ->where('fund_id', $this->currentFund->id);
+            ->where('purchased_at', '<=', $endDate);
+            // ->where('fund_id', $this->currentFund->id);
 
         // get total transactions for calculating pagination
         $totalTransactions = $baseQuery->get();
@@ -190,11 +178,14 @@ class TransactionsController extends BaseController
         $container = $this->getContainer();
 
         $transaction = $this->getCurrentUser()->transactions()
+            ->with('category')
             ->with('fund')
             ->findOrFail((int)$args['transaction_id']);
 
         // if errors found from post, this will contain data
-        $params = array_merge($transaction->toArray(), $request->getParams());
+        $params = array_merge($transaction->toArray(), $request->getParams(), [
+            'category' => $transaction->category->name,
+        ]);
 
         return $this->render('transactions/edit', [
             'params' => $params,

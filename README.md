@@ -1,12 +1,17 @@
 # Budget
 
 TODO
-* JS - categories autocomplete
-* pie chart
+* bug! start/end not setting
+* pie chart data
+* cat/group case insensitive
+* deletes - all
 * when deleting a user, does it soft delete child dependencies?
+* setup bytemark, dns martyn.biz, install apache, etc
+
+* allow category to be an option
+* create new fund - switch fund to new one
 * when redirect to login, store returnTo
 * reset password
-
 * translations - japanese
 * draggable, droppable,
 * debug bar for sql, etc

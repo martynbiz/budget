@@ -8,6 +8,6 @@
     }
     };
 
-    $(".alert").not(".alert-important").delay(3000).slideUp(300);
+    $(".callout.alert").not(".callout-important").delay(3000).slideUp(300);
 
 }).call(this);

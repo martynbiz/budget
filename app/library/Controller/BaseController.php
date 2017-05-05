@@ -18,6 +18,41 @@ class BaseController
     //
     public function __construct(Container $container) {
        $this->container = $container;
+
+       // do some stuff if authenticated 
+       if ($currentUser = $this->getCurrentUser()) {
+
+           // ensure we have a fund before dong any transaction related stuff
+           if (!$fundId = $container->get('session')->get('current_fund_id')) {
+               $this->currentFund = $currentUser->funds()->first();
+               $container->get('session')->set('current_fund_id', $this->currentFund->id);
+           } else {
+               $this->currentFund = $currentUser->funds()->find($fundId);
+           }
+
+           if (!$this->currentFund) {
+               $container->get('flash')->addMessage('errors', [
+                   'Fund not found. Please create one.'
+               ]);
+               return $this->returnTo('/funds/create');
+           }
+
+           if (isset($options['start_date'])) {
+               $container->get('session')->set('transactions__start_date', $options['start_date']);
+           }
+           if (!$startDate = $container->get('session')->get('transactions__start_date')) {
+               $container->get('session')->set('transactions__start_date', date("Y-m-d", strtotime("-1 month")));
+               $startDate = $container->get('session')->get('transactions__start_date');
+           }
+
+           if (isset($options['end_date'])) {
+               $container->get('session')->set('transactions__end_date', $options['end_date']);
+           }
+           if (!$endDate = $container->get('session')->get('transactions__end_date')) {
+               $container->get('session')->set('transactions__end_date', date("Y-m-d"));
+               $endDate = $container->get('session')->get('transactions__end_date');
+           }
+       }
     }
 
     /**

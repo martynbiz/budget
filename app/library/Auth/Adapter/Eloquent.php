@@ -44,11 +44,6 @@ class Eloquent implements AdapterInterface
             ->first();
         if (!$user) return false;
 
-        // $level = "08";
-		// $salt = '$2a$' . $level . '$' . $user->salt . '$';
-		// $hashed = crypt($password, $salt);
-
         return password_verify($password, $user->password);
-        // return ($user and ($hashed === $user->password));
     }
 }

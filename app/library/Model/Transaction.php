@@ -26,4 +26,9 @@ class Transaction extends Model
     {
         return $this->belongsTo('App\\Model\\Fund'); //, 'user_id');
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\\Model\\Category'); //, 'user_id');
+    }
 }
