@@ -18,9 +18,9 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li class="menu-text"><?= $this->translate('site_name') ?></li>
-                    <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions') ?></a></li>
-                    <li><a href="<?= $this->pathFor('funds') ?>"><?= $this->translate('funds') ?></a></li>
-                    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('categories') ?></a></li>
+                    <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions_link') ?></a></li>
+                    <li><a href="<?= $this->pathFor('funds') ?>"><?= $this->translate('funds_link') ?></a></li>
+                    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('categories_link') ?></a></li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -31,14 +31,14 @@
                         <li>
                             <a href="#"><?= $this->currentUser->first_name ?></a>
                             <ul class="menu vertical">
-                                <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;"><?= $this->translate('logout') ?></a></li>
+                                <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;"><?= $this->translate('logout_link') ?></a></li>
                             </ul>
                         </li>
                     </ul>
                 <?php else: ?>
                     <ul class="menu">
-                        <li><a href="<?= $this->pathFor('register') ?>"><?= $this->translate('register') ?></a></li>
-                        <li><a href="<?= $this->pathFor('login') ?>"><?= $this->translate('login') ?></a></li>
+                        <li><a href="<?= $this->pathFor('register') ?>"><?= $this->translate('register_link') ?></a></li>
+                        <li><a href="<?= $this->pathFor('login') ?>"><?= $this->translate('login_link') ?></a></li>
                     </ul>
                 <?php endif; ?>
             </div>

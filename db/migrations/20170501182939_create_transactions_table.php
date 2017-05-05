@@ -19,6 +19,7 @@ class CreateTransactionsTable extends AbstractMigration
         $table->addColumn('purchased_at', 'date');
         $table->addColumn('category_id', 'integer');
         $table->addColumn('user_id', 'integer');
+        $table->addColumn('fund_id', 'integer');
 
         // timestamps
         $table->addColumn('created_at', 'datetime');
@@ -26,6 +27,7 @@ class CreateTransactionsTable extends AbstractMigration
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true ));
 
         $table->addIndex('user_id');
+        $table->addIndex('fund_id');
 
         $table->save();
     }

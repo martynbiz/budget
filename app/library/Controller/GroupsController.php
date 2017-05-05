@@ -1,10 +1,10 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Categories;
+use App\Model\Groups;
 use App\Validator;
 
-class CategoriesController extends BaseController
+class GroupsController extends BaseController
 {
     public function index($request, $response, $args)
     {
@@ -19,22 +19,18 @@ class CategoriesController extends BaseController
         $start = ($page-1) * $limit;
 
         // get paginated rows
-        $categories = $currentUser->categories()
-            ->orderBy('name')
+        $groups = $currentUser->groups()
+            ->orderBy('name', 'asc')
             ->skip($start)
             ->take($limit)
             ->get();
 
         // TODO needs to be set against date range
-        $totalCategories = $currentUser->categories()->count();
-        $totalPages = ($totalCategories > 0) ? ceil($totalCategories/$limit) : 1;
+        $totalGroups = $currentUser->groups()->count();
+        $totalPages = ($totalGroups > 0) ? ceil($totalGroups/$limit) : 1;
 
-        $parents = $currentUser->categories()
-            ->get();
-
-        return $this->render('categories/index', [
-            'categories' => $categories,
-            'parent' => $parents,
+        return $this->render('groups/index', [
+            'groups' => $groups,
 
             // pagination
             'total_pages' => $totalPages,
@@ -44,16 +40,10 @@ class CategoriesController extends BaseController
 
     public function create($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
-
         // if errors found from post, this will contain data
         $params = $request->getParams();
 
-        $groups = $currentUser->categories()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        return $this->render('categories/create', [
+        return $this->render('groups/create', [
             'params' => $params,
         ]);
     }
@@ -71,34 +61,21 @@ class CategoriesController extends BaseController
         $validator->setData($params);
         $i18n = $container->get('i18n');
 
-        // name
+        // description
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') );
 
-        // group
-        $validator->check('group')
-            ->isNotEmpty( $i18n->translate('group_missing') );
-
-        // if valid, create category
+        // if valid, create group
         if ($validator->isValid()) {
 
-            // find or create category
-            if (!$group = $currentUser->groups()->where('name', $params['group'])->first()) {
-                $group = $currentUser->groups()->create([
-                    'name' => $params['group'],
-                    'group_id' => 0,
-                ]);
-            }
-            $params['group_id'] = $group->id;
-
-            if ($category = $currentUser->categories()->create($params)) {
+            if ($group = $currentUser->groups()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/categories';
+                isset($params['returnTo']) or $params['returnTo'] = '/groups';
                 return $this->returnTo($params['returnTo']);
 
             } else {
-                $errors = $category->errors();
+                $errors = $group->errors();
             }
 
         } else {
@@ -111,21 +88,15 @@ class CategoriesController extends BaseController
 
     public function edit($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
-
         $container = $this->getContainer();
-        $category = $this->getCurrentUser()->categories()->findOrFail((int)$args['category_id']);
+        $group = $this->getCurrentUser()->groups()->findOrFail((int)$args['group_id']);
 
         // if errors found from post, this will contain data
-        $params = array_merge($category->toArray(), $request->getParams());
+        $params = array_merge($group->toArray(), $request->getParams());
 
-        $groups = $currentUser->categories()
-            ->orderBy('name', 'asc')
-            ->get();
-
-        return $this->render('categories/edit', [
+        return $this->render('groups/edit', [
             'params' => $params,
-            'category' => $category,
+            'group' => $group,
         ]);
     }
 
@@ -142,36 +113,35 @@ class CategoriesController extends BaseController
         $validator->setData($params);
         $i18n = $container->get('i18n');
 
-        // name
-        $validator->check('name')
-            ->isNotEmpty( $i18n->translate('name_missing') );
+        // description
+        $validator->check('description')
+            ->isNotEmpty( $i18n->translate('description_missing') );
+
+        // amount
+        $validator->check('amount')
+            ->isNotEmpty( $i18n->translate('amount_missing') );
 
         // group
-        $validator->check('group')
+        $validator->check('group_id')
             ->isNotEmpty( $i18n->translate('group_missing') );
 
-        // if valid, create category
+        // purchased at
+        $validator->check('purchased_at')
+            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+
+        // if valid, create group
         if ($validator->isValid()) {
 
-            $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+            $group = $currentUser->groups()->findOrFail((int)$args['group_id']);
 
-            // find or create category
-            if (!$group = $currentUser->groups()->where('name', $params['group'])->first()) {
-                $group = $currentUser->groups()->create([
-                    'name' => $params['group'],
-                    'group_id' => 0,
-                ]);
-            }
-            $params['group_id'] = $group->id;
-
-            if ($category->update($params)) {
+            if ($group->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/categories';
+                isset($params['returnTo']) or $params['returnTo'] = '/groups';
                 return $this->returnTo($params['returnTo']);
 
             } else {
-                $errors = $category->errors();
+                $errors = $group->errors();
             }
 
         } else {
@@ -186,17 +156,18 @@ class CategoriesController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
-        $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+        $group = $currentUser->groups()->findOrFail((int)$args['group_id']);
 
-        if ($category->delete()) {
+        if ($group->delete()) {
 
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/categories';
+            isset($params['returnTo']) or $params['returnTo'] = '/groups';
             return $this->returnTo($params['returnTo']);
 
         } else {
-            $errors = $category->errors();
+            $errors = $group->errors();
         }
 
         $container->get('flash')->addMessage('errors', $errors);

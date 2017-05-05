@@ -1,22 +1,23 @@
 # Budget
 
 TODO
-* indent parent categories in select boxes
+* current fund in session
+* test PUT with valid data (currently only invalid data testing)
+* reset password
+* JS - date picker, categories autocomplete
 * fund switcher
-* translations - make keys more descriptive (e.g. transaction_link), japanese translations
 * test exceptions
-* remove user.findByEmail
 * pie chart
 * reset password
-* fund currency symbols (use sprintf)
-* BaseController.getOptions -- ['start': .., 'limit': .., 'page': .., 'total_pages': ..,] .. hide pagiantion if only 1
-* JS - date picker, categories autocomplete
-* date range
 * when deleting a user, does it soft delete child dependencies?
 * when redirect to login, store returnTo
 
+* translations - japanese
+* draggable, droppable,
+* debug bar for sql, etc
 
-## Install the Application ##
+
+## Install the Application
 
 ```
 $ git clone ... budget
@@ -65,7 +66,7 @@ Add the following to /etc/hosts
 192.168.33.20     budget.vagrant
 ```
 
-## Testing ##
+## Testing
 
 ```
 $ vagrant ssh
@@ -79,3 +80,10 @@ When writing new tests, some custom controller assertions have been added:
 $this->assertQuery('form#register', (string)$response->getBody());
 $this->assertQueryCount('ul.errors li', 3, (string)$response->getBody());
 ```
+
+## Translations
+
+*_link
+*_button
+*_label
+*_text

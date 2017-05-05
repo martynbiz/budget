@@ -14,6 +14,7 @@ class Transaction extends Model
         'purchased_at',
         'category_id',
         'user_id',
+        'fund_id',
     );
 
     public function user()

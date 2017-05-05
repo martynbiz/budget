@@ -7,7 +7,7 @@
         <div class="row">
         	<div class="col-xs-12">
                 <form id="logout_form" class="well text-center" method="post" action="<?= $this->pathFor('logout_post') ?>">
-                    <p>You are currently logged in. Please click below to logout:</p>
+                    <?= $this->translate('logout_intro') ?>
 
                     <input type="hidden" name="_METHOD" value="DELETE">
 
@@ -15,7 +15,7 @@
                         <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">
                     <?php endif; ?>
 
-                    <button class="btn btn-default">Logout</button>
+                    <button class="btn btn-default"><?= $this->translate('logout_button') ?></button>
                 </form>
             </div>
         </div>

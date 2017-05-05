@@ -6,17 +6,19 @@
     <div class="rows">
         <div class="small-12 medium-2 columns">
             <form>
-                <label class="show-for-sr">Fund:</label>
+                <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
                     <select name="fund_id">
-                        <option value="1">Nationwide</option>
+                        <?php foreach($this->funds as $fund): ?>
+                            <option value="1"><?= $fund->name ?></option>
+                        <?php endforeach ?>
                     </select>
                 <noscript>
-                    <submit type="submit" class="button">Switch fund</submit>
+                    <submit type="submit" class="button"><?= $this->translate('switch_fund_button') ?></submit>
                 </noscript>
             </form>
         </div>
         <div class="small-12 medium-offset-8 medium-2 columns text-right">
-            <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">New transaction</a>
+            <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded"><?= $this->translate('new_translation_button') ?></a>
         </div>
     </div>
 
@@ -25,9 +27,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Description</th>
-                        <th width="15%">Date</th>
-                        <th width="15%">Amount</th>
+                        <th><?= $this->translate('description_header') ?></th>
+                        <th width="15%"><?= $this->translate('date_header') ?></th>
+                        <th width="15%"><?= $this->translate('amount_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,13 +37,13 @@
                         <tr>
                             <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => 1]) ?>"><?= $transaction->description ?></a></td>
                             <td><?= $transaction->purchased_at ?></td>
-                            <td><?= sprintf('&pound;%01.2f', $transaction->amount) ?></td>
+                            <td><?= sprintf($transaction->fund->currency->format, $transaction->amount) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="2">Total</td>
+                        <th colspan="2"><?= $this->translate('total_header') ?></th>
                         <td><?= sprintf('&pound;%01.2f', $this->total_amount) ?></td>
                     </tr>
                 </tfoot>

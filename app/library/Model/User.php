@@ -39,6 +39,11 @@ class User extends Model
         return $this->hasMany('App\\Model\\Category'); //, 'user_id');
     }
 
+    public function groups()
+    {
+        return $this->hasMany('App\\Model\\Group'); //, 'user_id');
+    }
+
     public function auth_token()
     {
         return $this->hasOne('App\\Model\\AuthToken'); //, 'user_id');
@@ -120,18 +125,6 @@ class User extends Model
             PASSWORD_BCRYPT,
             ['cost' => 12]
         );
-    }
-
-    /**
-     * Scope a query to find a user by email
-     * Makes testing easier when we don't have to chain eloquent methods
-     * @param Query? $query
-     * @param string $email
-     * @return User|null
-     */
-    public function findByEmail($email)
-    {
-        return self::where('email', $email)->first();
     }
 
     /**

@@ -5,7 +5,7 @@
 <?php $this->section('content') ?>
     <div class="rows">
         <div class="small-12 medium-offset-10 medium-2 columns text-right">
-            <a href="<?= $this->pathFor('funds_create') ?>" class="button expanded">New fund</a>
+            <a href="<?= $this->pathFor('funds_create') ?>" class="button expanded"><?= $this->translate('new_fund_button') ?></a>
         </div>
     </div>
 
@@ -14,15 +14,15 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th width="15%">Currency</th>
-                        <th width="15%">Balance</th>
+                        <th><?= $this->translate('name_header') ?></th>
+                        <th width="15%"><?= $this->translate('currency_header') ?></th>
+                        <th width="15%"><?= $this->translate('balance_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($this->funds as $fund): ?>
                         <tr>
-                            <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => 1]) ?>"><?= $fund->description ?></a></td>
+                            <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => 1]) ?>"><?= $fund->name ?></a></td>
                             <td><?= $fund->purchased_at ?></td>
                             <td><?= sprintf('&pound;%01.2f', $fund->balance) ?></td>
                         </tr>

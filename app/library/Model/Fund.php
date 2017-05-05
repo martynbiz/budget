@@ -23,4 +23,9 @@ class Fund extends Model
     {
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
     }
+
+    public function currency()
+    {
+        return $this->belongsTo('App\\Model\\Currency'); //, 'user_id');
+    }
 }

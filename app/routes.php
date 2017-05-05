@@ -38,6 +38,16 @@ $app->group('/categories', function() {
     $this->delete('/{category_id}', '\App\Controller\CategoriesController:delete')->setName('categories_delete');
 })->add($requireAuth);
 
+// transactions routes
+$app->group('/groups', function() {
+    $this->get('', '\App\Controller\GroupsController:index')->setName('groups');
+    $this->get('/create', '\App\Controller\GroupsController:create')->setName('groups_create');
+    $this->post('', '\App\Controller\GroupsController:post')->setName('groups_post');
+    $this->get('/{group_id}/edit', '\App\Controller\GroupsController:edit')->setName('groups_edit');
+    $this->put('/{group_id}', '\App\Controller\GroupsController:update')->setName('groups_update');
+    $this->delete('/{group_id}', '\App\Controller\GroupsController:delete')->setName('groups_delete');
+})->add($requireAuth);
+
 // funds routes
 $app->group('/funds', function() {
     $this->get('', '\App\Controller\FundsController:index')->setName('funds');

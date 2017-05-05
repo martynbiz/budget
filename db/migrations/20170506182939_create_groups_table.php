@@ -2,20 +2,19 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateCategoriesTable extends AbstractMigration
+class CreateGroupsTable extends AbstractMigration
 {
     /**
      * Migrate Up.
      */
     public function up()
     {
-        $table = $this->table( 'categories', array(
+        $table = $this->table( 'groups', array(
             'engine' => 'InnoDB',
             'collation' => 'utf8_unicode_ci'
         ));
 
         $table->addColumn('name', 'string', array( 'limit' => 64 ));
-        $table->addColumn('group_id', 'integer');
         $table->addColumn('user_id', 'integer');
 
         // timestamps
@@ -23,7 +22,6 @@ class CreateCategoriesTable extends AbstractMigration
         $table->addColumn('updated_at', 'datetime', array( 'null' => true ));
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true ));
 
-        $table->addIndex('group_id');
         $table->addIndex('user_id');
 
         $table->addIndex(array('name'), array('unique' => true));
@@ -36,6 +34,6 @@ class CreateCategoriesTable extends AbstractMigration
      */
     public function down()
     {
-        $this->dropTable( 'categories' );
+        $this->dropTable( 'groups' );
     }
 }

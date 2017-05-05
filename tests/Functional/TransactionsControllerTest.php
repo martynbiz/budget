@@ -60,7 +60,7 @@ class TransactionsControllerTest extends BaseTestCase
     /**
      * @dataProvider getInvalidData
      */
-    public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    public function testPostTransactionWithInvalidData($description, $amount, $purchasedAt, $category)
     {
         $this->login( $this->user );
 
@@ -68,7 +68,7 @@ class TransactionsControllerTest extends BaseTestCase
             'description' => $description,
             'amount' => $amount,
             'purchased_at' => $purchasedAt,
-            'category_id' => $categoryId,
+            'category' => $category,
         ]);
 
         // assertions
@@ -88,10 +88,22 @@ class TransactionsControllerTest extends BaseTestCase
         $this->assertQuery('form#transaction_form', (string)$response->getBody()); // has form
     }
 
+    public function testPutTransactionWithValidData()
+    {
+        $this->login( $this->user );
+
+        $response = $this->runApp('POST', '/transactions/' . $this->transaction->id, static::getTransactionValues([
+            '_METHOD' => 'PUT',
+        ]));
+
+        // assertions
+        $this->assertEquals(302, $response->getStatusCode());
+    }
+
     /**
      * @dataProvider getInvalidData
      */
-    public function testPutTransactionWithInvalidData($description, $amount, $purchasedAt, $categoryId)
+    public function testPutTransactionWithInvalidData($description, $amount, $purchasedAt, $category)
     {
         $this->login( $this->user );
 
@@ -99,7 +111,7 @@ class TransactionsControllerTest extends BaseTestCase
             'description' => $description,
             'amount' => $amount,
             'purchased_at' => $purchasedAt,
-            'category_id' => $categoryId,
+            'category' => $category,
 
             '_METHOD' => 'PUT',
         ]);
@@ -133,7 +145,7 @@ class TransactionsControllerTest extends BaseTestCase
             'description' => 'Sandwich',
             'amount' => '12.50',
             'purchased_at' => '2017-05-01 00:00:05',
-            'category_id' => '1',
+            'category' => 'Groceries',
         ], $values);
     }
 
@@ -143,7 +155,7 @@ class TransactionsControllerTest extends BaseTestCase
             static::getTransactionValues(['description' => '']),
             static::getTransactionValues(['amount' => '']),
             static::getTransactionValues(['purchased_at' => '']),
-            static::getTransactionValues(['category_id' => '']),
+            static::getTransactionValues(['category' => '']),
         ];
     }
 

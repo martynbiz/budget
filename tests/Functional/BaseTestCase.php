@@ -14,6 +14,7 @@ use App\Model\AuthToken;
 use App\Model\RecoveryToken;
 use App\Model\Fund;
 use App\Model\Category;
+use App\Model\Group;
 use App\Model\CategoryGroup;
 use App\Model\Currency;
 
@@ -129,14 +130,13 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'fund_id' => $this->fund->id,
         ]);
 
-        $this->category1 = $this->user->categories()->create([
-            'name' => 'Groceries',
-            'parent_id' => 0,
+        $this->group = $this->user->groups()->create([
+            'name' => 'Food',
         ]);
 
-        $this->category2 = $this->user->categories()->create([
+        $this->category = $this->user->categories()->create([
             'name' => 'Groceries',
-            'parent_id' => $this->category1->id,
+            'group_id' => $this->group->id,
         ]);
     }
 
@@ -168,6 +168,10 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         Transaction::truncate();
         AuthToken::truncate();
         RecoveryToken::truncate();
+        Category::truncate();
+        Group::truncate();
+        Fund::truncate();
+        Currency::truncate();
 
         // turn foreign key checks back on
         switch($settings['eloquent']['driver']) {

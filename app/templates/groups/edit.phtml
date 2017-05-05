@@ -1,0 +1,21 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+]); ?>
+
+<?php $this->section('content') ?>
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="group_form" method="post" action="<?= $this->pathFor('groups_update', ['group_id' => $this->group->id]) ?>">
+                <?= $this->insert('groups/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('groups') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>

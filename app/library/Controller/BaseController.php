@@ -75,7 +75,7 @@ class BaseController
         if (! $this->currentUser) {
             $container = $this->getContainer();
             $attributes = $container->get('auth')->getAttributes();
-            $this->currentUser =  $container->get('model.user')->findByEmail($attributes['email']);
+            $this->currentUser =  $container->get('model.user')->where('email', $attributes['email'])->first();
         }
 
         return $this->currentUser;

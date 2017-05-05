@@ -1,7 +1,7 @@
 <?php
 namespace Tests\Functional;
 
-class CategoriesControllerTest extends BaseTestCase
+class GroupsControllerTest extends BaseTestCase
 {
     /**
      * @dataProvider getProtectedPaths
@@ -29,7 +29,7 @@ class CategoriesControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/categories');
+        $response = $this->runApp('GET', '/groups');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -40,18 +40,18 @@ class CategoriesControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/categories/create');
+        $response = $this->runApp('GET', '/groups/create');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
+        $this->assertQuery('form#group_form', (string)$response->getBody()); // has form
     }
 
     public function testPostCategoryWithValidData()
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('POST', '/categories', static::getCategoryValues());
+        $response = $this->runApp('POST', '/groups', static::getCategoryValues());
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -64,13 +64,13 @@ class CategoriesControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('POST', '/categories', [
+        $response = $this->runApp('POST', '/groups', [
             'name' => $name,
         ]);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
+        $this->assertQuery('form#group_form', (string)$response->getBody()); // has form
         $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
     }
 
@@ -78,23 +78,11 @@ class CategoriesControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/categories/' . $this->category->id . '/edit');
+        $response = $this->runApp('GET', '/groups/' . $this->group->id . '/edit');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
-    }
-
-    public function testPutCategoryWithValidData()
-    {
-        $this->login( $this->user );
-
-        $response = $this->runApp('POST', '/categories/' . $this->category->id, static::getCategoryValues([
-            '_METHOD' => 'PUT',
-        ]));
-
-        // assertions
-        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertQuery('form#group_form', (string)$response->getBody()); // has form
     }
 
     /**
@@ -110,11 +98,11 @@ class CategoriesControllerTest extends BaseTestCase
             '_METHOD' => 'PUT',
         ];
 
-        $response = $this->runApp('POST', '/categories/' . $this->category->id, $values);
+        $response = $this->runApp('POST', '/groups/' . $this->group->id, $values);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#category_form', (string)$response->getBody()); // has form
+        $this->assertQuery('form#group_form', (string)$response->getBody()); // has form
         $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
     }
 
@@ -127,7 +115,7 @@ class CategoriesControllerTest extends BaseTestCase
         ];
 
         $this->login( $this->user );
-        $response = $this->runApp('DELETE', '/categories/' . $this->category->id);
+        $response = $this->runApp('DELETE', '/groups/' . $this->group->id);
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -139,7 +127,7 @@ class CategoriesControllerTest extends BaseTestCase
     {
         return array_merge([
             'name' => 'Restaurant',
-            'group' => 'Food',
+            'parent_id' => 1,
         ], $values);
     }
 
@@ -147,7 +135,6 @@ class CategoriesControllerTest extends BaseTestCase
     {
         return [
             static::getCategoryValues(['name' => '']),
-            static::getCategoryValues(['group' => '']),
         ];
     }
 
@@ -157,12 +144,12 @@ class CategoriesControllerTest extends BaseTestCase
     public static function getProtectedPaths()
     {
         return [
-            ['path' => '/categories', 'method' => 'GET'],
-            ['path' => '/categories/create', 'method' => 'GET'],
-            ['path' => '/categories', 'method' => 'POST'],
-            ['path' => '/categories/1/edit', 'method' => 'GET'],
-            ['path' => '/categories/1', 'method' => 'PUT'],
-            ['path' => '/categories/1', 'method' => 'DELETE'],
+            ['path' => '/groups', 'method' => 'GET'],
+            ['path' => '/groups/create', 'method' => 'GET'],
+            ['path' => '/groups', 'method' => 'POST'],
+            ['path' => '/groups/1/edit', 'method' => 'GET'],
+            ['path' => '/groups/1', 'method' => 'PUT'],
+            ['path' => '/groups/1', 'method' => 'DELETE'],
         ];
     }
 }

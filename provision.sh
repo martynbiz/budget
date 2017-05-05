@@ -73,3 +73,9 @@ vendor/bin/phinx migrate --environment vagrantdev
 vendor/bin/phinx migrate --environment vagranttest
 
 vendor/bin/phinx seed:run -s CurrenciesSeeder --environment vagrantdev
+
+# this is only for dev, remove later
+vendor/bin/phinx seed:run -s UsersSeeder --environment vagrantdev
+vendor/bin/phinx seed:run -s GroupsSeeder --environment vagrantdev
+vendor/bin/phinx seed:run -s CategoriesSeeder --environment vagrantdev
+vendor/bin/phinx seed:run -s FundsSeeder --environment vagrantdev

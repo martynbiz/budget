@@ -20,6 +20,7 @@ class TransactionsController extends BaseController
 
         // get paginated rows
         $transactions = $currentUser->transactions()
+            ->with('fund')
             ->skip($start)
             ->take($limit)
             ->get();
@@ -31,9 +32,14 @@ class TransactionsController extends BaseController
         $amounts = $currentUser->transactions()->pluck('amount');
         $totalAmount = $amounts->sum();
 
+        // funds for the fund switcher
+        $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
+
         return $this->render('transactions/index', [
             'transactions' => $transactions,
             'total_amount' => $totalAmount,
+
+            'funds' => $funds,
 
             // pagination
             'total_pages' => $totalPages,
@@ -47,13 +53,8 @@ class TransactionsController extends BaseController
         $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
 
-        $categories = $currentUser->categories()
-            ->orderBy('parent_id', 'asc')
-            ->get();
-
         return $this->render('transactions/create', [
             'params' => $params,
-            'categories' => $categories,
         ]);
     }
 
@@ -79,7 +80,7 @@ class TransactionsController extends BaseController
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
         // category
-        $validator->check('category_id')
+        $validator->check('category')
             ->isNotEmpty( $i18n->translate('category_missing') );
 
         // purchased at
@@ -88,6 +89,19 @@ class TransactionsController extends BaseController
 
         // if valid, create transaction
         if ($validator->isValid()) {
+
+            // find or create category
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
+                    'group_id' => 0,
+                ]);
+            }
+            $params['category_id'] = $category->id;
+
+            // TODO get current fund
+            $fund = $currentUser->funds()->first();
+            $params['fund_id'] = $fund->id;
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
@@ -111,19 +125,17 @@ class TransactionsController extends BaseController
     {
         $currentUser = $this->getCurrentUser();
         $container = $this->getContainer();
-        $transaction = $this->getCurrentUser()->transactions()->findOrFail((int)$args['transaction_id']);
+
+        $transaction = $this->getCurrentUser()->transactions()
+            ->with('fund')
+            ->findOrFail((int)$args['transaction_id']);
 
         // if errors found from post, this will contain data
         $params = array_merge($transaction->toArray(), $request->getParams());
 
-        $categories = $currentUser->categories()
-            ->orderBy('parent_id', 'asc')
-            ->get();
-
         return $this->render('transactions/edit', [
             'params' => $params,
             'transaction' => $transaction,
-            'categories' => $categories,
         ]);
     }
 
@@ -131,6 +143,7 @@ class TransactionsController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
         // validate form data
 
@@ -148,7 +161,7 @@ class TransactionsController extends BaseController
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
         // category
-        $validator->check('category_id')
+        $validator->check('category')
             ->isNotEmpty( $i18n->translate('category_missing') );
 
         // purchased at
@@ -159,6 +172,15 @@ class TransactionsController extends BaseController
         if ($validator->isValid()) {
 
             $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
+
+            // find or create category
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
+                    'group_id' => 0,
+                ]);
+            }
+            $params['category_id'] = $category->id;
 
             if ($transaction->update($params)) {
 
