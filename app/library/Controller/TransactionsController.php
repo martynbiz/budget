@@ -1,35 +1,95 @@
 <?php
 namespace App\Controller;
 
+use Slim\Container;
+
 use App\Model\Transactions;
 use App\Validator;
 
 class TransactionsController extends BaseController
 {
+    /**
+     * @var Store the current fund
+     */
+    protected $currentFund;
+
+    public function __construct(Container $container) {
+       parent::__construct($container);
+
+       $currentUser = $this->getCurrentUser();
+
+       // ensure we have a fund before dong any transaction related stuff
+       if (!$fundId = $container->get('session')->get('current_fund_id')) {
+           $this->currentFund = $currentUser->funds()->first();
+           $container->get('session')->set('current_fund_id', $currentFund->id);
+       } else {
+           $this->currentFund = $currentUser->funds()->find($fundId);
+       }
+
+       if (!$this->currentFund) {
+           $container->get('flash')->addMessage('errors', [
+               'Fund not found. Please create one.'
+           ]);
+           return $this->returnTo('/funds/create');
+       }
+    }
+
     public function index($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
+        $container = $this->getContainer();
 
         $options = array_merge([
             'page' => 1,
         ], $request->getQueryParams());
 
         $page = (int)$options['page'];
-        $limit = 1;
+        $limit = 10;
         $start = ($page-1) * $limit;
 
-        // get paginated rows
-        $transactions = $currentUser->transactions()
+        // set date range if not set
+        // if (!$startDate = $container->get('session')->get('transactions__start_date')) {
+        //     $container->get('session')->set('transactions__start_date', date("y-m-d", strtotime("-1 month")));
+        //     $startDate = $container->get('session')->get('transactions__start_date');
+        // }
+        // if (!$endDate = $container->get('session')->get('transactions__end_date')) {
+        //     $container->get('session')->set('transactions__end_date', date("y-m-d"));
+        //     $endDate = $container->get('session')->get('transactions__end_date')
+        // }
+
+        if (isset($options['start_date'])) {
+            $container->get('session')->set('transactions__start_date', $options['start_date']);
+        }
+        if (!$startDate = $container->get('session')->get('transactions__start_date')) {
+            $startDate = date("Y-m-d", strtotime("-1 month"));
+        }
+
+        if (isset($options['end_date'])) {
+            $container->get('session')->set('transactions__end_date', $options['end_date']);
+        }
+        if (!$endDate = $container->get('session')->get('transactions__end_date')) {
+            $endDate = date("Y-m-d");
+        }
+
+        // base query will be used for both transactions and totalTransactions
+        $baseQuery = $currentUser->transactions()
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
+            ->where('fund_id', $this->currentFund->id);
+
+        // get total transactions for calculating pagination
+        $totalTransactions = $baseQuery->get();
+        $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions->count() / $limit) : 1;
+
+        // get paginated transactions for dispaying in the table
+        $transactions = $baseQuery
             ->with('fund')
             ->skip($start)
             ->take($limit)
             ->get();
 
-        // TODO needs to be set against date range
-        $totalTransactions = $currentUser->transactions()->count();
-        $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions/$limit) : 1;
-
-        $amounts = $currentUser->transactions()->pluck('amount');
+        // get total amounts
+        $amounts = $baseQuery->pluck('amount');
         $totalAmount = $amounts->sum();
 
         // funds for the fund switcher
@@ -40,6 +100,10 @@ class TransactionsController extends BaseController
             'total_amount' => $totalAmount,
 
             'funds' => $funds,
+            'current_fund' => $this->currentFund,
+
+            'start_date' => $startDate,
+            'end_date' => $endDate,
 
             // pagination
             'total_pages' => $totalPages,
@@ -100,13 +164,12 @@ class TransactionsController extends BaseController
             $params['category_id'] = $category->id;
 
             // TODO get current fund
-            $fund = $currentUser->funds()->first();
-            $params['fund_id'] = $fund->id;
+            $params['fund_id'] = $this->currentFund->id;
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/';
+                isset($params['returnTo']) or $params['returnTo'] = '/transactions';
                 return $this->returnTo($params['returnTo']);
 
             } else {

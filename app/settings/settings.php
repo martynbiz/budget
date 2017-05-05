@@ -46,7 +46,7 @@ $settings = [
 
             // this is the session namespace. apps that want to authenticate
             // using this auth app must configure their mwauth-client to match
-            'namespace' => 'jt_budget__',
+            'namespace' => '__budget_auth',
 
             // remember me cookie settings
             'auth_token' => [
@@ -66,6 +66,12 @@ $settings = [
             ],
 
             'cookie_domain' => null,
+        ],
+
+        'session' => [
+
+            // namespace within the session storage
+            'segment_name' => '__budget',
         ],
 
         'mail' => [

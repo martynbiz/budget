@@ -18,7 +18,6 @@ class CategoriesController extends BaseController
         $limit = 10;
         $start = ($page-1) * $limit;
 
-        // get paginated rows
         $categories = $currentUser->categories()
             ->orderBy('name')
             ->skip($start)

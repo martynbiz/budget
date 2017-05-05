@@ -185,4 +185,21 @@ class FundsController extends BaseController
         $container->get('flash')->addMessage('errors', $errors);
         return $this->forward('index', func_get_args());
     }
+
+    /**
+     * Switch the current fund to another
+     */
+    public function switch($request, $response, $args)
+    {
+        $params = $request->getParams();
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+
+        // change fund in session
+        $newFund = $currentUser->funds()->findOrFail((int)$params['fund_id']);
+        $container->get('session')->set('current_fund_id', $newFund->id);
+
+        // redirect back to transactions
+        return $this->returnTo('/transactions');
+    }
 }

@@ -79,6 +79,17 @@ $container['flash'] = function ($c) {
     return new \MartynBiz\FlashMessage\Flash();
 };
 
+// session
+$container['session'] = function ($c) {
+    $settings = $c->get('settings')['session'];
+
+    $session_factory = new \Aura\Session\SessionFactory;
+    $session = $session_factory->newInstance($_SESSION);
+
+    // return session segment
+    return $session->getSegment('__budget');
+};
+
 // mail
 $container['mail_manager'] = function ($c) {
     $settings = $c->get('settings')['mail'];

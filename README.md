@@ -1,20 +1,19 @@
 # Budget
 
 TODO
-* current fund in session
-* test PUT with valid data (currently only invalid data testing)
-* reset password
 * JS - date picker, categories autocomplete
-* fund switcher
-* test exceptions
 * pie chart
-* reset password
 * when deleting a user, does it soft delete child dependencies?
 * when redirect to login, store returnTo
+* reset password
 
 * translations - japanese
 * draggable, droppable,
 * debug bar for sql, etc
+* can auth use aura for sessions?
+* Use tabs for trans, funds, cats menu as budget80 does
+* switch to aura session for flash messages
+* test exceptions
 
 
 ## Install the Application

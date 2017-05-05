@@ -13,3 +13,11 @@
 <label><?= $this->translate('purchased_at_label') ?>
     <input type="text" name="purchased_at" placeholder="<?= $this->translate('purchased_at_label') ?>" value="<?= @$this->params['purchased_at'] ?>">
 </label>
+
+<?php $this->section('scripts') ?>
+    <script>
+    $(function() {
+        $("input[name='purchased_at']").datepicker();
+    });
+    </script>
+<?php $this->append() ?>

@@ -5,16 +5,14 @@
 <?php $this->section('content') ?>
     <div class="rows">
         <div class="small-12 medium-2 columns">
-            <form>
+            <form id="switch_fund_form" method="post" action="<?= $this->pathFor('funds_switch') ?>">
                 <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
-                    <select name="fund_id">
-                        <?php foreach($this->funds as $fund): ?>
-                            <option value="1"><?= $fund->name ?></option>
-                        <?php endforeach ?>
-                    </select>
-                <noscript>
-                    <submit type="submit" class="button"><?= $this->translate('switch_fund_button') ?></submit>
-                </noscript>
+                <select name="fund_id">
+                    <?php foreach($this->funds as $fund): ?>
+                        <option value="<?= $fund->id ?>" <?= ($this->current_fund->id == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
+                    <?php endforeach ?>
+                </select>
+                <submit type="submit" class="button show-for-sr"><?= $this->translate('switch_fund_button') ?></submit>
             </form>
         </div>
         <div class="small-12 medium-offset-8 medium-2 columns text-right">
@@ -24,6 +22,23 @@
 
     <div class="row">
         <div class="small-12 medium-8 columns">
+            <form class="callout secondary" method="get" action="<?= $this->pathFor('transactions') ?>">
+                <div class="row">
+                    <div class="small-12 medium-3 columns">
+                        <label class="show-for-sr"><?= $this->translate('start_date_label') ?></label>
+                        <input type="text" name="start_date" value="<?= $this->start_date ?>" placeholder="YYYY-MM-DD">
+                    </div>
+                    <div class="small-12 medium-3 columns">
+                        <label class="show-for-sr"><?= $this->translate('end_date_label') ?></label>
+                        <input type="text" name="end_date" value="<?= $this->end_date ?>" placeholder="YYYY-MM-DD">
+                    </div>
+                    <div class="small-12 medium-6 columns">
+                        <button type="submit" class="button"><?= $this->translate('set_filter_button') ?></button>
+                    </div>
+                </div>
+                <input type="hidden" name="page" value="<?= $this->page ?>">
+            </form>
+
             <table>
                 <thead>
                     <tr>
@@ -37,14 +52,14 @@
                         <tr>
                             <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => 1]) ?>"><?= $transaction->description ?></a></td>
                             <td><?= $transaction->purchased_at ?></td>
-                            <td><?= sprintf($transaction->fund->currency->format, $transaction->amount) ?></td>
+                            <td><?= sprintf($this->current_fund->currency->format, $transaction->amount) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="2"><?= $this->translate('total_header') ?></th>
-                        <td><?= sprintf('&pound;%01.2f', $this->total_amount) ?></td>
+                        <td><?= sprintf($this->current_fund->currency->format, $this->total_amount) ?></td>
                     </tr>
                 </tfoot>
             </table>
@@ -60,3 +75,14 @@
     <script src="https://code.highcharts.com/modules/data.js"></script>
     <script src="https://code.highcharts.com/modules/drilldown.js"></script>
 <?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+    $("select[name='fund_id']").on("change", function() {
+        $('form#switch_fund_form').submit();
+    });
+    $(function() {
+        $("input[name='start_date'],input[name='end_date']").datepicker();
+    });
+    </script>
+<?php $this->append() ?>

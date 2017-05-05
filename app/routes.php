@@ -28,6 +28,18 @@ $app->group('/transactions', function() {
     $this->delete('/{transaction_id}', '\App\Controller\TransactionsController:delete')->setName('transactions_delete');
 })->add($requireAuth);
 
+// funds routes
+$app->group('/funds', function() {
+    $this->get('', '\App\Controller\FundsController:index')->setName('funds');
+    $this->get('/create', '\App\Controller\FundsController:create')->setName('funds_create');
+    $this->post('', '\App\Controller\FundsController:post')->setName('funds_post');
+    $this->get('/{fund_id}/edit', '\App\Controller\FundsController:edit')->setName('funds_edit');
+    $this->put('/{fund_id}', '\App\Controller\FundsController:update')->setName('funds_update');
+    $this->delete('/{fund_id}', '\App\Controller\FundsController:delete')->setName('funds_delete');
+
+    $this->post('/switch', '\App\Controller\FundsController:switch')->setName('funds_switch');
+})->add($requireAuth);
+
 // transactions routes
 $app->group('/categories', function() {
     $this->get('', '\App\Controller\CategoriesController:index')->setName('categories');
@@ -46,14 +58,4 @@ $app->group('/groups', function() {
     $this->get('/{group_id}/edit', '\App\Controller\GroupsController:edit')->setName('groups_edit');
     $this->put('/{group_id}', '\App\Controller\GroupsController:update')->setName('groups_update');
     $this->delete('/{group_id}', '\App\Controller\GroupsController:delete')->setName('groups_delete');
-})->add($requireAuth);
-
-// funds routes
-$app->group('/funds', function() {
-    $this->get('', '\App\Controller\FundsController:index')->setName('funds');
-    $this->get('/create', '\App\Controller\FundsController:create')->setName('funds_create');
-    $this->post('', '\App\Controller\FundsController:post')->setName('funds_post');
-    $this->get('/{fund_id}/edit', '\App\Controller\FundsController:edit')->setName('funds_edit');
-    $this->put('/{fund_id}', '\App\Controller\FundsController:update')->setName('funds_update');
-    $this->delete('/{fund_id}', '\App\Controller\FundsController:delete')->setName('funds_delete');
 })->add($requireAuth);
