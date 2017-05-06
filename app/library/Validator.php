@@ -2,6 +2,7 @@
 namespace App;
 
 use App\Model\User;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Extension of MartynBiz\Validator so we can define custom validation classes
@@ -21,6 +22,46 @@ class Validator extends \MartynBiz\Validator
 
         // log error
         if ($user) {
+            $this->logError($this->key, $message);
+        }
+
+        // return instance
+        return $this;
+    }
+
+    /**
+     * Check that the category is valid
+     * @param string $message Custom message when validation fails
+     * @param User $model This will be used to query the db
+     * @return Validator
+     */
+    public function isUniqueCategory($message, HasMany $model)
+    {
+        //check whether this email exists in the db
+        $category = $model->where('name', '=', $this->value)->first();
+
+        // log error
+        if ($category) {
+            $this->logError($this->key, $message);
+        }
+
+        // return instance
+        return $this;
+    }
+
+    /**
+     * Check that the group is valid
+     * @param string $message Custom message when validation fails
+     * @param User $model This will be used to query the db
+     * @return Validator
+     */
+    public function isUniqueGroup($message, HasMany $model)
+    {
+        //check whether this email exists in the db
+        $group = $model->where('name', '=', $this->value)->first();
+
+        // log error
+        if ($group) {
             $this->logError($this->key, $message);
         }
 

@@ -195,8 +195,8 @@ class BaseController
     {
         $currentUser = $this->getCurrentUser();
 
-        // if category is empty, we'll give it a default
-        if (empty($categoryName)) $categoryName = 'Uncategorized';
+        // // if category is empty, we'll give it a default
+        // if (empty($categoryName)) $categoryName = 'Uncategorized';
 
         if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
             $category = $currentUser->categories()->create([
@@ -212,10 +212,7 @@ class BaseController
     {
         $currentUser = $this->getCurrentUser();
 
-        // if category is empty, we'll give it a default
-        if (empty($groupName)) $groupName = 'Uncategorized';
-
-        if (!$group = $currentUser->categories()->where('name', $groupName)->first()) {
+        if (!$group = $currentUser->groups()->where('name', $groupName)->first()) {
             $group = $currentUser->groups()->create([
                 'name' => $groupName,
                 'group_id' => 0,

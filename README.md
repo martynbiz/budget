@@ -10,7 +10,6 @@ TODO
 * draggable, droppable,
 * debug bar for sql, etc
 * can auth use aura for sessions?
-* Use tabs for trans, funds, cats menu as budget80 does
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies
 * notices with aura/session when testing

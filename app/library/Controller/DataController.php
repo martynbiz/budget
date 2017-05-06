@@ -75,6 +75,7 @@ class DataController extends BaseController
             })) // lazy load categories/groups
             ->where('purchased_at', '>=', $startDate)
             ->where('purchased_at', '<=', $endDate)
+            ->where('amount', '<', 0) // is expense
             ->get();
 
         // first gonna build up an array of only the groups that have trans
@@ -107,10 +108,10 @@ class DataController extends BaseController
             isset($groupDrilldownData[$groupName][$category->name]) || $groupDrilldownData[$groupName][$category->name] = 0;
 
             // add to category total
-            $groupDrilldownData[$groupName][$category->name]+= $transaction->amount;
+            $groupDrilldownData[$groupName][$category->name]+= abs($transaction->amount);
 
             // add to y of series too (group total)
-            $groupsSeriesData[$groupName]['y'] += $transaction->amount;
+            $groupsSeriesData[$groupName]['y'] += abs($transaction->amount);
         }
 
         // first, populate the drill down data with categories

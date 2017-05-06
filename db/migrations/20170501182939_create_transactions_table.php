@@ -15,9 +15,9 @@ class CreateTransactionsTable extends AbstractMigration
         ));
 
         $table->addColumn('description', 'string', array( 'limit' => 64 ));
-        $table->addColumn('amount', 'decimal');
+        $table->addColumn('amount', 'decimal', array('precision' => 10, 'scale' => 2));
         $table->addColumn('purchased_at', 'date');
-        $table->addColumn('category_id', 'integer');
+        $table->addColumn('category_id', 'integer', array( 'null' => true ));
         $table->addColumn('user_id', 'integer');
         $table->addColumn('fund_id', 'integer');
 

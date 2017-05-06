@@ -135,6 +135,7 @@ class GroupsControllerTest extends BaseTestCase
     {
         return [
             static::getGroupValues(['name' => '']),
+            static::getGroupValues(['name' => 'Food']), // duplicate
         ];
     }
 

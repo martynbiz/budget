@@ -63,7 +63,8 @@ class GroupsController extends BaseController
 
         // description
         $validator->check('name')
-            ->isNotEmpty( $i18n->translate('name_missing') );
+            ->isNotEmpty( $i18n->translate('name_missing') )
+            ->isUniqueGroup( $i18n->translate('group_name_not_unique'), $currentUser->groups() );
 
         // if valid, create group
         if ($validator->isValid()) {

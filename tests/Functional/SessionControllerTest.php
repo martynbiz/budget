@@ -14,11 +14,7 @@ class SessionControllerTest extends BaseTestCase
 
     public function testGetLoginRedirectsWhenAuthenticated()
     {
-        // mock authenticate to return true
-        $this->app->getContainer()['auth']
-            ->expects( $this->once() )
-            ->method('isAuthenticated')
-            ->willReturn(true);
+        $this->login( $this->user );
 
         $response = $this->runApp('GET', '/login');
 
@@ -28,11 +24,7 @@ class SessionControllerTest extends BaseTestCase
 
     public function testPostLoginWithValidCredentials()
     {
-        // mock authenticate to return true
-        $this->app->getContainer()['auth']
-            ->expects( $this->once() )
-            ->method('authenticate')
-            ->willReturn(true);
+        $this->login( $this->user );
 
         $response = $this->runApp('POST', '/login', [
             'email' => 'martyn@example.com',
@@ -45,11 +37,11 @@ class SessionControllerTest extends BaseTestCase
 
     public function testPostLoginWithInvalidCredentials()
     {
-        // mock authenticate to return true
-        $this->app->getContainer()['auth']
-            ->expects( $this->once() )
-            ->method('authenticate')
-            ->willReturn(false);
+        // // mock authenticate to return true
+        // $this->app->getContainer()['auth']
+        //     ->expects( $this->once() )
+        //     ->method('authenticate')
+        //     ->willReturn(false);
 
         $response = $this->runApp('POST', '/login', [
             'email' => 'martyn@example.com',
@@ -64,11 +56,7 @@ class SessionControllerTest extends BaseTestCase
 
     public function testGetLogoutShowsFormWhenAuthenticated()
     {
-        // mock authenticate to return true
-        $this->app->getContainer()['auth']
-            ->expects( $this->once() )
-            ->method('isAuthenticated')
-            ->willReturn(true);
+        $this->login( $this->user );
 
         $response = $this->runApp('GET', '/logout');
 

@@ -112,10 +112,6 @@ class TransactionsController extends BaseController
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
-        // // category
-        // $validator->check('category')
-        //     ->isNotEmpty( $i18n->translate('category_missing') );
-
         // purchased at
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
@@ -125,7 +121,7 @@ class TransactionsController extends BaseController
 
             // get category
             $category = $this->findOrCreateCategoryByName($params['category']);
-            $params['category_id'] = $category->id;
+            $params['category_id'] = (int)$category->id;
 
             // TODO get current fund
             $params['fund_id'] = $this->currentFund->id;
@@ -213,8 +209,10 @@ class TransactionsController extends BaseController
         if ($validator->isValid()) {
 
             // get category
-            $category = $this->findOrCreateCategoryByName($params['category']);
-            $params['category_id'] = $category->id;
+            if (!empty($params['category'])) {
+                $category = $this->findOrCreateCategoryByName($params['category']);
+                $params['category_id'] = $category->id;
+            }
 
             $transaction = $container->get('model.transaction')
                 ->findOrFail((int)$args['transaction_id']);

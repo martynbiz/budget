@@ -13,7 +13,7 @@ class SessionController extends BaseController
         $params = $request->getParams();
 
         // if authenticated, return to the homepage
-        if ($container->get('auth')->isAuthenticated()) {
+        if ($currentUser = $this->getCurrentUser()) {
             return $this->redirect('/');
         }
 

@@ -73,18 +73,17 @@ class CategoriesController extends BaseController
 
         // name
         $validator->check('name')
-            ->isNotEmpty( $i18n->translate('name_missing') );
-
-        // // group
-        // $validator->check('group')
-        //     ->isNotEmpty( $i18n->translate('group_missing') );
+            ->isNotEmpty( $i18n->translate('name_missing') )
+            ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories());
 
         // if valid, create category
         if ($validator->isValid()) {
 
-            // get category
-            $group = $this->findOrCreateGroupByName($params['group']);
-            $params['group_id'] = $group->id;
+            // get group
+            if (!empty($params['group'])) {
+                $group = $this->findOrCreateGroupByName($params['group']);
+                $params['group_id'] = $group->id;
+            }
 
             if ($category = $currentUser->categories()->create($params)) {
 

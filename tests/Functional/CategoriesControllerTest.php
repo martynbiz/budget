@@ -147,7 +147,7 @@ class CategoriesControllerTest extends BaseTestCase
     {
         return [
             static::getCategoryValues(['name' => '']),
-            // static::getCategoryValues(['group' => '']),
+            static::getCategoryValues(['name' => 'Groceries']), // duplicate
         ];
     }
 

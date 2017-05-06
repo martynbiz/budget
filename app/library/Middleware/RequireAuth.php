@@ -24,7 +24,10 @@ class RequireAuth
      */
     public function __invoke($request, $response, $next)
     {
-        if (!$this->container->get('auth')->isAuthenticated()) {
+        $attributes = $this->container->get('auth')->getAttributes();
+        $currentUser =  $this->container->get('model.user')->where('id', $attributes['id'])->first();
+
+        if (!$currentUser) {
             $loginUrl = $this->container->get('router')->pathFor('login');
             return $response->withRedirect($loginUrl, 302);
         }
