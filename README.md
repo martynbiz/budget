@@ -1,15 +1,9 @@
 # Budget
 
 TODO
-* bug! start/end not setting
-* cat/group case insensitive
-* deletes - all
-* when deleting a user, does it soft delete child dependencies?
-
+* isUniqueCategory, isUniueGroup
 * setup bytemark, dns martyn.biz, install apache, etc
 
-* allow category to be an option - or just auto create an uncatogorized when empty?
-* create new fund - switch fund to new one
 * when redirect to login, store returnTo
 * reset password
 * translations - japanese
@@ -18,7 +12,7 @@ TODO
 * can auth use aura for sessions?
 * Use tabs for trans, funds, cats menu as budget80 does
 * switch to aura session for flash messages
-* test exceptions, pie chart data,
+* test exceptions, pie chart data, deletes and child dependencies
 * notices with aura/session when testing
 
 

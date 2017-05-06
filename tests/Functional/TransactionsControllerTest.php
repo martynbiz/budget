@@ -155,7 +155,7 @@ class TransactionsControllerTest extends BaseTestCase
             static::getTransactionValues(['description' => '']),
             static::getTransactionValues(['amount' => '']),
             static::getTransactionValues(['purchased_at' => '']),
-            static::getTransactionValues(['category' => '']),
+            // static::getTransactionValues(['category' => '']),
         ];
     }
 

@@ -71,8 +71,7 @@ class GroupsController extends BaseController
             if ($group = $currentUser->groups()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/groups';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/groups');
 
             } else {
                 $errors = $group->errors();
@@ -137,8 +136,7 @@ class GroupsController extends BaseController
             if ($group->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/groups';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/groups');
 
             } else {
                 $errors = $group->errors();
@@ -159,12 +157,20 @@ class GroupsController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         $group = $currentUser->groups()->findOrFail((int)$args['group_id']);
+        $groupId = $group->id;
 
         if ($group->delete()) {
 
+            // update transactions assigned to this category
+            $uncatogorizedGroup = $this->findOrCreateGroupByName('');
+            $group->categories()
+                ->where('group_id', $groupId)
+                ->update([
+                    'group_id' => $uncatogorizedGroup->id,
+                ]);
+
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/groups';
-            return $this->returnTo($params['returnTo']);
+            return $response->withRedirect('/groups');
 
         } else {
             $errors = $group->errors();

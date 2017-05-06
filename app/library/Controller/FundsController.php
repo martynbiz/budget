@@ -81,9 +81,12 @@ class FundsController extends BaseController
 
             if ($fund = $currentUser->funds()->create($params)) {
 
+                // set new fund as current
+                $container->get('session')->set('current_fund_id', $fund->id);
+                $this->currentFund = $fund;
+
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/transactions');
 
             } else {
                 $errors = $fund->errors();
@@ -150,8 +153,7 @@ class FundsController extends BaseController
             if ($fund->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/funds';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/funds');
 
             } else {
                 $errors = $fund->errors();
@@ -171,12 +173,17 @@ class FundsController extends BaseController
         $container = $this->getContainer();
 
         $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
+        $fundId = $fund->id;
 
         if ($fund->delete()) {
 
+            // remove all transactions
+            $transactions = $fund->transactions()
+                ->where('fund_id', $fundId)
+                ->delete();
+
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/funds';
-            return $this->returnTo($params['returnTo']);
+            return $response->withRedirect('/funds');
 
         } else {
             $errors = $fund->errors();

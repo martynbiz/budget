@@ -75,27 +75,21 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') );
 
-        // group
-        $validator->check('group')
-            ->isNotEmpty( $i18n->translate('group_missing') );
+        // // group
+        // $validator->check('group')
+        //     ->isNotEmpty( $i18n->translate('group_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {
 
-            // find or create category
-            if (!$group = $currentUser->groups()->where('name', $params['group'])->first()) {
-                $group = $currentUser->groups()->create([
-                    'name' => $params['group'],
-                    'group_id' => 0,
-                ]);
-            }
+            // get category
+            $group = $this->findOrCreateGroupByName($params['group']);
             $params['group_id'] = $group->id;
 
             if ($category = $currentUser->categories()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/categories';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/categories');
 
             } else {
                 $errors = $category->errors();
@@ -118,8 +112,9 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        // if errors found from post, this will contain data
-        $params = array_merge($category->toArray(), $request->getParams());
+        $params = array_merge($category->toArray(), $request->getParams(), [
+            'group' => $category->group->name,
+        ]);
 
         $groups = $currentUser->categories()
             ->orderBy('name', 'asc')
@@ -148,29 +143,23 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') );
 
-        // group
-        $validator->check('group')
-            ->isNotEmpty( $i18n->translate('group_missing') );
+        // // group
+        // $validator->check('group')
+        //     ->isNotEmpty( $i18n->translate('group_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {
 
-            $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
-
-            // find or create category
-            if (!$group = $currentUser->groups()->where('name', $params['group'])->first()) {
-                $group = $currentUser->groups()->create([
-                    'name' => $params['group'],
-                    'group_id' => 0,
-                ]);
-            }
+            // get category
+            $group = $this->findOrCreateGroupByName($params['group']);
             $params['group_id'] = $group->id;
+
+            $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
 
             if ($category->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/categories';
-                return $this->returnTo($params['returnTo']);
+                return $response->withRedirect('/categories');
 
             } else {
                 $errors = $category->errors();
@@ -190,12 +179,20 @@ class CategoriesController extends BaseController
         $container = $this->getContainer();
 
         $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+        $categoryId = $category->id;
 
         if ($category->delete()) {
 
+            // update transactions assigned to this category
+            $uncatogorizedCategory = $this->findOrCreateCategoryByName('');
+            $category->transactions()
+                ->where('category_id', $categoryId)
+                ->update([
+                    'category_id' => $uncatogorizedCategory->id,
+                ]);
+
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/categories';
-            return $this->returnTo($params['returnTo']);
+            return $response->withRedirect('/categories');
 
         } else {
             $errors = $category->errors();

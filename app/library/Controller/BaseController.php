@@ -15,38 +15,36 @@ class BaseController
      */
     protected $currentUser;
 
+    /**
+     * @var Store the current fund
+     */
+    protected $currentFund;
+
     //
     public function __construct(Container $container) {
        $this->container = $container;
+       $queryParams = $container->get('request')->getQueryParams();
 
-       // do some stuff if authenticated 
+       // do some stuff if authenticated
        if ($currentUser = $this->getCurrentUser()) {
 
-           // ensure we have a fund before dong any transaction related stuff
-           if (!$fundId = $container->get('session')->get('current_fund_id')) {
-               $this->currentFund = $currentUser->funds()->first();
-               $container->get('session')->set('current_fund_id', $this->currentFund->id);
-           } else {
-               $this->currentFund = $currentUser->funds()->find($fundId);
+           // set fund_id in session, and set currentFund
+           $fundId = $container->get('session')->get('current_fund_id');
+           if (($fundId && ($currentFund = $currentUser->funds()->find($fundId))) || ($currentFund = $currentUser->funds()->first())) {
+               $container->get('session')->set('current_fund_id', $currentFund->id);
+               $this->currentFund = $currentFund;
            }
 
-           if (!$this->currentFund) {
-               $container->get('flash')->addMessage('errors', [
-                   'Fund not found. Please create one.'
-               ]);
-               return $this->returnTo('/funds/create');
-           }
-
-           if (isset($options['start_date'])) {
-               $container->get('session')->set('transactions__start_date', $options['start_date']);
+           if (isset($queryParams['start_date'])) {
+               $container->get('session')->set('transactions__start_date', $queryParams['start_date']);
            }
            if (!$startDate = $container->get('session')->get('transactions__start_date')) {
                $container->get('session')->set('transactions__start_date', date("Y-m-d", strtotime("-1 month")));
                $startDate = $container->get('session')->get('transactions__start_date');
            }
 
-           if (isset($options['end_date'])) {
-               $container->get('session')->set('transactions__end_date', $options['end_date']);
+           if (isset($queryParams['end_date'])) {
+               $container->get('session')->set('transactions__end_date', $queryParams['end_date']);
            }
            if (!$endDate = $container->get('session')->get('transactions__end_date')) {
                $container->get('session')->set('transactions__end_date', date("Y-m-d"));
@@ -191,5 +189,39 @@ class BaseController
         }
 
         return $this->redirect($returnTo);
+    }
+
+    protected function findOrCreateCategoryByName($categoryName)
+    {
+        $currentUser = $this->getCurrentUser();
+
+        // if category is empty, we'll give it a default
+        if (empty($categoryName)) $categoryName = 'Uncategorized';
+
+        if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
+            $category = $currentUser->categories()->create([
+                'name' => $categoryName,
+                'group_id' => 0,
+            ]);
+        }
+
+        return $category;
+    }
+
+    protected function findOrCreateGroupByName($groupName)
+    {
+        $currentUser = $this->getCurrentUser();
+
+        // if category is empty, we'll give it a default
+        if (empty($groupName)) $groupName = 'Uncategorized';
+
+        if (!$group = $currentUser->categories()->where('name', $groupName)->first()) {
+            $group = $currentUser->groups()->create([
+                'name' => $groupName,
+                'group_id' => 0,
+            ]);
+        }
+
+        return $group;
     }
 }

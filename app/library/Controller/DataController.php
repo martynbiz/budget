@@ -34,6 +34,10 @@ class DataController extends BaseController
         $currentFund = $this->currentFund;
         $currency = $currentFund->currency;
 
+        $title = [
+            'text' => $container->get('i18n')->translate('expenses_header'),
+        ];
+
         $plotOptions = [
             'pie' => [
                 'allowPointSelect' => true,
@@ -43,12 +47,6 @@ class DataController extends BaseController
                 ],
                 'showInLegend' => true
             ],
-            // 'series' => [
-            //     'dataLabels' => [
-            //         'enabled' => true,
-            //         'format' => '{point.name}: {point.y:' . $currency->format . '}'
-            //     ]
-            // ]
         ];
 
         $tooltip = [
@@ -79,14 +77,6 @@ class DataController extends BaseController
             ->where('purchased_at', '<=', $endDate)
             ->get();
 
-        // $series = [
-        //     [
-        //         'name' => $group->name,
-        //         'y' => 30,
-        //         'drilldown' => $group->id
-        //     ]
-        // ];
-
         // first gonna build up an array of only the groups that have trans
         $groupsSeriesData = [];
         $groupsDrilldown = [];
@@ -97,6 +87,9 @@ class DataController extends BaseController
             // some categories might not belong to a group
             $groupId = $group ? $group->id : -1;
             $groupName = $group ? $group->name : 'Uncategorized';
+
+            // same for category
+            $categoryName = $category ? $category->name : 'Uncategorized';
 
             isset($groupsSeriesData[$groupName]) || $groupsSeriesData[$groupName] = [
                 'name' => $groupName,
@@ -127,41 +120,11 @@ class DataController extends BaseController
             }
         }
 
-        // echo json_encode($groupsDrilldown); exit;
-
         $series[0]['data'] = array_values($groupsSeriesData);
         $drilldown['series'] = array_values($groupsDrilldown);
 
-        // $drilldown[0]['series'] = array_values($groupsDrilldown);
-        // foreach ($groupsDrilldown as $groupName => $value) {
-        //     $drilldown['series'][] = $value;
-        // }
-
-        // foreach ($groups as $group) {
-        //
-        //     $seriesData = [
-        //         'name' => $group->name,
-        //         'y' => 30,
-        //         'drilldown' => $group->id
-        //     ];
-        //
-        //     $drilldownGroup = [
-        //         'name' => 'Food',
-        //         'id' => $group->id,
-        //         'data' => []
-        //     ];
-        //
-        //     foreach ($group->categories as $category) {
-        //         array_push($drilldownGroup['data'], ['Groceries', 15]);
-        //         array_push($drilldownGroup['data'], ['Bento', 10]);
-        //         array_push($drilldownGroup['data'], ['Resturant', 5]);
-        //     }
-        //
-        //     $series[0]['data'][] = $seriesData;
-        //     $drilldown['series'][] = $drilldownGroup;
-        // }
-
         return $this->renderJSON([
+            'title' => $title,
             'plotOptions' => $plotOptions,
             'tooltip' => $tooltip,
             'series' => $series,

@@ -16,6 +16,16 @@
 
                 <a href="<?= $this->pathFor('groups') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
             </form>
+
+            <hr>
+
+            <form method="POST" action="<?= $this->pathFor('groups_delete', ['group_id' => $this->group->id]) ?>" onsubmit="return confirm('Are you sure you want to submit?');">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+
+                <button class="button alert" type="submit">
+                    <?= $this->translate('delete_button') ?>
+                </button>
+            </form>
         </div>
     </div>
 <?php $this->replace() ?>

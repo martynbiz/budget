@@ -22,7 +22,7 @@
                 <tbody>
                     <?php foreach($this->funds as $fund): ?>
                         <tr>
-                            <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => 1]) ?>"><?= $fund->name ?></a></td>
+                            <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => $fund->id]) ?>"><?= $fund->name ?></a></td>
                             <td><?= $fund->purchased_at ?></td>
                             <td><?= sprintf('&pound;%01.2f', $fund->balance) ?></td>
                         </tr>

@@ -8,19 +8,16 @@ use App\Validator;
 
 class TransactionsController extends BaseController
 {
-    /**
-     * @var Store the current fund
-     */
-    protected $currentFund;
-
-    // public function __construct(Container $container) {
-    //    parent::__construct($container);
-    // }
-
     public function index($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
         $container = $this->getContainer();
+
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
+        $currentUser = $this->getCurrentUser();
 
         $options = array_merge([
             'page' => 1,
@@ -30,32 +27,6 @@ class TransactionsController extends BaseController
         $limit = 10;
         $start = ($page-1) * $limit;
 
-        // set date range if not set
-        // if (!$startDate = $container->get('session')->get('transactions__start_date')) {
-        //     $container->get('session')->set('transactions__start_date', date("y-m-d", strtotime("-1 month")));
-        //     $startDate = $container->get('session')->get('transactions__start_date');
-        // }
-        // if (!$endDate = $container->get('session')->get('transactions__end_date')) {
-        //     $container->get('session')->set('transactions__end_date', date("y-m-d"));
-        //     $endDate = $container->get('session')->get('transactions__end_date')
-        // }
-
-        // if (isset($options['start_date'])) {
-        //     $container->get('session')->set('transactions__start_date', $options['start_date']);
-        // }
-        // if (!$startDate = $container->get('session')->get('transactions__start_date')) {
-        //     $container->get('session')->set('transactions__start_date', date("Y-m-d", strtotime("-1 month")));
-        //     $startDate = $container->get('session')->get('transactions__start_date');
-        // }
-        //
-        // if (isset($options['end_date'])) {
-        //     $container->get('session')->set('transactions__end_date', $options['end_date']);
-        // }
-        // if (!$endDate = $container->get('session')->get('transactions__end_date')) {
-        //     $container->get('session')->set('transactions__end_date', date("Y-m-d"));
-        //     $endDate = $container->get('session')->get('transactions__end_date');
-        // }
-
         $startDate = $container->get('session')->get('transactions__start_date');
         $endDate = $container->get('session')->get('transactions__end_date');
 
@@ -63,7 +34,6 @@ class TransactionsController extends BaseController
         $baseQuery = $this->currentFund->transactions()
             ->where('purchased_at', '>=', $startDate)
             ->where('purchased_at', '<=', $endDate);
-            // ->where('fund_id', $this->currentFund->id);
 
         // get total transactions for calculating pagination
         $totalTransactions = $baseQuery->get();
@@ -101,6 +71,11 @@ class TransactionsController extends BaseController
 
     public function create($request, $response, $args)
     {
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
         // if errors found from post, this will contain data
         $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
@@ -114,6 +89,12 @@ class TransactionsController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
         $currentUser = $this->getCurrentUser();
 
         // validate form data
@@ -131,9 +112,9 @@ class TransactionsController extends BaseController
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
-        // category
-        $validator->check('category')
-            ->isNotEmpty( $i18n->translate('category_missing') );
+        // // category
+        // $validator->check('category')
+        //     ->isNotEmpty( $i18n->translate('category_missing') );
 
         // purchased at
         $validator->check('purchased_at')
@@ -142,13 +123,8 @@ class TransactionsController extends BaseController
         // if valid, create transaction
         if ($validator->isValid()) {
 
-            // find or create category
-            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
-                $category = $currentUser->categories()->create([
-                    'name' => $params['category'],
-                    'group_id' => 0,
-                ]);
-            }
+            // get category
+            $category = $this->findOrCreateCategoryByName($params['category']);
             $params['category_id'] = $category->id;
 
             // TODO get current fund
@@ -174,15 +150,20 @@ class TransactionsController extends BaseController
 
     public function edit($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
         $container = $this->getContainer();
+
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
+        $currentUser = $this->getCurrentUser();
 
         $transaction = $this->getCurrentUser()->transactions()
             ->with('category')
             ->with('fund')
             ->findOrFail((int)$args['transaction_id']);
 
-        // if errors found from post, this will contain data
         $params = array_merge($transaction->toArray(), $request->getParams(), [
             'category' => $transaction->category->name,
         ]);
@@ -195,8 +176,14 @@ class TransactionsController extends BaseController
 
     public function update($request, $response, $args)
     {
-        $params = $request->getParams();
         $container = $this->getContainer();
+
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
+        $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
 
         // validate form data
@@ -214,9 +201,9 @@ class TransactionsController extends BaseController
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
-        // category
-        $validator->check('category')
-            ->isNotEmpty( $i18n->translate('category_missing') );
+        // // category
+        // $validator->check('category')
+        //     ->isNotEmpty( $i18n->translate('category_missing') );
 
         // purchased at
         $validator->check('purchased_at')
@@ -225,16 +212,12 @@ class TransactionsController extends BaseController
         // if valid, create transaction
         if ($validator->isValid()) {
 
-            $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
-
-            // find or create category
-            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
-                $category = $currentUser->categories()->create([
-                    'name' => $params['category'],
-                    'group_id' => 0,
-                ]);
-            }
+            // get category
+            $category = $this->findOrCreateCategoryByName($params['category']);
             $params['category_id'] = $category->id;
+
+            $transaction = $container->get('model.transaction')
+                ->findOrFail((int)$args['transaction_id']);
 
             if ($transaction->update($params)) {
 
@@ -256,16 +239,21 @@ class TransactionsController extends BaseController
 
     public function delete($request, $response, $args)
     {
-        $params = $request->getParams();
         $container = $this->getContainer();
+
+        if (!$this->currentFund) {
+            $container->get('flash')->addMessage('errors', ['Please create a fund']);
+            return $response->withRedirect('/funds');
+        }
+
+        $params = $request->getParams();
 
         $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
 
         if ($transaction->delete()) {
 
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/transactions';
-            return $this->returnTo($params['returnTo']);
+            return $response->withRedirect('/transactions');
 
         } else {
             $errors = $transaction->errors();

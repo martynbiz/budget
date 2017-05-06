@@ -93,4 +93,49 @@ class UsersController extends BaseController
         $container->get('flash')->addMessage('errors', $errors);
         return $this->forward('register', func_get_args());
     }
+
+    public function delete($request, $response, $args)
+    {
+        $params = $request->getParams();
+        $container = $this->getContainer();
+
+        $user = $container->get('model.user')->findOrFail((int)$args['user_id']);
+
+        // remove all transactions
+        $transactions = $user->transactions;
+        $transactions->remove();
+
+        // remove all funds
+        $transactions = $user->transactions;
+        $transactions->remove();
+
+        // remove all categories
+        $categories = $user->categories;
+        $categories->remove();
+
+        // remove all groups
+        $groups = $user->groups;
+        $groups->remove();
+
+        // remove all recoverTokens
+        $recoverTokens = $user->recover_tokens;
+        $recoverTokens->remove();
+
+        // remove all authTokens
+        $authTokens = $user->auth_tokens;
+        $authTokens->remove();
+
+        if ($user->delete()) {
+
+            // redirect
+            isset($params['returnTo']) or $params['returnTo'] = '/users';
+            return $this->returnTo($params['returnTo']);
+
+        } else {
+            $errors = $user->errors();
+        }
+
+        $container->get('flash')->addMessage('errors', $errors);
+        return $this->forward('index', func_get_args());
+    }
 }

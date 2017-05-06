@@ -47,11 +47,11 @@ class GroupsControllerTest extends BaseTestCase
         $this->assertQuery('form#group_form', (string)$response->getBody()); // has form
     }
 
-    public function testPostCategoryWithValidData()
+    public function testPostGroupWithValidData()
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('POST', '/groups', static::getCategoryValues());
+        $response = $this->runApp('POST', '/groups', static::getGroupValues());
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -60,7 +60,7 @@ class GroupsControllerTest extends BaseTestCase
     /**
      * @dataProvider getInvalidData
      */
-    public function testPostCategoryWithInvalidData($name)
+    public function testPostGroupWithInvalidData($name)
     {
         $this->login( $this->user );
 
@@ -88,7 +88,7 @@ class GroupsControllerTest extends BaseTestCase
     /**
      * @dataProvider getInvalidData
      */
-    public function testPutCategoryWithInvalidData($name)
+    public function testPutGroupWithInvalidData($name)
     {
         $this->login( $this->user );
 
@@ -106,7 +106,7 @@ class GroupsControllerTest extends BaseTestCase
         $this->assertQuery('.callout.alert', (string)$response->getBody()); // showing errors
     }
 
-    public function testDeleteCategory()
+    public function testDeleteGroup()
     {
         $this->login( $this->user );
 
@@ -123,7 +123,7 @@ class GroupsControllerTest extends BaseTestCase
 
 
 
-    private static function getCategoryValues($values=array())
+    private static function getGroupValues($values=array())
     {
         return array_merge([
             'name' => 'Restaurant',
@@ -134,7 +134,7 @@ class GroupsControllerTest extends BaseTestCase
     public function getInvalidData()
     {
         return [
-            static::getCategoryValues(['name' => '']),
+            static::getGroupValues(['name' => '']),
         ];
     }
 
