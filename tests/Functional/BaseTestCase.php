@@ -84,6 +84,11 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        // session service
+        $container['session'] = $this->getMockBuilder('Aura\\Session\\Segment')
+            ->disableOriginalConstructor()
+            ->getMock();
+
         // Register middleware
         if ($this->withMiddleware) {
             require __DIR__ . '/../../app/middleware.php';

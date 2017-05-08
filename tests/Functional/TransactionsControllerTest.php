@@ -18,7 +18,7 @@ class TransactionsControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/');
+        $response = $this->runApp('GET', '/transactions');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());

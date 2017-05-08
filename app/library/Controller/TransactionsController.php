@@ -77,7 +77,9 @@ class TransactionsController extends BaseController
         }
 
         // if errors found from post, this will contain data
-        $params = $request->getParams();
+        $params = array_merge([
+            'purchased_at' => date('Y-m-d'),
+        ], $request->getParams());
         $currentUser = $this->getCurrentUser();
 
         return $this->render('transactions/create', [

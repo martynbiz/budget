@@ -100,12 +100,13 @@ class CategoriesControllerTest extends BaseTestCase
     /**
      * @dataProvider getInvalidData
      */
-    public function testPutCategoryWithInvalidData($name)
+    public function testPutCategoryWithInvalidData($name, $group)
     {
         $this->login( $this->user );
 
         $values = [
             'name' => $name,
+            'group' => $group,
 
             '_METHOD' => 'PUT',
         ];
@@ -146,7 +147,7 @@ class CategoriesControllerTest extends BaseTestCase
     public function getInvalidData()
     {
         return [
-            static::getCategoryValues(['name' => '']),
+            // static::getCategoryValues(['name' => '']),
             static::getCategoryValues(['name' => 'Groceries']), // duplicate
         ];
     }
