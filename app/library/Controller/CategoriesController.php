@@ -131,6 +131,8 @@ class CategoriesController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
+        $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+
         // validate form data
 
         // our simple custom validator for the form
@@ -141,7 +143,7 @@ class CategoriesController extends BaseController
         // name
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
-            ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories());
+            ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories(), $category);
 
         // if valid, create category
         if ($validator->isValid()) {
@@ -149,8 +151,6 @@ class CategoriesController extends BaseController
             // get category
             $group = $this->findOrCreateGroupByName($params['group']);
             $params['group_id'] = $group->id;
-
-            $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
 
             if ($category->update($params)) {
 

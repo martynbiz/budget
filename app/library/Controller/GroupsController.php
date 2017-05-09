@@ -61,7 +61,7 @@ class GroupsController extends BaseController
         $validator->setData($params);
         $i18n = $container->get('i18n');
 
-        // description
+        // name
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
             ->isUniqueGroup( $i18n->translate('group_name_not_unique'), $currentUser->groups() );
@@ -106,6 +106,8 @@ class GroupsController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
+        $group = $currentUser->groups()->findOrFail((int)$args['group_id']);
+
         // validate form data
 
         // our simple custom validator for the form
@@ -113,26 +115,13 @@ class GroupsController extends BaseController
         $validator->setData($params);
         $i18n = $container->get('i18n');
 
-        // description
-        $validator->check('description')
-            ->isNotEmpty( $i18n->translate('description_missing') );
-
-        // amount
-        $validator->check('amount')
-            ->isNotEmpty( $i18n->translate('amount_missing') );
-
-        // group
-        $validator->check('group_id')
-            ->isNotEmpty( $i18n->translate('group_missing') );
-
-        // purchased at
-        $validator->check('purchased_at')
-            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+        // name
+        $validator->check('name')
+            ->isNotEmpty($i18n->translate('name_missing'))
+            ->isUniqueGroup($i18n->translate('group_name_not_unique'), $currentUser->groups(), $group);
 
         // if valid, create group
         if ($validator->isValid()) {
-
-            $group = $currentUser->groups()->findOrFail((int)$args['group_id']);
 
             if ($group->update($params)) {
 
