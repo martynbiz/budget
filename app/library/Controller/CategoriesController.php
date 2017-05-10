@@ -36,6 +36,8 @@ class CategoriesController extends BaseController
             'categories' => $categories,
             'parent' => $parents,
 
+            'current_fund' => $this->currentFund,
+
             // pagination
             'total_pages' => $totalPages,
             'page' => $page,
@@ -47,7 +49,9 @@ class CategoriesController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         // if errors found from post, this will contain data
-        $params = $request->getParams();
+        $params = array_merge([
+            'budget' => '0',
+        ], $request->getParams());
 
         $groups = $currentUser->categories()
             ->orderBy('name', 'asc')
@@ -75,6 +79,10 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
             ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories());
+
+        // budget
+        $validator->check('budget')
+            ->isNotEmpty( $i18n->translate('budget_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {
@@ -111,9 +119,10 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        $params = array_merge($category->toArray(), $request->getParams(), [
+        $params = array_merge([
             'group' => $category->group->name,
-        ]);
+            'budget' => '0',
+        ], $category->toArray(), $request->getParams());
 
         $groups = $currentUser->categories()
             ->orderBy('name', 'asc')
@@ -144,6 +153,10 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
             ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories(), $category);
+
+        // budget
+        $validator->check('budget')
+            ->isNotEmpty( $i18n->translate('budget_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {

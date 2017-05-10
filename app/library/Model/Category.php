@@ -10,6 +10,7 @@ class Category extends Model
     */
     protected $fillable = array(
         'name',
+        'budget',
         'group_id',
     );
 
@@ -26,5 +27,24 @@ class Category extends Model
     public function group()
     {
         return $this->belongsTo('App\\Model\\Group'); //, 'user_id');
+    }
+
+    public function getAmountAttribute()
+    {
+        $startDate = date('Y-m-01');
+        $endDate = date('Y-m-t');
+
+        $transactionsAmount = $this->transactions()
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
+            ->pluck('amount')
+            ->sum();
+
+        return $transactionsAmount; //, 'user_id');
+    }
+
+    public function getBalanceAttribute()
+    {
+        return $this->budget - $this->amount; //, 'user_id');
     }
 }

@@ -15,6 +15,7 @@ class CreateCategoriesTable extends AbstractMigration
         ));
 
         $table->addColumn('name', 'string', array( 'limit' => 64 ));
+        $table->addColumn('budget', 'decimal');
         $table->addColumn('group_id', 'integer', array( 'null' => true ));
         $table->addColumn('user_id', 'integer');
 

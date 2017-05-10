@@ -1,7 +1,10 @@
 <?php
 
 return array (
-  'welcome_text' => '',
+  'budget_label' => 'Budget',
+  'budget_missing' => 'Budget is missing',
+  'groups_link' => 'Groups',
+  'welcome_text' => 'Welcome to Budget app',
   'start_date_label' => 'Start date',
   'end_date_label' => 'End date',
   'set_filter_button' => 'Set filter',
@@ -45,7 +48,7 @@ return array (
   'currency_header' => 'Currency',
   'balance_header' => 'Balance',
   'new_category_button' => 'New category',
-  'site_name' => 'Budget80',
+  'site_name' => 'Budget',
   'name_missing' => 'Missing name',
   'send_recovery_email_button' => 'Send recovery email',
   'resetpassword_password_has_been_changed' => 'Password has been changed',

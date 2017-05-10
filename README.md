@@ -1,15 +1,14 @@
 # Budget
 
 TODO
-* is category being created when empty?
-* fix register fields
-* is remember me working?
-* link to groups?
+* debug tool
+* add with('transactions') to cats index - see debug tool
 * create redirect (method that can redirectTo anywhere, keep returnTo though)
 * work on header: link to home, menus in mobile view
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 * set monthly budget (on each category?)
+* isAuthenticated should check the user in the db
 
 * sync script
 * when redirect to login, store returnTo
@@ -19,7 +18,7 @@ TODO
 * debug bar for sql, etc
 * can auth use aura for sessions?
 * switch to aura session for flash messages
-* test exceptions, pie chart data, deletes and child dependencies, auth token, 
+* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string,
 * notices with aura/session when testing
 
 

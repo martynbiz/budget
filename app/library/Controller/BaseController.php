@@ -193,10 +193,10 @@ class BaseController
 
     protected function findOrCreateCategoryByName($categoryName)
     {
-        $currentUser = $this->getCurrentUser();
+        // if category is empty, we'll return
+        if (empty($categoryName)) return;
 
-        // // if category is empty, we'll give it a default
-        // if (empty($categoryName)) $categoryName = 'Uncategorized';
+        $currentUser = $this->getCurrentUser();
 
         if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
             $category = $currentUser->categories()->create([
@@ -210,6 +210,9 @@ class BaseController
 
     protected function findOrCreateGroupByName($groupName)
     {
+        // if category is empty, we'll return
+        if (empty($groupName)) return;
+
         $currentUser = $this->getCurrentUser();
 
         if (!$group = $currentUser->groups()->where('name', $groupName)->first()) {

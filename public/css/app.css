@@ -6927,3 +6927,15 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 .budget__user-menu li:last-child {
   border-top: 1px solid #cacaca;
 }
+
+.balance-in {
+  background: #090;
+}
+
+.balance-out {
+  background: #fc0;
+}
+
+.balance-even {
+  background: #cacaca;
+}

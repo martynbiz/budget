@@ -64,3 +64,13 @@ keep the resulting css file small(ish)
 .budget__user-menu li:last-child {
     border-top: 1px solid $medium-gray;
 }
+
+.balance-in {
+    background: #090;
+}
+.balance-out {
+    background: #fc0;
+}
+.balance-even {
+    background: $medium-gray;
+}
