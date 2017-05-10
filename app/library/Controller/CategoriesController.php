@@ -120,6 +120,8 @@ class CategoriesController extends BaseController
             ->findOrFail((int)$args['category_id']);
 
         $params = array_merge([
+
+            // defaults 
             'group' => $category->group->name,
             'budget' => '0',
         ], $category->toArray(), $request->getParams());
