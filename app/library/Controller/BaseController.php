@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use Slim\Container;
+use App\Model\Transaction;
 
 class BaseController
 {
@@ -23,7 +24,6 @@ class BaseController
     //
     public function __construct(Container $container) {
        $this->container = $container;
-       $queryParams = $container->get('request')->getQueryParams();
 
        // do some stuff if authenticated
        if ($currentUser = $this->getCurrentUser()) {
@@ -35,20 +35,9 @@ class BaseController
                $this->currentFund = $currentFund;
            }
 
-           if (isset($queryParams['start_date'])) {
-               $container->get('session')->set('transactions__start_date', $queryParams['start_date']);
-           }
-           if (!$startDate = $container->get('session')->get('transactions__start_date')) {
-               $container->get('session')->set('transactions__start_date', date("Y-m-d", strtotime("-1 month")));
-               $startDate = $container->get('session')->get('transactions__start_date');
-           }
-
-           if (isset($queryParams['end_date'])) {
-               $container->get('session')->set('transactions__end_date', $queryParams['end_date']);
-           }
-           if (!$endDate = $container->get('session')->get('transactions__end_date')) {
-               $container->get('session')->set('transactions__end_date', date("Y-m-d"));
-               $endDate = $container->get('session')->get('transactions__end_date');
+           // set default if not set
+           if (!$container->get('session')->get(Transaction::SESSION_FILTER_MONTH)) {
+               $container->get('session')->set(Transaction::SESSION_FILTER_MONTH, date("Y-m"));
            }
        }
     }

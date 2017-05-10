@@ -1,12 +1,12 @@
 <?php
 
 return array (
+  'month_label' => 'Month',
+  'budget_remaining_header' => 'Budget',
   'budget_label' => 'Budget',
   'budget_missing' => 'Budget is missing',
   'groups_link' => 'Groups',
   'welcome_text' => 'Welcome to Budget app',
-  'start_date_label' => 'Start date',
-  'end_date_label' => 'End date',
   'set_filter_button' => 'Set filter',
   'delete_button' => 'Delete',
   'username_label' => 'Username',

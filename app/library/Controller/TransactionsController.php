@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use Slim\Container;
 
-use App\Model\Transactions;
+use App\Model\Transaction;
 use App\Validator;
 
 class TransactionsController extends BaseController
@@ -12,23 +12,34 @@ class TransactionsController extends BaseController
     {
         $container = $this->getContainer();
 
+        // get current fund
         if (!$this->currentFund) {
             $container->get('flash')->addMessage('errors', ['Please create a fund']);
             return $response->withRedirect('/funds');
         }
 
-        $currentUser = $this->getCurrentUser();
+        $params = $request->getQueryParams();
 
-        $options = array_merge([
+        // set query params to session
+        if (isset($params['month_filter'])) {
+            $container->get('session')->set(Transaction::SESSION_FILTER_MONTH, $params['month_filter']);
+        }
+
+        // set param defaults
+        $params = array_merge([
             'page' => 1,
-        ], $request->getQueryParams());
+            'month_filter' => $container->get('session')->get(Transaction::SESSION_FILTER_MONTH),
+        ], $params);
 
-        $page = (int)$options['page'];
+        $page = (int)$params['page'];
         $limit = 10;
         $start = ($page-1) * $limit;
 
-        $startDate = $container->get('session')->get('transactions__start_date');
-        $endDate = $container->get('session')->get('transactions__end_date');
+        $currentUser = $this->getCurrentUser();
+
+        // get start and end date from the month filter
+        $startDate = date('Y-m-01', strtotime($container->get('session')->get(Transaction::SESSION_FILTER_MONTH) . '-01'));
+        $endDate = date('Y-m-t', strtotime($startDate . '-01'));
 
         // base query will be used for both transactions and totalTransactions
         $baseQuery = $this->currentFund->transactions()
@@ -60,8 +71,7 @@ class TransactionsController extends BaseController
             'funds' => $funds,
             'current_fund' => $this->currentFund,
 
-            'start_date' => $startDate,
-            'end_date' => $endDate,
+            'params' => $params,
 
             // pagination
             'total_pages' => $totalPages,

@@ -45,6 +45,6 @@ class Category extends Model
 
     public function getBalanceAttribute()
     {
-        return $this->budget - $this->amount; //, 'user_id');
+        return $this->budget + $this->amount; //, 'user_id');
     }
 }

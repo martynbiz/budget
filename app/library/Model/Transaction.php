@@ -5,6 +5,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    const SESSION_FILTER_MONTH = 'transaction-filter__month';
+
     /**
     * @var array
     */

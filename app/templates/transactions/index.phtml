@@ -28,14 +28,10 @@
             <form class="callout secondary" method="get" action="<?= $this->pathFor('transactions') ?>">
                 <div class="row">
                     <div class="small-12 medium-3 columns">
-                        <label class="show-for-sr"><?= $this->translate('start_date_label') ?></label>
-                        <input type="text" name="start_date" value="<?= $this->start_date ?>" placeholder="YYYY-MM-DD">
+                        <label class="show-for-sr"><?= $this->translate('month_label') ?></label>
+                        <input type="text" name="month_filter" value="<?= @$this->params['month_filter'] ?>" placeholder="YYYY-MM">
                     </div>
-                    <div class="small-12 medium-3 columns">
-                        <label class="show-for-sr"><?= $this->translate('end_date_label') ?></label>
-                        <input type="text" name="end_date" value="<?= $this->end_date ?>" placeholder="YYYY-MM-DD">
-                    </div>
-                    <div class="small-12 medium-6 columns">
+                    <div class="small-12 medium-9 columns">
                         <button type="submit" class="button"><?= $this->translate('set_filter_button') ?></button>
                     </div>
                 </div>
@@ -75,6 +71,17 @@
     </div>
 <?php $this->replace() ?>
 
+<?php $this->section('head') ?>
+    <style>
+
+    .ui-datepicker-calendar {
+        display: none;
+        }
+
+    </style>
+<?php $this->append() ?>
+
+
 <?php $this->section('scripts') ?>
     <script>
 
@@ -85,8 +92,19 @@
 
     // init the datepicker
     $(function() {
-        $("input[name='start_date'],input[name='end_date']").datepicker({
-            dateFormat: "yyyy-mm-dd"
+
+        // $("input[name='start_date'],input[name='end_date']").datepicker({
+        //     dateFormat: "yyyy-mm-dd"
+        // });
+
+        $("input[name='month_filter']").datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'yy-mm',
+            onClose: function(dateText, inst) {
+                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
+            }
         });
     });
 

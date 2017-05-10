@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Model\Transaction;
+
 class DataController extends BaseController
 {
     /**
@@ -67,8 +69,8 @@ class DataController extends BaseController
 
         $groups = $currentUser->groups()->get();
 
-        $startDate = $container->get('session')->get('transactions__start_date');
-        $endDate = $container->get('session')->get('transactions__end_date');
+        $startDate = date('Y-m-01', strtotime($container->get('session')->get(Transaction::SESSION_FILTER_MONTH) . '-01'));
+        $endDate = date('Y-m-t', strtotime($startDate . '-01'));
         $transactions = $currentFund->transactions()
             ->with(array('category' => function($query) {
                 $query->with('group');
