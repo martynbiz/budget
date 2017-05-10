@@ -21,7 +21,7 @@ return array (
   'purchased_at_label' => 'Purchased date',
   'fund_label' => 'Fund',
   'switch_fund_button' => 'Switch fund',
-  'new_translation_button' => 'New translation',
+  'new_transaction_button' => 'New transaction',
   'description_header' => 'Description',
   'date_header' => 'Date',
   'amount_header' => 'Amount',

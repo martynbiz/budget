@@ -2,7 +2,11 @@
 
 TODO
 * is category being created when empty?
-* setup bytemark, dns martyn.biz, install apache, etc
+* fix register fields
+* is remember me working?
+* top menu in mobile needs drop down
+* link to groups?
+* create redirect (method that can redirectTo anywhere, keep returnTo though)
 
 * when redirect to login, store returnTo
 * reset password

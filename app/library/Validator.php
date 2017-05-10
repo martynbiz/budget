@@ -33,12 +33,20 @@ class Validator extends \MartynBiz\Validator
      * Check that the category is valid
      * @param string $message Custom message when validation fails
      * @param User $model This will be used to query the db
+     * @param mixed $updateItem The item that is being updated, can be the same as itself
      * @return Validator
      */
-    public function isUniqueCategory($message, HasMany $model)
+    public function isUniqueCategory($message, HasMany $model, $updateItem=null)
     {
         //check whether this email exists in the db
-        $category = $model->where('name', '=', $this->value)->first();
+        $query = $model->where('name', '=', $this->value);
+
+        // if updatedItem
+        if (!is_null($updateItem)) {
+            $query = $model->where('id', '!=', $updateItem->id);
+        }
+
+        $category = $query->first();
 
         // log error
         if ($category) {
