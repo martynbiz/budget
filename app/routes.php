@@ -6,8 +6,7 @@ $container = $app->getContainer();
 $requireAuth = new \App\Middleware\RequireAuth($container);
 
 // home will use transactions (for now)
-$app->get('/', '\App\Controller\TransactionsController:index')
-    ->add($requireAuth);
+$app->get('/', '\App\Controller\HomeController:index');
 
 // session routes
 $app->get('/login', '\App\Controller\SessionController:login')->setName('login');
