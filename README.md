@@ -1,7 +1,7 @@
 # Budget
 
 TODO
-* isUniqueCategory, isUniueGroup
+* is category being created when empty?
 * setup bytemark, dns martyn.biz, install apache, etc
 
 * when redirect to login, store returnTo

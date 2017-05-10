@@ -105,10 +105,10 @@ class DataController extends BaseController
 
             // here is categories
             isset($groupDrilldownData[$groupName]) || $groupDrilldownData[$groupName] = [];
-            isset($groupDrilldownData[$groupName][$category->name]) || $groupDrilldownData[$groupName][$category->name] = 0;
+            isset($groupDrilldownData[$groupName][$categoryName]) || $groupDrilldownData[$groupName][$categoryName] = 0;
 
             // add to category total
-            $groupDrilldownData[$groupName][$category->name]+= abs($transaction->amount);
+            $groupDrilldownData[$groupName][$categoryName]+= abs($transaction->amount);
 
             // add to y of series too (group total)
             $groupsSeriesData[$groupName]['y'] += abs($transaction->amount);
