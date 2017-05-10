@@ -8,8 +8,8 @@ TODO
 * http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 * set monthly budget (on each category?)
 * isAuthenticated should check the user in the db
+* scheduled backups of mysql, sync script
 
-* sync script
 * when redirect to login, store returnTo
 * reset password
 * translations - japanese

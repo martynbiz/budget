@@ -1,7 +1,7 @@
 <?php
 namespace App\Controller;
 
-// use App\Model\User;
+use App\Exception\InvalidAuthToken;
 
 class SessionController extends BaseController
 {
@@ -34,7 +34,7 @@ class SessionController extends BaseController
                     $container->get('auth')->deleteAuthTokenCookie();
 
                     // throwing an exception will be caught and an error message displayed
-                    throw new InvalidAuthTokenException('Could not automatically sign in with \'Remember me\' token (0). Please login again.');
+                    throw new InvalidAuthToken('Could not automatically sign in with \'Remember me\' token (0). Please login again.');
 
                 }
 
@@ -47,7 +47,7 @@ class SessionController extends BaseController
                     $authToken->delete();
 
                     // throwing an exception will be caught and an error message displayed
-                    throw new InvalidAuthTokenException('Could not automatically sign in with \'Remember me\' token (1). Please login again.');
+                    throw new InvalidAuthToken('Could not automatically sign in with \'Remember me\' token (1). Please login again.');
 
                 }
 
@@ -61,7 +61,7 @@ class SessionController extends BaseController
                     $authToken->delete();
 
                     // throwing an exception will be caught and an error message displayed
-                    throw new InvalidAuthTokenException('Could not automatically sign in with \'Remember me\' token (2). Please login again.');
+                    throw new InvalidAuthToken('Could not automatically sign in with \'Remember me\' token (2). Please login again.');
 
                 }
 
