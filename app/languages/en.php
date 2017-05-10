@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'welcome_text' => '',
   'start_date_label' => 'Start date',
   'end_date_label' => 'End date',
   'set_filter_button' => 'Set filter',
@@ -9,10 +10,8 @@ return array (
   'password_label' => 'Password',
   'new_group_button' => 'New group',
   'group_label' => 'Group',
-  'group' => 'Group',
   'group_header' => 'Group',
   'group_name_not_unique' => 'Group name not unique',
-  'group_missing' => 'Group missing',
   'expenses_header' => 'Expenses',
   'category_name_not_unique' => 'Category name not unique',
   'description_label' => 'Description',
@@ -54,10 +53,8 @@ return array (
   'resetpassword_change_password_intro' => '...',
   'password_confirmation' => 'Password confirm',
   'change_password_button' => 'Change password',
-  'amount' => 'Amount',
   'save_button' => 'Save',
   'cancel_button' => 'Cancel',
-  'name' => 'Name',
   'first_name_missing' => 'First name missing',
   'last_name_missing' => 'Last name missing',
   'email_missing' => 'Email address missing',

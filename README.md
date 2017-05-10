@@ -4,9 +4,10 @@ TODO
 * is category being created when empty?
 * fix register fields
 * is remember me working?
-* top menu in mobile needs drop down
 * link to groups?
 * create redirect (method that can redirectTo anywhere, keep returnTo though)
+* work on header: link to home, menus in mobile view
+* transtool not checking valid lang array (e.g. translatetool update ar)
 
 * when redirect to login, store returnTo
 * reset password
