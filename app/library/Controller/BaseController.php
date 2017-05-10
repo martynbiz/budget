@@ -190,6 +190,7 @@ class BaseController
         if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
             $category = $currentUser->categories()->create([
                 'name' => $categoryName,
+                'budget' => 0,
                 'group_id' => 0,
             ]);
         }
