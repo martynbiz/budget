@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'na_text' => 'n/a',
   'month_label' => 'Month',
   'budget_remaining_header' => 'Budget',
   'budget_label' => 'Budget',
