@@ -8,6 +8,8 @@ TODO
 * create redirect (method that can redirectTo anywhere, keep returnTo though)
 * work on header: link to home, menus in mobile view
 * transtool not checking valid lang array (e.g. translatetool update ar)
+* http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/, 
+* set monthly budget (on each category?)
 
 * when redirect to login, store returnTo
 * reset password
