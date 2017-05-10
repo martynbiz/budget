@@ -9,7 +9,6 @@
         <title><?= $this->title ?></title>
 
         <?php $this->section('head') ?>
-        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="/css/app.css">
         <?php $this->stop() ?>
     </head>
@@ -19,9 +18,6 @@
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
                     <li class="menu-text"><?= $this->translate('site_name') ?></li>
-                    <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions_link') ?></a></li>
-                    <li><a href="<?= $this->pathFor('funds') ?>"><?= $this->translate('funds_link') ?></a></li>
-                    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('categories_link') ?></a></li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -31,7 +27,10 @@
                     <ul class="dropdown menu" data-dropdown-menu>
                         <li>
                             <a href="#"><?= $this->currentUser->first_name ?></a>
-                            <ul class="menu vertical">
+                            <ul class="menu vertical budget__user-menu">
+                                <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions_link') ?></a></li>
+                                <li><a href="<?= $this->pathFor('funds') ?>"><?= $this->translate('funds_link') ?></a></li>
+                                <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('categories_link') ?></a></li>
                                 <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;"><?= $this->translate('logout_link') ?></a></li>
                             </ul>
                         </li>

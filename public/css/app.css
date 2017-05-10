@@ -6923,3 +6923,7 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 .top-bar {
   margin-bottom: 2em;
 }
+
+.budget__user-menu li:last-child {
+  border-top: 1px solid #cacaca;
+}

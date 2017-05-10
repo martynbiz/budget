@@ -60,3 +60,7 @@ keep the resulting css file small(ish)
 .top-bar {
     margin-bottom: 2em;
 }
+
+.budget__user-menu li:last-child {
+    border-top: 1px solid $medium-gray;
+}
