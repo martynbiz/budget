@@ -63,10 +63,17 @@ class Validator extends \MartynBiz\Validator
      * @param User $model This will be used to query the db
      * @return Validator
      */
-    public function isUniqueGroup($message, HasMany $model)
+    public function isUniqueGroup($message, HasMany $model, $updateItem=null)
     {
         //check whether this email exists in the db
-        $group = $model->where('name', '=', $this->value)->first();
+        $query = $model->where('name', '=', $this->value);
+
+        // if updatedItem
+        if (!is_null($updateItem)) {
+            $query = $model->where('id', '!=', $updateItem->id);
+        }
+
+        $group = $query->first();
 
         // log error
         if ($group) {

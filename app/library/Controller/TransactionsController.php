@@ -38,8 +38,9 @@ class TransactionsController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         // get start and end date from the month filter
-        $startDate = date('Y-m-01', strtotime($container->get('session')->get(Transaction::SESSION_FILTER_MONTH) . '-01'));
-        $endDate = date('Y-m-t', strtotime($startDate . '-01'));
+        $monthFilter = $container->get('session')->get(Transaction::SESSION_FILTER_MONTH);
+        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
+        $endDate = date('Y-m-t', strtotime($startDate));
 
         // base query will be used for both transactions and totalTransactions
         $baseQuery = $this->currentFund->transactions()

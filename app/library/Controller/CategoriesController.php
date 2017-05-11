@@ -20,7 +20,7 @@ class CategoriesController extends BaseController
 
         $categories = $currentUser->categories()
             ->with('group')
-            ->orderBy('name')
+            ->orderBy('group_id')
             ->skip($start)
             ->take($limit)
             ->get();
@@ -119,12 +119,11 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        $params = array_merge([
-
-            // defaults 
-            'group' => $category->group->name,
+        $params = array_merge([ // defaults
             'budget' => '0',
-        ], $category->toArray(), $request->getParams());
+        ], $category->toArray(), [
+            'group' => $category->group->name,
+        ], $request->getParams());
 
         $groups = $currentUser->categories()
             ->orderBy('name', 'asc')

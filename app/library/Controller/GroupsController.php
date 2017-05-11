@@ -126,7 +126,7 @@ class GroupsController extends BaseController
             if ($group->update($params)) {
 
                 // redirect
-                return $response->withRedirect('/groups');
+                return $response->withRedirect( $container->get('router')->pathFor('categories') );
 
             } else {
                 $errors = $group->errors();

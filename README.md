@@ -1,7 +1,7 @@
 # Budget
 
 TODO
-* bug: group field in cat create showing as Array
+* getAmountAttribute -> getAmount($startDate, $endDate)
 * debug tool
 * add with('transactions') to cats index - see debug tool
 * create redirect (method that can redirectTo anywhere, keep returnTo though)
