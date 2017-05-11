@@ -1,6 +1,7 @@
 # Budget
 
 TODO
+* exception dir missing 
 * getAmountAttribute -> getAmount($startDate, $endDate)
 * debug tool
 * add with('transactions') to cats index - see debug tool

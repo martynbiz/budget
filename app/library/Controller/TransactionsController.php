@@ -28,7 +28,7 @@ class TransactionsController extends BaseController
         // set param defaults
         $params = array_merge([
             'page' => 1,
-            'month_filter' => $container->get('session')->get(Transaction::SESSION_FILTER_MONTH),
+            // 'month_filter' => $container->get('session')->get(Transaction::SESSION_FILTER_MONTH),
         ], $params);
 
         $page = (int)$params['page'];
@@ -38,9 +38,8 @@ class TransactionsController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         // get start and end date from the month filter
-        $monthFilter = $container->get('session')->get(Transaction::SESSION_FILTER_MONTH);
-        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
-        $endDate = date('Y-m-t', strtotime($startDate));
+        $startDate = $container->get('session')->get(Transaction::SESSION_FILTER_START_DATE);
+        $endDate = $container->get('session')->get(Transaction::SESSION_FILTER_END_DATE);
 
         // base query will be used for both transactions and totalTransactions
         $baseQuery = $this->currentFund->transactions()

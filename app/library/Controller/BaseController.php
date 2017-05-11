@@ -23,23 +23,37 @@ class BaseController
 
     //
     public function __construct(Container $container) {
-       $this->container = $container;
 
-       // do some stuff if authenticated
-       if ($currentUser = $this->getCurrentUser()) {
+        $this->container = $container;
+        $request = $container->get('request');
 
-           // set fund_id in session, and set currentFund
-           $fundId = $container->get('session')->get('current_fund_id');
-           if (($fundId && ($currentFund = $currentUser->funds()->find($fundId))) || ($currentFund = $currentUser->funds()->first())) {
-               $container->get('session')->set('current_fund_id', $currentFund->id);
-               $this->currentFund = $currentFund;
-           }
+        // do some stuff if authenticated
+        if ($currentUser = $this->getCurrentUser()) {
 
-           // set default if not set
-           if (!$container->get('session')->get(Transaction::SESSION_FILTER_MONTH)) {
-               $container->get('session')->set(Transaction::SESSION_FILTER_MONTH, date("Y-m"));
-           }
-       }
+            // set fund_id in session, and set currentFund
+            $fundId = $container->get('session')->get('current_fund_id');
+            if (($fundId && ($currentFund = $currentUser->funds()->find($fundId))) || ($currentFund = $currentUser->funds()->first())) {
+                $container->get('session')->set('current_fund_id', $currentFund->id);
+                $this->currentFund = $currentFund;
+            }
+
+            // set default session vars
+            $container->get('session')->get(Transaction::SESSION_FILTER_START_DATE) ||
+                $container->get('session')->set(Transaction::SESSION_FILTER_START_DATE, date("Y-m-01"));
+
+            $container->get('session')->get(Transaction::SESSION_FILTER_END_DATE) ||
+                $container->get('session')->set(Transaction::SESSION_FILTER_END_DATE, date("Y-m-t"));
+
+            // update session vars from query params
+            $params = $request->getQueryParams();
+            if (isset($params['month_filter'])) {
+                $startDate = date('Y-m-01', strtotime($params['month_filter'] . '-01'));
+                $endDate = date('Y-m-t', strtotime($startDate));
+
+                $container->get('session')->set(Transaction::SESSION_FILTER_START_DATE, $startDate);
+                $container->get('session')->set(Transaction::SESSION_FILTER_END_DATE, $endDate);
+            }
+        }
     }
 
     /**
@@ -61,6 +75,8 @@ class BaseController
     public function render($file, $data=array())
     {
         $container = $this->getContainer();
+        $request = $container->get('request');
+        $response = $container->get('response');
 
         $data['currentUser'] = $this->getCurrentUser();
 
@@ -78,11 +94,13 @@ class BaseController
             $data['csrfValue'] = $request->getAttribute('csrf_value');
         }
 
+        // get start and end date from the month filter
+        $monthFilter = $container->get('session')->get($request->getQueryParam('month_filter'));
+        $data['transactions_start_date'] = date('Y-m-01', strtotime($monthFilter . '-01'));
+        $data['transactions_end_date'] = date('Y-m-t', strtotime($data['transactions_start_date']));
+
         // generate the html
         $html = $container->get('renderer')->render($file, $data);
-
-        // put the html in the response object
-        $response = $container->get('response');
         $response->getBody()->write($html);
 
         return $response;

@@ -29,11 +29,8 @@ class Category extends Model
         return $this->belongsTo('App\\Model\\Group'); //, 'user_id');
     }
 
-    public function getAmountAttribute()
+    public function getAmount($startDate, $endDate)
     {
-        $startDate = date('Y-m-01');
-        $endDate = date('Y-m-t');
-
         $transactionsAmount = $this->transactions()
             ->where('purchased_at', '>=', $startDate)
             ->where('purchased_at', '<=', $endDate)
@@ -43,8 +40,8 @@ class Category extends Model
         return $transactionsAmount; //, 'user_id');
     }
 
-    public function getBalanceAttribute()
+    public function getBalance($startDate, $endDate)
     {
-        return $this->budget + $this->amount; //, 'user_id');
+        return $this->budget + $this->getAmount($startDate, $endDate); //, 'user_id');
     }
 }
