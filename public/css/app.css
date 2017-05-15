@@ -6933,9 +6933,13 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 }
 
 .balance-out {
-  background: #fc0;
+  background: #900;
 }
 
 .balance-even {
   background: #cacaca;
+}
+
+footer {
+  background: #0a0a0a;
 }

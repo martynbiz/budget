@@ -38,7 +38,8 @@
         "phpunit/phpunit": ">=4.8 < 6.0",
         "symfony/dom-crawler": "^3.2",
         "symfony/css-selector": "^3.2",
-        "martynbiz/php-translate-tool": "dev-master"
+        "martynbiz/php-translate-tool": "dev-master",
+        "martynbiz/phpdebugbar": "dev-master"
     },
     "autoload-dev": {
         "psr-4": {

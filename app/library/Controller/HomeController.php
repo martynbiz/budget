@@ -15,4 +15,17 @@ class HomeController extends BaseController
 
         return $this->render('home/index');
     }
+
+    /**
+     *
+     */
+    public function switchLanguage($request, $response, $args)
+    {
+        $params = $request->getParams();
+
+        // set language cookie
+        setcookie('language', $params['language']);
+
+        return $this->returnTo('/');
+    }
 }

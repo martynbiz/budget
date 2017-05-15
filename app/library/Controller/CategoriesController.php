@@ -20,6 +20,7 @@ class CategoriesController extends BaseController
 
         $categories = $currentUser->categories()
             ->with('group')
+            ->with('transactions')
             ->orderBy('group_id')
             ->skip($start)
             ->take($limit)

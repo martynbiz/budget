@@ -14,6 +14,11 @@ class Category extends Model
         'group_id',
     );
 
+    /**
+     * @var
+     */
+    protected $transactionsAmount;
+
     public function user()
     {
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
@@ -31,7 +36,7 @@ class Category extends Model
 
     public function getAmount($startDate, $endDate)
     {
-        $transactionsAmount = $this->transactions()
+        $this->transactionsAmount = $this->transactions()
             ->where('purchased_at', '>=', $startDate)
             ->where('purchased_at', '<=', $endDate)
             ->pluck('amount')

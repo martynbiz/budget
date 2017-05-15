@@ -69,8 +69,12 @@ keep the resulting css file small(ish)
     background: #090;
 }
 .balance-out {
-    background: #fc0;
+    background: #900;
 }
 .balance-even {
     background: $medium-gray;
+}
+
+footer {
+    background: $black;
 }

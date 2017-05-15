@@ -24,6 +24,7 @@
                 <thead>
                     <tr>
                         <th><?= $this->translate('name_header') ?></th>
+                        <th width="20%"><?= $this->translate('budget_header') ?></th>
                         <th width="20%"><?= $this->translate('balance_header') ?></th>
                         <th width="20%"><?= $this->translate('budget_remaining_header') ?></th>
                     </tr>
@@ -33,13 +34,15 @@
                         <?php if ($category->group && @$category->group->id !== @$group->id): $group = $category->group;  ?>
                             <tr class="text-left">
                                 <th><a href="<?= $this->pathFor('groups_edit', ['group_id' => $group->id]) ?>"><?= $group->name ?></a></th>
-                                <th><?= sprintf($this->current_fund->currency->format, $group->getAmount($this->month_filter)) ?></th>
+                                <th><?= sprintf($this->current_fund->currency->format, $group->budget) ?></th>
+                                <th><?= sprintf($this->current_fund->currency->format, $group->getAmount($this->transactions_start_date, $this->transactions_end_date)) ?></th>
                                 <th class="<?= ($group->budget > 0) ? (($group->getBalance($this->transactions_start_date, $this->transactions_end_date) > 0) ? 'balance-in' : (($group->getBalance($this->transactions_start_date, $this->transactions_end_date) < 0) ? 'balance-out' : 'balance-even')) : '' ?>"><?= ($group->budget > 0) ? sprintf($this->current_fund->currency->format, $group->getBalance($this->transactions_start_date, $this->transactions_end_date)) : $this->translate('na_text') ?></th>
                             </tr>
                         <?php endif; ?>
                         <tr>
                             <td><a href="<?= $this->pathFor('categories_edit', ['category_id' => $category->id]) ?>"><?= (($group) ? '- ' : '') . $category->name ?></a></td>
-                            <td><?= sprintf($this->current_fund->currency->format, $category->getAmount($this->month_filter)) ?></td>
+                            <td><?= sprintf($this->current_fund->currency->format, $category->budget) ?></td>
+                            <td><?= sprintf($this->current_fund->currency->format, $category->getAmount($this->transactions_start_date, $this->transactions_end_date)) ?></td>
                             <td class="<?= ($category->budget > 0) ? (($category->getBalance($this->transactions_start_date, $this->transactions_end_date) > 0) ? 'balance-in' : (($category->getBalance($this->transactions_start_date, $this->transactions_end_date) < 0) ? 'balance-out' : 'balance-even')) : '' ?>"><?= ($category->budget > 0) ? sprintf($this->current_fund->currency->format, $category->getBalance($this->transactions_start_date, $this->transactions_end_date)) : $this->translate('na_text') ?></td>
                         </tr>
                     <?php endforeach ?>

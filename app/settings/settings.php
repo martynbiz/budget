@@ -4,6 +4,11 @@ $settings = [
         'displayErrorDetails' => false, // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
 
+        'debugbar' => [
+            'enabled' => false,
+            'base_url' => 'phpdebugbar',
+        ],
+
         'eloquent' => [
             'driver' => 'mysql',
     		'host' => 'localhost',
@@ -88,7 +93,7 @@ $settings = [
 // local settings
 $localSettingsPath = realpath(APPLICATION_PATH . '/settings/settings-' . APPLICATION_ENV . '.php');
 if (file_exists($localSettingsPath)) {
-    $settings = array_merge_recursive($settings, include $localSettingsPath);
+    $settings = array_replace_recursive($settings, include $localSettingsPath);
 }
 
 return $settings;

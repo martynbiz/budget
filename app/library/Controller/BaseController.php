@@ -88,6 +88,10 @@ class BaseController
             $data['router'] = $container->get('router');
         }
 
+        if ($container->has('debugbar')) {
+            $data['debugbar'] = $container->get('debugbar');
+        }
+
         if ($container->has('csrf')) {
             $request = $container->get('request');
             $data['csrfName'] = $request->getAttribute('csrf_name');

@@ -114,6 +114,25 @@ $container['mail_manager'] = function ($c) {
     return new \App\Mail\Manager($transport, $c['renderer'], $locale, $defaultLocale, $c['i18n']);
 };
 
+// debugbar
+$container['debugbar'] = function ($c) {
+
+    // get settings as an array
+    $settings = [];
+    foreach($c->get('settings') as $key => $value) {
+        $settings[$key] = $value;
+    }
+
+    $debugbar = new \MartynBiz\PHPDebugBar($settings['debugbar']);
+
+    $pdo = $c['model.user']->getConnection()->getPDO();
+
+    $debugbar->addDatabaseCollector($pdo);
+    $debugbar->addConfigCollector( $settings ); // config array
+
+    return $debugbar;
+};
+
 
 // Models
 
