@@ -18,24 +18,45 @@ class CategoriesController extends BaseController
         $limit = 10;
         $start = ($page-1) * $limit;
 
+        // categories is actually a combined list of categories and groups
+        // so we need to build that combined array here and use it to paginate
+        $categoriesAndGroups = [];
+
+        // first get the categories
         $categories = $currentUser->categories()
             ->with('group')
             ->with('transactions')
             ->orderBy('group_id')
-            ->skip($start)
-            ->take($limit)
+            // ->skip($start)
+            // ->take($limit)
             ->get();
 
-        // TODO needs to be set against date range
-        $totalCategories = $currentUser->categories()->count();
-        $totalPages = ($totalCategories > 0) ? ceil($totalCategories/$limit) : 1;
+        $currentGroupId = null; // so we know when to insert a group
+        foreach ($categories as $category) {
 
-        $parents = $currentUser->categories()
-            ->get();
+            // first, insert the group if changed or first
+            $group = $category->group;
+            if ($group && $currentGroupId !== $group->id) {
+                array_push($categoriesAndGroups, $group);
+                $currentGroupId = $group->id;
+            }
+
+            // insert the category under it's group
+            array_push($categoriesAndGroups, $category);
+        }
+
+        // set totals based on full categoriesAndGroups array
+        $totalCategories = count($categoriesAndGroups); //$currentUser->categories()->count();
+        $totalPages = ($totalCategories > 0) ? (int)ceil($totalCategories/$limit) : 1;
+
+        // now, slice the array based on pagination
+        $categoriesAndGroups = array_slice($categoriesAndGroups, $start, $limit);
+
+        // $parents = $currentUser->categories()->get();
 
         return $this->render('categories/index', [
-            'categories' => $categories,
-            'parent' => $parents,
+            'categories' => $categoriesAndGroups,
+            // 'parent' => $parents,
 
             'current_fund' => $this->currentFund,
 

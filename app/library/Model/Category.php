@@ -36,13 +36,15 @@ class Category extends Model
 
     public function getAmount($startDate, $endDate)
     {
-        $this->transactionsAmount = $this->transactions()
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
-            ->pluck('amount')
-            ->sum();
+        if (is_null($this->transactionsAmount)) {
+            $this->transactionsAmount = $this->transactions()
+                ->where('purchased_at', '>=', $startDate)
+                ->where('purchased_at', '<=', $endDate)
+                ->pluck('amount')
+                ->sum();
+        }
 
-        return $transactionsAmount; //, 'user_id');
+        return $this->transactionsAmount; //, 'user_id');
     }
 
     public function getBalance($startDate, $endDate)

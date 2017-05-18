@@ -1,12 +1,12 @@
 <?php
 
 return array (
+  'budget_header' => 'Budget',
   'na_text' => 'n/a',
   'month_label' => 'Month',
   'budget_remaining_header' => 'Remaining',
   'budget_label' => 'Budget',
   'budget_missing' => 'Budget is missing',
-  'groups_link' => 'Groups',
   'welcome_text' => 'Welcome to Budget app',
   'set_filter_button' => 'Set filter',
   'delete_button' => 'Delete',
@@ -14,7 +14,6 @@ return array (
   'password_label' => 'Password',
   'new_group_button' => 'New group',
   'group_label' => 'Group',
-  'group_header' => 'Group',
   'group_name_not_unique' => 'Group name not unique',
   'expenses_header' => 'Expenses',
   'category_name_not_unique' => 'Category name not unique',
