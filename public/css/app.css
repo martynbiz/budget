@@ -6928,16 +6928,12 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
   border-top: 1px solid #cacaca;
 }
 
-.balance-in {
-  background: #090;
-}
-
 .balance-out {
-  background: #900;
+  color: #c66;
 }
 
 .balance-even {
-  background: #cacaca;
+  color: #cacaca;
 }
 
 footer {

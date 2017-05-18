@@ -66,13 +66,13 @@ keep the resulting css file small(ish)
 }
 
 .balance-in {
-    background: #090;
+    // color: #0c6;
 }
 .balance-out {
-    background: #900;
+    color: #c66;
 }
 .balance-even {
-    background: $medium-gray;
+    color: $medium-gray;
 }
 
 footer {
