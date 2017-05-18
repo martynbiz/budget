@@ -10,7 +10,7 @@ class HomeController extends BaseController
     {
         $container = $this->getContainer();
         if($currentUser = $container->get('auth')->getAttributes()) {
-            return $this->returnTo( $container->get('router')->pathFor('transactions') );
+            return $this->returnTo( $container->get('router')->pathFor('categories') );
         }
 
         return $this->render('home/index');

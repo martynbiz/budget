@@ -1,18 +1,8 @@
 <?php
 namespace App\Middleware;
 
-class RequireAuth
+class RequireAuth extends Base
 {
-    /**
-     * @var Container
-     */
-    protected $container;
-
-    public function __construct($container)
-    {
-        $this->container = $container;
-    }
-
     /**
      * Attach to routes to ensure protected pages
      *

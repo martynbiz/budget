@@ -1,11 +1,10 @@
 # Budget
 
 TODO
-* categories index pagination needs to consider groups in the list too
-* create redirect (method that can redirectTo anywhere, keep returnTo though)
+* session filters are not saving between transactions and categories
+* use redirect method when returnTo not required
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
-* set monthly budget (on each category?)
 * isAuthenticated should check the user in the db
 * scheduled backups of mysql, sync script
 

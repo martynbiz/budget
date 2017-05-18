@@ -11,19 +11,7 @@ class TransactionsController extends BaseController
     public function index($request, $response, $args)
     {
         $container = $this->getContainer();
-
-        // get current fund
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
-
         $params = $request->getQueryParams();
-
-        // set query params to session
-        if (isset($params['month_filter'])) {
-            $container->get('session')->set(Transaction::SESSION_FILTER_MONTH, $params['month_filter']);
-        }
 
         // set param defaults
         $params = array_merge([
@@ -37,8 +25,9 @@ class TransactionsController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         // get start and end date from the month filter
-        $startDate = $container->get('session')->get(Transaction::SESSION_FILTER_START_DATE);
-        $endDate = $container->get('session')->get(Transaction::SESSION_FILTER_END_DATE);
+        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
+        $endDate = date('Y-m-t', strtotime($startDate));
 
         // base query will be used for both transactions and totalTransactions
         $baseQuery = $this->currentFund->transactions()
@@ -60,14 +49,11 @@ class TransactionsController extends BaseController
         // get total amounts
         $totalAmount = $baseQuery->pluck('amount')->sum();
 
-        // funds for the fund switcher
-        $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
-
         return $this->render('transactions/index', [
             'transactions' => $transactions,
             'total_amount' => $totalAmount,
 
-            'funds' => $funds,
+            // 'funds' => $funds,
             'current_fund' => $this->currentFund,
 
             'params' => $params,

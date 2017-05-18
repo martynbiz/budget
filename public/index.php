@@ -27,6 +27,9 @@ session_start();
 $settings = require __DIR__ . '/../app/settings/settings.php';
 $app = new \Slim\App($settings);
 
+const SESSION_FILTER_MONTH = 'filter__month';
+const SESSION_FILTER_FUND = 'filter__fund_id';
+
 // Set up dependencies
 require __DIR__ . '/../app/dependencies.php';
 

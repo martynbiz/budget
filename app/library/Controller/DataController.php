@@ -69,8 +69,9 @@ class DataController extends BaseController
 
         $groups = $currentUser->groups()->get();
 
-        $startDate = $container->get('session')->get(Transaction::SESSION_FILTER_START_DATE);
-        $endDate = $container->get('session')->get(Transaction::SESSION_FILTER_END_DATE);
+        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
+        $endDate = date('Y-m-t', strtotime($startDate));
         $transactions = $currentFund->transactions()
             ->with(array('category' => function($query) {
                 $query->with('group');

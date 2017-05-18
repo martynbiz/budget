@@ -25,35 +25,40 @@ class BaseController
     public function __construct(Container $container) {
 
         $this->container = $container;
-        $request = $container->get('request');
 
-        // do some stuff if authenticated
-        if ($currentUser = $this->getCurrentUser()) {
+        $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
+        $this->currentFund = $container->get('model.fund')->find($fundId);
 
-            // set fund_id in session, and set currentFund
-            $fundId = $container->get('session')->get('current_fund_id');
-            if (($fundId && ($currentFund = $currentUser->funds()->find($fundId))) || ($currentFund = $currentUser->funds()->first())) {
-                $container->get('session')->set('current_fund_id', $currentFund->id);
-                $this->currentFund = $currentFund;
-            }
 
-            // set default session vars
-            $container->get('session')->get(Transaction::SESSION_FILTER_START_DATE) ||
-                $container->get('session')->set(Transaction::SESSION_FILTER_START_DATE, date("Y-m-01"));
 
-            $container->get('session')->get(Transaction::SESSION_FILTER_END_DATE) ||
-                $container->get('session')->set(Transaction::SESSION_FILTER_END_DATE, date("Y-m-t"));
-
-            // update session vars from query params
-            $params = $request->getQueryParams();
-            if (isset($params['month_filter'])) {
-                $startDate = date('Y-m-01', strtotime($params['month_filter'] . '-01'));
-                $endDate = date('Y-m-t', strtotime($startDate));
-
-                $container->get('session')->set(Transaction::SESSION_FILTER_START_DATE, $startDate);
-                $container->get('session')->set(Transaction::SESSION_FILTER_END_DATE, $endDate);
-            }
-        }
+        // $request = $container->get('request');
+        //
+        // // // do some stuff if authenticated
+        // // if ($currentUser = $this->getCurrentUser()) {
+        // //
+        // //     $params = $request->getQueryParams();
+        // //
+        // //     // fund filter
+        // //     if ($fundId = $request->getQueryParams('filter__fund_id')) {
+        // //         $container->get('session')->set(SESSION_FILTER_MONTH, $fundId)
+        // //     }
+        // //
+        // //     // set (default) fund
+        // //     // fund must exist so we attempt to fetch it from the db
+        // //     $fund = $container->get('model.fund')->find($fundId) ||
+        // //         $fund = $container->get('model.fund')->first();
+        // //     $container->get('session')->set(SESSION_FILTER_MONTH, @$fund->id);
+        // //
+        // //     // month filter
+        // //     if ($month = $request->getQueryParams('filter__month')) {
+        // //         $container->get('session')->set(SESSION_FILTER_MONTH, $month)
+        // //     }
+        // //
+        // //     // set (default) month in session
+        // //     $container->get('session')->get(SESSION_FILTER_MONTH) ||
+        // //         $container->get('session')->set(SESSION_FILTER_MONTH, date('Y-m'));
+        // //
+        // // }
     }
 
     /**
@@ -77,6 +82,7 @@ class BaseController
         $container = $this->getContainer();
         $request = $container->get('request');
         $response = $container->get('response');
+        $currentUser = $this->getCurrentUser();
 
         $data['currentUser'] = $this->getCurrentUser();
 
@@ -99,9 +105,23 @@ class BaseController
         }
 
         // get start and end date from the month filter
-        $monthFilter = $container->get('session')->get($request->getQueryParam('month_filter'));
-        $data['transactions_start_date'] = date('Y-m-01', strtotime($monthFilter . '-01'));
-        $data['transactions_end_date'] = date('Y-m-t', strtotime($data['transactions_start_date']));
+        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        // $data['transactions_start_date'] = date('Y-m-01', strtotime($monthFilter . '-01'));
+        // $data['transactions_end_date'] = date('Y-m-t', strtotime($data['transactions_start_date']));
+        $data['month_filter'] = $monthFilter;
+
+        // get the first ever transaction will allow us to set the first month
+        // default is this month
+        $firstTransaction = $container->get('model.transaction')
+            ->orderBy('purchased_at')
+            ->first();
+        $data['first_month'] = ($firstTransaction) ?
+            date("Y-m", strtotime($firstTransaction->purchased_at)) :
+            date("Y-m");
+
+        // funds for the fund switcher
+        $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
+        $data['funds'] = $funds;
 
         // generate the html
         $html = $container->get('renderer')->render($file, $data);

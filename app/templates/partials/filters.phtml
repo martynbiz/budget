@@ -1,0 +1,21 @@
+<div class="small-12 medium-3 columns">
+    <form id="switch_fund_form" method="get" action="">
+        <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
+        <select name="filter__fund_id">
+            <?php foreach($this->funds as $fund): ?>
+                <option value="<?= $fund->id ?>" <?= ($this->current_fund->id == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
+            <?php endforeach ?>
+        </select>
+        <submit type="submit" class="button show-for-sr"><?= $this->translate('switch_fund_button') ?></submit>
+    </form>
+</div>
+<div class="small-12 medium-3 columns">
+    <form id="switch_month_form" method="get" action="">
+        <label class="show-for-sr"><?= $this->translate('month_label') ?></label>
+        <select name="filter__month">
+            <?php $month = date('Y-m'); while($month >= $this->first_month): ?>
+                <option value="<?= $month ?>" <?= ($month == $this->month_filter) ? 'selected="selected"' : '' ?>> <?= date("M Y", strtotime($month . '-01')) ?></option>
+            <?php $month = date('Y-m', strtotime('-1 month', strtotime($month))); endwhile; ?>
+        </select>
+    </form>
+</div>

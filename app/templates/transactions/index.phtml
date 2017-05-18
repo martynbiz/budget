@@ -4,18 +4,9 @@
 
 <?php $this->section('content') ?>
     <div class="rows">
-        <div class="small-12 medium-2 columns">
-            <form id="switch_fund_form" method="post" action="<?= $this->pathFor('funds_switch') ?>">
-                <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
-                <select name="fund_id">
-                    <?php foreach($this->funds as $fund): ?>
-                        <option value="<?= $fund->id ?>" <?= ($this->current_fund->id == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
-                    <?php endforeach ?>
-                </select>
-                <submit type="submit" class="button show-for-sr"><?= $this->translate('switch_fund_button') ?></submit>
-            </form>
-        </div>
-        <div class="small-12 medium-offset-8 medium-2 columns text-right">
+        <?= $this->insert('partials/filters') ?>
+
+        <div class="small-12 offset-medium-3 medium-3 columns">
             <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <?= $this->translate('new_transaction_button') ?>
@@ -25,19 +16,6 @@
 
     <div class="row">
         <div class="small-12 medium-8 columns">
-            <form class="callout secondary" method="get" action="<?= $this->pathFor('transactions') ?>">
-                <div class="row">
-                    <div class="small-12 medium-3 columns">
-                        <label class="show-for-sr"><?= $this->translate('month_label') ?></label>
-                        <input type="text" name="month_filter" value="<?= @$this->params['month_filter'] ?>" placeholder="YYYY-MM">
-                    </div>
-                    <div class="small-12 medium-9 columns">
-                        <button type="submit" class="button"><?= $this->translate('set_filter_button') ?></button>
-                    </div>
-                </div>
-                <input type="hidden" name="page" value="<?= $this->page ?>">
-            </form>
-
             <table>
                 <thead>
                     <tr>
@@ -71,7 +49,7 @@
     </div>
 <?php $this->replace() ?>
 
-<?php $this->section('head') ?>
+<?php /*$this->section('head') ?>
     <style>
 
     .ui-datepicker-calendar {
@@ -79,34 +57,11 @@
         }
 
     </style>
-<?php $this->append() ?>
+<?php $this->append()*/ ?>
 
 
 <?php $this->section('scripts') ?>
     <script>
-
-    // init the fund switcher
-    $("select[name='fund_id']").on("change", function() {
-        $('form#switch_fund_form').submit();
-    });
-
-    // init the datepicker
-    $(function() {
-
-        // $("input[name='start_date'],input[name='end_date']").datepicker({
-        //     dateFormat: "yyyy-mm-dd"
-        // });
-
-        $("input[name='month_filter']").datepicker( {
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'yy-mm',
-            onClose: function(dateText, inst) {
-                $(this).datepicker('setDate', new Date(inst.selectedYear, inst.selectedMonth, 1));
-            }
-        });
-    });
 
     // init the chart
     $.getJSON("/data/expenses", function(data) {
