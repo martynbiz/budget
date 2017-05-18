@@ -28,7 +28,6 @@ class TransactionsController extends BaseController
         // set param defaults
         $params = array_merge([
             'page' => 1,
-            // 'month_filter' => $container->get('session')->get(Transaction::SESSION_FILTER_MONTH),
         ], $params);
 
         $page = (int)$params['page'];
@@ -55,11 +54,11 @@ class TransactionsController extends BaseController
             ->with('fund')
             ->skip($start)
             ->take($limit)
+            ->orderBy('purchased_at', 'desc')
             ->get();
 
         // get total amounts
-        $amounts = $baseQuery->pluck('amount');
-        $totalAmount = $amounts->sum();
+        $totalAmount = $baseQuery->pluck('amount')->sum();
 
         // funds for the fund switcher
         $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
