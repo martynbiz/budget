@@ -130,7 +130,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $this->transaction = $this->user->transactions()->create([
             'description' => 'Sandwich',
             'amount' => '12.50',
-            'purchased_at' => '2017-05-01 00:00:05',
+            'purchased_at' => date("Y-m-d"),
             'category_id' => '1',
             'fund_id' => $this->fund->id,
         ]);
@@ -141,8 +141,22 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         $this->category = $this->user->categories()->create([
             'name' => 'Groceries',
+            'budget' => 0,
             'group_id' => $this->group->id,
         ]);
+
+
+        // mock session values
+        $container->get('session')
+            ->expects($this->any())
+            ->method('get')
+            ->with(SESSION_FILTER_MONTH)
+            ->willReturn(date("Y-m"));
+        $container->get('session')
+            ->expects($this->any())
+            ->method('get')
+            ->with(SESSION_FILTER_FUND)
+            ->willReturn($this->fund->id);
     }
 
     public function tearDown()

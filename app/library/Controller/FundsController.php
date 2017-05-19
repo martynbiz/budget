@@ -82,7 +82,7 @@ class FundsController extends BaseController
             if ($fund = $currentUser->funds()->create($params)) {
 
                 // set new fund as current
-                $container->get('session')->set('current_fund_id', $fund->id);
+                $container->get('session')->set(SESSION_FILTER_FUND, $fund->id);
                 $this->currentFund = $fund;
 
                 // redirect

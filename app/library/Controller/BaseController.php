@@ -28,37 +28,6 @@ class BaseController
 
         $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
         $this->currentFund = $container->get('model.fund')->find($fundId);
-
-
-
-        // $request = $container->get('request');
-        //
-        // // // do some stuff if authenticated
-        // // if ($currentUser = $this->getCurrentUser()) {
-        // //
-        // //     $params = $request->getQueryParams();
-        // //
-        // //     // fund filter
-        // //     if ($fundId = $request->getQueryParams('filter__fund_id')) {
-        // //         $container->get('session')->set(SESSION_FILTER_MONTH, $fundId)
-        // //     }
-        // //
-        // //     // set (default) fund
-        // //     // fund must exist so we attempt to fetch it from the db
-        // //     $fund = $container->get('model.fund')->find($fundId) ||
-        // //         $fund = $container->get('model.fund')->first();
-        // //     $container->get('session')->set(SESSION_FILTER_MONTH, @$fund->id);
-        // //
-        // //     // month filter
-        // //     if ($month = $request->getQueryParams('filter__month')) {
-        // //         $container->get('session')->set(SESSION_FILTER_MONTH, $month)
-        // //     }
-        // //
-        // //     // set (default) month in session
-        // //     $container->get('session')->get(SESSION_FILTER_MONTH) ||
-        // //         $container->get('session')->set(SESSION_FILTER_MONTH, date('Y-m'));
-        // //
-        // // }
     }
 
     /**
@@ -84,7 +53,14 @@ class BaseController
         $response = $container->get('response');
         $currentUser = $this->getCurrentUser();
 
-        $data['currentUser'] = $this->getCurrentUser();
+        if ($currentUser = $this->getCurrentUser()) {
+
+            $data['currentUser'] = $currentUser;
+
+            // funds for the fund switcher
+            $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
+            $data['funds'] = $funds;
+        }
 
         if ($container->has('flash')) {
             $data['messages'] = $container->get('flash')->flushMessages();
@@ -106,8 +82,6 @@ class BaseController
 
         // get start and end date from the month filter
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        // $data['transactions_start_date'] = date('Y-m-01', strtotime($monthFilter . '-01'));
-        // $data['transactions_end_date'] = date('Y-m-t', strtotime($data['transactions_start_date']));
         $data['month_filter'] = $monthFilter;
 
         // get the first ever transaction will allow us to set the first month
@@ -118,10 +92,6 @@ class BaseController
         $data['first_month'] = ($firstTransaction) ?
             date("Y-m", strtotime($firstTransaction->purchased_at)) :
             date("Y-m");
-
-        // funds for the fund switcher
-        $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
-        $data['funds'] = $funds;
 
         // generate the html
         $html = $container->get('renderer')->render($file, $data);

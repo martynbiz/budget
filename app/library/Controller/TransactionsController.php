@@ -66,6 +66,8 @@ class TransactionsController extends BaseController
 
     public function create($request, $response, $args)
     {
+        $container = $this->getContainer();
+
         if (!$this->currentFund) {
             $container->get('flash')->addMessage('errors', ['Please create a fund']);
             return $response->withRedirect('/funds');

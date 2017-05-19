@@ -17,24 +17,30 @@ class SetFilters extends Base
         $params = $request->getQueryParams();
         $container = $this->container;
 
+
         // fund filter
         if ($fundId = $request->getQueryParam('filter__fund_id')) {
             $container->get('session')->set(SESSION_FILTER_FUND, $fundId);
         }
 
-        // set (default) fund
         // fund must exist so we attempt to fetch it from the db
+        $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
         ($fund = $container->get('model.fund')->find($fundId)) ||
             ($fund = $container->get('model.fund')->first());
         if (!$fund) return $response->withRedirect('/funds');
 
+        // set session var - from confirmed $fund
         $container->get('session')->set(SESSION_FILTER_FUND, $fund->id);
 
 
         // month filter
-        if (!$month = $request->getQueryParam('filter__month'))
-            $month = date('Y-m');
-        $container->get('session')->set(SESSION_FILTER_MONTH, $month);
+        if ($month = $request->getQueryParam('filter__month')) {
+            $container->get('session')->set(SESSION_FILTER_MONTH, $month);
+        }
+
+        // set session var - or set a default for month
+        $container->get('session')->get(SESSION_FILTER_MONTH) ||
+            $container->get('session')->set(SESSION_FILTER_MONTH, date('Y-m'));
 
         $response = $next($request, $response);
 

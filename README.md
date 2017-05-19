@@ -1,6 +1,7 @@
 # Budget
 
 TODO
+* why is group appearing twice ?
 * session filters are not saving between transactions and categories
 * use redirect method when returnTo not required
 * transtool not checking valid lang array (e.g. translatetool update ar)
