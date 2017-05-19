@@ -74,9 +74,9 @@ gulp.task('js', function() {
         // 'bower_components/what-input/dist/what-input.js',
         'bower_components/foundation-sites/dist/js/foundation.js',
         'bower_components/slicknav/dist/jquery.slicknav.js',
-        // 'bower_components/highcharts/highcharts.js',
-        // 'bower_components/highcharts/modules/data.js',
-        // 'bower_components/highcharts/modules/drilldown.js',
+        'bower_components/highcharts/highcharts.js',
+        'bower_components/highcharts/modules/data.js',
+        'bower_components/highcharts/modules/drilldown.js',
         //...
         'src/js/sliding-menu.js',
         'src/js/app.js'

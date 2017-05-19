@@ -15,6 +15,7 @@
   "dependencies": {
     "foundation-sites": "~6.3.1",
     "dripicons": "~1.0.0",
-    "slicknav": "~1.0.10"
+    "slicknav": "~1.0.10",
+    "highcharts": "~5.0.11"
   }
 }

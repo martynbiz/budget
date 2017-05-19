@@ -3,10 +3,17 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Budget</title>
-        <link rel="stylesheet" href="/css/app.css">
+        <title><?= $this->title ?></title>
+
+        <?php $this->section('head') ?>
+        <link rel="stylesheet" type="text/css" href="/css/app.css">
+        <?php $this->stop() ?>
+
+        <?php echo $this->debugbar->renderHead(); ?>
     </head>
     <body>
+        <h1 class="show-for-sr">Budget</h1>
+
         <div class="off-canvas-wrap" data-offcanvas="">
             <div class="inner-wrap">
                 <div id="skin-select" style="width: 260px;">
@@ -22,32 +29,56 @@
                             <div class="side-bar">
                                 <ul id="menu-showhide" class="topnav slicknav" style="height: auto; margin: -13px 0px 0px;">
                                     <li style="text-align: left;">
-                                        <a id="menu-select" class="tooltip-tip tooltipster-disable" href="http://ndesaintheme.com/edumix/version_1.2/index.html" title="Dashboard">
+                                        <a id="menu-select" class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('home') ?>">
                                         <i class="icon-monitor" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                        <span style="display: inline-block; float: none;">Dashboard</span>
+                                        <span style="display: inline-block; float: none;"><?= $this->translate('dashboard_link') ?></span>
                                         </a>
                                     </li>
                                     <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable" href="http://ndesaintheme.com/edumix/version_1.2/#" title="Mail">
+                                        <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('transactions') ?>">
                                             <i class="icon-view-list" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;">Transactions</span>
+                                            <span style="display: inline-block; float: none;"><?= $this->translate('transactions_link') ?></span>
                                             <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
                                         </a>
                                     </li>
                                     <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable" href="http://ndesaintheme.com/edumix/version_1.2/#" title="Mail">
+                                        <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('funds') ?>">
                                             <i class="icon-export" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;">Funds</span>
+                                            <span style="display: inline-block; float: none;"><?= $this->translate('funds_link') ?></span>
                                             <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
                                         </a>
                                     </li>
                                     <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable" href="http://ndesaintheme.com/edumix/version_1.2/#" title="Mail">
+                                        <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('categories') ?>">
                                             <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;">Categories</span>
+                                            <span style="display: inline-block; float: none;"><?= $this->translate('categories_link') ?></span>
                                             <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
                                         </a>
                                     </li>
+                                    <?php if ($this->currentUser): ?>
+                                        <!-- <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('logout') ?>">
+                                                <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('logout_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li> -->
+                                    <?php else: ?>
+                                        <!-- <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('register') ?>">
+                                                <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('register_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li>
+                                        <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable" href="<?= $this->pathFor('login') ?>">
+                                                <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('login_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li> -->
+                                    <?php endif; ?>
                                 </ul>
                             </div>
                         </div>
@@ -59,33 +90,69 @@
 
                         </div>
                         <div class="top-bar-right">
-                            <ul class="dropdown menu" data-dropdown-menu>
-                                <li>
-                                    <a href="#">Martyn Bissett</a>
-                                    <ul class="menu vertical">
-                                        <li><a href="#">One</a></li>
-                                        <li><a href="#">Two</a></li>
-                                        <li><a href="#">Three</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                            <?php if ($this->currentUser): ?>
+                                <form id="logout_form" method="post" action="<?= $this->pathFor('logout_post') ?>"><input type="hidden" name="_METHOD" value="DELETE"></form>
+
+                                <ul class="dropdown menu" data-dropdown-menu>
+                                    <li>
+                                        <a href="#"><?= $this->currentUser->first_name ?> <?= $this->currentUser->last_name ?></a>
+                                        <ul class="menu vertical budget__user-menu">
+                                            <li><a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;"><?= $this->translate('logout_link') ?></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            <?php else: ?>
+                                <ul class="menu">
+                                    <li><a href="<?= $this->pathFor('register') ?>"><?= $this->translate('register_link') ?></a></li>
+                                    <li><a href="<?= $this->pathFor('login') ?>"><?= $this->translate('login_link') ?></a></li>
+                                </ul>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="content-wrapper">
-                        ...
+                        <div class="row">
+                            <div class="small-12 columns">
+                                <?php if (isset($this->messages['success'])): ?>
+                                <div class="success callout">
+                                    <?=$this->messages['success']; ?>
+                                </div>
+                                <?php endif; ?>
+
+                                <?php if (isset($this->messages['errors'])): ?>
+                                <div class="alert callout">
+                                    <ul>
+                                        <?php foreach ($this->messages['errors'] as $error): ?>
+                                        <li><?= $error ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                                <?php endif; ?>
+
+                                <?php $this->section('content') ?>
+                                    ...
+                                <?php $this->stop() ?>
+                            </div>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
-        <script type="text/javascript" src="/js/app.js"></script>
-        <script>
-            $(document).foundation();
-        </script>
+
+        <?php $this->section('scripts') ?>
+            <script src="/js/app.js" type="text/javascript"></script>
+            <script>
+                $(document).foundation();
+            </script>
+        <?php $this->stop() ?>
+
         <script>
         	$(function(){
         		$('#menu-showhide').slicknav();
         	});
         </script>
+
+        <?php echo $this->debugbar->render(); ?>
     </body>
 </html>

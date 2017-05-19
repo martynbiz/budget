@@ -334,7 +334,12 @@ ul.topnav h4 {
 }
 
 .content-wrapper {
-    padding: 1rem 3rem;
+    padding: 1rem;
+}
+@media screen and (max-width: 40em) {
+    .content-wrapper {
+        padding: 1rem 0;
+    }
 }
 
 

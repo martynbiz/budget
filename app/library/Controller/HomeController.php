@@ -8,10 +8,10 @@ class HomeController extends BaseController
      */
     public function index($request, $response, $args)
     {
-        $container = $this->getContainer();
-        if($currentUser = $container->get('auth')->getAttributes()) {
-            return $this->redirect( $container->get('router')->pathFor('categories') );
-        }
+        // $container = $this->getContainer();
+        // if($currentUser = $container->get('auth')->getAttributes()) {
+        //     return $this->redirect( $container->get('router')->pathFor('categories') );
+        // }
 
         return $this->render('home/index');
     }

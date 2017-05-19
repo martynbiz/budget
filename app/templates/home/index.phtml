@@ -3,5 +3,33 @@
 ]); ?>
 
 <?php $this->section('content') ?>
-    <?= $this->translate('welcome_text') ?>
+<div class="row">
+    <div class="small-12 medium-4 columns">
+        <div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+    </div>
+    <div class="small-12 medium-8 columns">
+        &nbsp;
+    </div>
+</div>
 <?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+
+    // init the chart
+    $.getJSON("/data/expenses", function(data) {
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: data["title"],
+            plotOptions: data['plotOptions'],
+            tooltip: data["tooltip"],
+            series: data["series"],
+            drilldown: data["drilldown"]
+        });
+    });
+
+    </script>
+<?php $this->append() ?>
