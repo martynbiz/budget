@@ -79,8 +79,7 @@ class UsersController extends BaseController
                 $container->get('mail_manager')->sendWelcomeEmail($user);
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/';
-                return $this->returnTo($params['returnTo']);
+                return $this->redirect('/');
 
             } else {
                 $errors = $user->errors();
@@ -128,8 +127,7 @@ class UsersController extends BaseController
         if ($user->delete()) {
 
             // redirect
-            isset($params['returnTo']) or $params['returnTo'] = '/users';
-            return $this->returnTo($params['returnTo']);
+            return $this->redirect('users');
 
         } else {
             $errors = $user->errors();

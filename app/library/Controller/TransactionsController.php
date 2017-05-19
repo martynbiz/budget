@@ -128,8 +128,7 @@ class TransactionsController extends BaseController
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/transactions';
-                return $this->returnTo($params['returnTo']);
+                return $this->redirect('/transactions');
 
             } else {
                 $errors = $transaction->errors();
@@ -219,8 +218,7 @@ class TransactionsController extends BaseController
             if ($transaction->update($params)) {
 
                 // redirect
-                isset($params['returnTo']) or $params['returnTo'] = '/transactions';
-                return $this->returnTo($params['returnTo']);
+                return $this->redirect('/transactions');
 
             } else {
                 $errors = $transaction->errors();

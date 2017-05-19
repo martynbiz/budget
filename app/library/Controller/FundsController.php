@@ -207,6 +207,6 @@ class FundsController extends BaseController
         $container->get('session')->set('current_fund_id', $newFund->id);
 
         // redirect back to transactions
-        return $this->returnTo('/transactions');
+        return $this->redirect('/transactions');
     }
 }

@@ -10,7 +10,7 @@ class HomeController extends BaseController
     {
         $container = $this->getContainer();
         if($currentUser = $container->get('auth')->getAttributes()) {
-            return $this->returnTo( $container->get('router')->pathFor('categories') );
+            return $this->redirect( $container->get('router')->pathFor('categories') );
         }
 
         return $this->render('home/index');
@@ -26,6 +26,6 @@ class HomeController extends BaseController
         // set language cookie
         setcookie('language', $params['language']);
 
-        return $this->returnTo('/');
+        return $this->redirect('/');
     }
 }
