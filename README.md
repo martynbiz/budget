@@ -1,11 +1,11 @@
 # Budget
 
 redesign
-* ensure everything is latest version eg. foundation
-* get everything under bower/gulp
 * strip out unwanted styles
 * remove commented code
 * slick nav
+* top nav
+* slim templates
 
 TODO
 * garvitar
