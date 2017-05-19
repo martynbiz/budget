@@ -4,6 +4,8 @@ redesign
 * restore sliding-menu.js
 * slim templates
 * move user menu options to main menu for slick nav to access (but hide them normally)
+* disable unused f6 components
+* cache pie chart dataa
 
 TODO
 * garvitar
