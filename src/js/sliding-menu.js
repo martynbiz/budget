@@ -1,14 +1,14 @@
 $(document).ready(function() { 
-	
-	
-	// toggle skin select	
-	$("#skin-select #toggle").click(function() { 
+
+
+	// toggle skin select
+	$("#skin-select #toggle").click(function() {
 
 
 
 		if($(this).hasClass('active')) {
 			$(this).removeClass('active')
-		
+
 			$('#skin-select').css({"width":"260px"});
 			$('.wrap-fluid').css({"width":"auto","margin-left":"260px",});
 			$('#skin-select li').css({"text-align":"left"});
@@ -27,22 +27,22 @@ $(document).ready(function() {
 			$(".profile h3").css({'display':'block'});
 			$(".profile img").css({'width':'45px', 'height':'45px', 'top':'15px', 'left':'4px' });
 			$(".profile").css({'top':'-13px'});
-	
+
 
 			$('#menuwrapper').removeAttr('id').addClass();
-			
-			
+
+
 		} else {
 			$(this).addClass('active')
-			
-	
+
+
 			$('#skin-select').css({"width":"50px"});
 			$('.wrap-fluid').css({"width":"auto", "margin-left":"50px"});
 			$('#skin-select li').css({"text-align":"right"});
 			$('#skin-select li span, .devider-title h3, ul.topnav h4, .side-dash, .noft-blue, .noft-purple-number, .noft-blue-number').css({"display":"none"});
 			//$('.tooltip-tip2').removeClass('tooltipster-disable');
 			//$('.tooltip-tip').removeClass('tooltipster-disable');
-			$('.datepicker-wrap').css({"position":"absolute", "right":"84px"});	
+			$('.datepicker-wrap').css({"position":"absolute", "right":"84px"});
 			$('.skin-part').css({"visibility":"visible"});
 			$('.hide-min-toggle').css({"display":"block"});
 			$('#menu-showhide').css({"margin":"-10px 0px 0px"});
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			$('ul.topnav ul').removeAttr('style');
 			$('#menuwrapper ul li ul').css({"display":"inline-grid!important"});
 			$('.profile span, .profile i, .bottom-list-menu li').css({"display":"none"});
-		
+
 			$('img.admin-pic.img-circle').css({"margin":"18px 0 0 4px"});
 			$('.accordion-nav').removeAttr('class').addClass('topnav');
 			$(".side-bar").attr("id","menuwrapper");
@@ -64,11 +64,10 @@ $(document).ready(function() {
 		}
 		return false;
 	});
-	
-	
+
+
 	// show skin select for a second
 	setTimeout(function(){ $("#skin-select #toggle").addClass('active').trigger('click'); },10)
-	
-	
-}); // end doc.ready
 
+
+}); // end doc.ready

@@ -1,20 +1,10 @@
 {
-  "name": "foundation-sites-template",
-  "version": "1.0.0",
+  "name": "budget",
+  "version": "0.0.0",
   "authors": [
-    "ZURB <foundation@zurb.com>"
+    "Martyn Bissett <martynbissett@yahoo.co.uk>"
   ],
-  "description": "Basic template for a new Foundation for Sites project.",
-  "main": "index.html",
   "license": "MIT",
-  "homepage": "http://foundation.zurb.com",
-  "dependencies": {
-    "foundation-sites": "~6.3.0",
-    "motion-ui": "~1.2.2",
-    "highcharts": "~5.0.11",
-    "jquery-ui": "~1.12.1",
-    "fontawesome": "~4.7.0"
-  },
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,5 +12,8 @@
     "test",
     "tests"
   ],
-  "private": true
+  "dependencies": {
+    "foundation-sites": "~6.3.1",
+    "dripicons": "~1.0.0"
+  }
 }

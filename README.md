@@ -1,5 +1,12 @@
 # Budget
 
+redesign
+* ensure everything is latest version eg. foundation
+* get everything under bower/gulp
+* strip out unwanted styles
+* remove commented code
+* slick nav
+
 TODO
 * garvitar
 * transtool not checking valid lang array (e.g. translatetool update ar)

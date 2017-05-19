@@ -25,7 +25,7 @@ gulp.task('sass', function () {
     // include paths for sass compiler
     var sassPaths = [
         'bower_components/foundation-sites/scss',
-        'bower_components/motion-ui/src',
+        // 'bower_components/motion-ui/src',
         'src/scss'
     ];
 
@@ -47,20 +47,12 @@ gulp.task('css', function() {
     // Will compile all styles into a single file. Add files to the array,
     // styles will be compiled in that order.
     var scripts = [
+        'bower_components/dripicons/css/dripicons.css',
+        // 'bower_components/fontawesome/css/font-awesome.css',
         // 'bower_components/jquery-ui/themes/base/jquery-ui.css',
-        // // 'bower_components/fontawesome/css/font-awesome.css',
-        // //...
-        // 'src/css/app.css' // compiled app.sass (includes foundation css)
-
-        "src/css/foundation.css",
-        "src/css/dashboard.css",
-        "src/css/style.css",
-        "src/css/dripicon.css",
-        "src/css/typicons.css",
-        "src/css/font-awesome.css",
-        "src/css/theme.css",
-        "src/css/pace-theme-flash.css",
-        "src/css/slicknav.css",
+        //...
+        'src/css/app.css', // compiled app.sass (includes foundation css)
+        'src/css/theme.css'
     ];
 
     return gulp.src(scripts)
@@ -76,38 +68,16 @@ gulp.task('js', function() {
     // Will compile all scripts into a single script. Add files to the array,
     // scripts will be compiled in that order.
     var scripts = [
-        // 'bower_components/jquery/dist/jquery.js',
+        'bower_components/jquery/dist/jquery.js',
         // 'bower_components/jquery-ui/jquery-ui.js',
         // 'bower_components/what-input/dist/what-input.js',
-        // 'bower_components/foundation-sites/dist/js/foundation.js',
+        'bower_components/foundation-sites/dist/js/foundation.js',
         // 'bower_components/highcharts/highcharts.js',
         // 'bower_components/highcharts/modules/data.js',
         // 'bower_components/highcharts/modules/drilldown.js',
-        // //...
-        // 'src/js/app.js'
-
-        "src/js/jquery.js",
-        "src/js/pace.js",
-        "src/js/waypoints.min.js",
-        "src/js/preloader-script.js",
-        "src/js/foundation.min.js",
-        "src/js/foundation/foundation.#111111.js",
-        "src/js/slimscroll/jquery.slimscroll.js",
-        "src/js/slicknav/jquery.slicknav.js",
-        "src/js/sliding-menu.js",
-        "src/js/scriptbreaker-multiple-accordion-1.js",
-        "src/js/number/jquery.counterup.min.js",
-        "src/js/circle-progress/jquery.circliful.js",
-        "src/js/appp.js",
-        "src/js/number-progress-bar/jquery.velocity.min.js",
-        "src/js/number-progress-bar/number-pb.js",
-        "src/js/loader/loader.js",
-        "src/js/loader/demo.js",
-        "src/js/flot/jquery.flot.js",
-        "src/js/flot/jquery.flot.resize.min.js",
-        "src/js/flot/jquery.flot.pie.min.js",
-        "src/js/flot/jquery.flot.categories.min.js",
-        "src/js/skycons/skycons.js"
+        //...
+        'src/js/sliding-menu.js',
+        'src/js/app.js'
     ];
 
     return gulp.src(scripts)
@@ -117,10 +87,10 @@ gulp.task('js', function() {
         .pipe(browserSync.stream());
 });
 
-gulp.task('icons', function() { 
-    return gulp.src('./bower_components/fontawesome/fonts/**.*') 
-        .pipe(gulp.dest('./public/fonts')); 
-});
+// gulp.task('icons', function() { 
+//     return gulp.src('./bower_components/fontawesome/fonts/**.*') 
+//         .pipe(gulp.dest('./public/fonts')); 
+// });
 
 gulp.task('default', function() {
 
@@ -132,7 +102,7 @@ gulp.task('default', function() {
         });
     }
 
-    // gulp.watch(['src/scss/**/*.scss'], ['sass']);
+    gulp.watch(['src/scss/**/*.scss'], ['sass']);
     gulp.watch(['src/css/**/*.css'], ['css']);
     gulp.watch(['src/js/**/*.js'], ['js']);
 });
