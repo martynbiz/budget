@@ -1,6 +1,7 @@
 # Budget
 
 TODO
+* garvitar
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 * scheduled backups of mysql, sync script
