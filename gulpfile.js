@@ -48,6 +48,7 @@ gulp.task('css', function() {
     // styles will be compiled in that order.
     var scripts = [
         'bower_components/dripicons/css/dripicons.css',
+        'bower_components/slicknav/dist/slicknav.css',
         // 'bower_components/fontawesome/css/font-awesome.css',
         // 'bower_components/jquery-ui/themes/base/jquery-ui.css',
         //...
@@ -72,6 +73,7 @@ gulp.task('js', function() {
         // 'bower_components/jquery-ui/jquery-ui.js',
         // 'bower_components/what-input/dist/what-input.js',
         'bower_components/foundation-sites/dist/js/foundation.js',
+        'bower_components/slicknav/dist/jquery.slicknav.js',
         // 'bower_components/highcharts/highcharts.js',
         // 'bower_components/highcharts/modules/data.js',
         // 'bower_components/highcharts/modules/drilldown.js',

@@ -1,10 +1,7 @@
 # Budget
 
 redesign
-* strip out unwanted styles
-* remove commented code
-* slick nav
-* top nav
+* restore sliding-menu.js
 * slim templates
 
 TODO

@@ -76,6 +76,8 @@ body {
     text-decoration: none;
     font-weight: normal;
     border-radius: 0 4px 4px 0;
+
+    display: none;
 }
 #skin-select #toggle:hover {
     background: #111;
@@ -298,8 +300,16 @@ ul.topnav h4 {
     background: #f5f5f5;
     min-height: 1040px;
     margin: 0 0 -35px;
-    padding: 0 15px 35px;
+    /*padding: 0 15px 35px;*/
     position: relative;
+
+    width: auto;
+    margin-left: 260px;
+}
+@media screen and (max-width: 40em) {
+    #paper-bg {
+        margin-left: 0;
+    }
 }
 #paper-bg:before {
     background: red;
@@ -311,6 +321,40 @@ ul.topnav h4 {
     left: 0;
 }
 .wrap-fluid {
-    padding: 20px;
-    width: 100%;
+    /*padding: 20px;*/
+    /*width: 100%;*/
+}
+
+.top-bar {
+    min-height: 72px;
+}
+.top-bar-left,
+.top-bar-right {
+    padding-top: 0.7rem;
+}
+
+.content-wrapper {
+    padding: 1rem 3rem;
+}
+
+
+
+
+.slicknav_menu {
+	display:none;
+}
+
+@media screen and (max-width: 40em) {
+	/* #menu is the original menu */
+	#skin-select {
+		display: none;
+	}
+
+    .skin-part {
+        margin-left: 0;
+    }
+
+	.slicknav_menu {
+		display:block;
+	}
 }
