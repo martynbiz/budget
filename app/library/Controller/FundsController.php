@@ -20,6 +20,7 @@ class FundsController extends BaseController
 
         // get paginated rows
         $funds = $currentUser->funds()
+            ->with('currency')
             ->skip($start)
             ->take($limit)
             ->get();

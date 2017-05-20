@@ -50,7 +50,7 @@ gulp.task('css', function() {
         'bower_components/dripicons/css/dripicons.css',
         'bower_components/slicknav/dist/slicknav.css',
         // 'bower_components/fontawesome/css/font-awesome.css',
-        // 'bower_components/jquery-ui/themes/base/jquery-ui.css',
+        'bower_components/jquery-ui/themes/base/jquery-ui.css',
         //...
         'src/css/app.css', // compiled app.sass (includes foundation css)
         'src/css/theme.css'
@@ -70,7 +70,7 @@ gulp.task('js', function() {
     // scripts will be compiled in that order.
     var scripts = [
         'bower_components/jquery/dist/jquery.js',
-        // 'bower_components/jquery-ui/jquery-ui.js',
+        'bower_components/jquery-ui/jquery-ui.js',
         // 'bower_components/what-input/dist/what-input.js',
         'bower_components/foundation-sites/dist/js/foundation.js',
         'bower_components/slicknav/dist/jquery.slicknav.js',

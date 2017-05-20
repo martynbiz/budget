@@ -6,7 +6,7 @@ $settings = [
 
         'debugbar' => [
             'enabled' => false,
-            'base_url' => 'phpdebugbar',
+            'base_url' => '/phpdebugbar',
         ],
 
         'eloquent' => [

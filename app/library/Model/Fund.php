@@ -14,6 +14,11 @@ class Fund extends Model
         'currency_id',
     );
 
+    /**
+     * @var
+     */
+    protected $transactionsAmount;
+
     public function user()
     {
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
@@ -27,5 +32,16 @@ class Fund extends Model
     public function currency()
     {
         return $this->belongsTo('App\\Model\\Currency'); //, 'user_id');
+    }
+
+    public function getAmount()
+    {
+        if (is_null($this->transactionsAmount)) {
+            $this->transactionsAmount = $this->transactions()
+                ->pluck('amount')
+                ->sum();
+        }
+
+        return $this->transactionsAmount;
     }
 }

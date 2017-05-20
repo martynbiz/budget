@@ -1,5 +1,6 @@
 <?php $this->layout('layouts/main', [
     'title' => 'Budget',
+    'selected_menu' => 'funds',
 ]); ?>
 
 <?php $this->section('content') ?>
@@ -27,7 +28,7 @@
                         <tr>
                             <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => $fund->id]) ?>"><?= $fund->name ?></a></td>
                             <td><?= $fund->purchased_at ?></td>
-                            <td><?= sprintf('&pound;%01.2f', $fund->balance) ?></td>
+                            <td class="<?= (($fund->getAmount() > 0) ? 'balance-in' : (($fund->getAmount() < 0) ? 'balance-out' : 'balance-even')) ?>"><?= sprintf($fund->currency->format, $fund->getAmount()) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

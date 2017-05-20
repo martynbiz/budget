@@ -186,12 +186,12 @@ body {
     position: relative;
     z-index: 0;
 }
-#menu-select {
+.is-active {
     background: rgba(0, 0, 0, 0.3);
     padding: 0 0 0 40px;
     position: relative;
 }
-#menu-select:before {
+.is-active:before {
     content: "";
     width: 3px;
     position: absolute;

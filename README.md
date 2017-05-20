@@ -1,16 +1,17 @@
 # Budget
 
 redesign
-* cache pie chart dataa
-* stats widget
 * category index should only getAmount of current fund
+* breadcrumbs
+* filter categories
+* stats widget
+* cache pie chart data
 * funds index balance (in each currency)
-* filters in top bar, if fund exists
-* links active when on page, hide links when not signed in?
-* add theme.css to app.scss
 * totals on trans table should be for all pages
 * restore sliding-menu.js
 * move user menu options to main menu for slick nav to access (but hide them normally)
+* add theme.css to app.scss - rename styles, use sass vars?
+* rename methods to getRemainingBudget, getBalance
 
 TODO
 * garvitar
