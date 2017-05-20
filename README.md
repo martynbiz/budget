@@ -1,15 +1,16 @@
 # Budget
 
 redesign
-* restore sliding-menu.js
-* slim templates
-* move user menu options to main menu for slick nav to access (but hide them normally)
-* disable unused f6 components
 * cache pie chart dataa
+* stats widget
 * category index should only getAmount of current fund
 * funds index balance (in each currency)
 * filters in top bar, if fund exists
 * links active when on page, hide links when not signed in?
+* add theme.css to app.scss
+* totals on trans table should be for all pages
+* restore sliding-menu.js
+* move user menu options to main menu for slick nav to access (but hide them normally)
 
 TODO
 * garvitar

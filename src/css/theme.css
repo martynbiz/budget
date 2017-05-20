@@ -328,9 +328,13 @@ ul.topnav h4 {
 .top-bar {
     min-height: 72px;
 }
-.top-bar-left,
+/*.top-bar-left,
 .top-bar-right {
     padding-top: 0.7rem;
+}*/
+.gravatar-img {
+    border-radius: 16px;
+    border: 1px solid #666;
 }
 
 .content-wrapper {

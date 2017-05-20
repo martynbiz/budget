@@ -145,4 +145,12 @@ class User extends Model
             return null;
         }
     }
+
+    /**
+     * Gravatar image url from email
+     */
+    public function getGravatarImageUrl($size=80)
+    {
+        return 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($this->email))) . '?s=' . $size;
+    }
 }

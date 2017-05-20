@@ -3,12 +3,59 @@
 ]); ?>
 
 <?php $this->section('content') ?>
+
 <div class="row">
-    <div class="small-12 medium-4 columns">
-        <div id="container" style="min-width: 310px; max-width: 600px; height: 400px; margin: 0 auto"></div>
+    <div class="small-12 medium-4 columns widget widget__categories">
+        <h3>Categories</h3>
+        <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
     </div>
-    <div class="small-12 medium-8 columns">
-        &nbsp;
+    <div class="small-12 medium-6 columns widget widget__monthly-stats">
+        <h3>Monthly stats</h3>
+        <table class="unstriped">
+            <thead>
+                <tr>
+                    <th><span class="show-for-sr">Month</span></th>
+                    <th>Earnings</th>
+                    <th>Expenses</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#">May, 2017</a></td>
+                    <td class="earnings">
+                        <span class="amount">&pound;2040.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                    <td class="expenses">
+                        <span class="amount">&pound;1240.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">April, 2017</a></td>
+                    <td class="earnings">
+                        <span class="amount">&pound;2040.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                    <td class="expenses">
+                        <span class="amount">&pound;1240.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#">March, 2017</a></td>
+                    <td class="earnings">
+                        <span class="amount">&pound;2040.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                    <td class="expenses">
+                        <span class="amount">&pound;1240.40</span>
+                        <span class="diff up">(+11%)</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <?php $this->replace() ?>

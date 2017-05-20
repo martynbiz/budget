@@ -72,7 +72,7 @@ class GroupsController extends BaseController
             if ($group = $currentUser->groups()->create($params)) {
 
                 // redirect
-                return $response->withRedirect('/groups');
+                return $response->withRedirect( $container->get('router')->pathFor('categories') );
 
             } else {
                 $errors = $group->errors();
@@ -160,7 +160,7 @@ class GroupsController extends BaseController
                 ]);
 
             // redirect
-            return $response->withRedirect('/groups');
+            return $response->withRedirect( $container->get('router')->pathFor('categories') );
 
         } else {
             $errors = $group->errors();

@@ -44,7 +44,7 @@ return array (
   'new_fund_button' => 'New fund',
   'name_header' => 'Name',
   'currency_header' => 'Currency',
-  'balance_header' => 'Balance',
+  'balance_header' => 'Total',
   'new_category_button' => 'New category',
   'name_missing' => 'Missing name',
   'send_recovery_email_button' => 'Send recovery email',
