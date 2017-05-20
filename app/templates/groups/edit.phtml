@@ -3,6 +3,14 @@
     'selected_menu' => 'categories',
 ]); ?>
 
+<?php $this->section('breadcrumbs') ?>
+    <ul class="breadcrumbs">
+        <li><i class="icon-home" style="color: #999;"></i></li>
+        <li><a href="<?= $this->pathFor('groups') ?>"><?= $this->translate('groups_link') ?></a></li>
+        <li><span class="show-for-sr">Current: </span> <?= $this->group->name ?></li>
+    </ul>
+<?php $this->replace() ?>
+
 <?php $this->section('content') ?>
     <div class="row">
         <div class="small-12 columns">

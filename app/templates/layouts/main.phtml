@@ -64,12 +64,14 @@
                     <div class="top-bar">
                         <div class="top-bar-left">
                             <nav aria-label="You are here:" role="navigation">
-                                <ul class="breadcrumbs">
-                                    <li><i class="icon-home" style="color: #999;"></i></li>
-                                    <li>
-                                        <span class="show-for-sr">Current: </span> Dashboard
-                                    </li>
-                                </ul>
+                                <?php $this->section('breadcrumbs') ?>
+                                    <ul class="breadcrumbs">
+                                        <li><i class="icon-home" style="color: #999;"></i></li>
+                                        <li>
+                                            <span class="show-for-sr">Current: </span> Dashboard
+                                        </li>
+                                    </ul>
+                                <?php $this->stop() ?>
                             </nav>
                         </div>
                         <div class="top-bar-right">
