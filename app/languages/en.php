@@ -1,14 +1,12 @@
 <?php
 
 return array (
-  'budget_header' => 'Budget',
+  'dashboard_link' => 'Dashboard',
   'na_text' => 'n/a',
   'month_label' => 'Month',
   'budget_remaining_header' => 'Remaining',
   'budget_label' => 'Budget',
   'budget_missing' => 'Budget is missing',
-  'welcome_text' => 'Welcome to Budget app',
-  'set_filter_button' => 'Set filter',
   'delete_button' => 'Delete',
   'username_label' => 'Username',
   'password_label' => 'Password',
@@ -48,7 +46,6 @@ return array (
   'currency_header' => 'Currency',
   'balance_header' => 'Balance',
   'new_category_button' => 'New category',
-  'site_name' => 'Budget',
   'name_missing' => 'Missing name',
   'send_recovery_email_button' => 'Send recovery email',
   'resetpassword_password_has_been_changed' => 'Password has been changed',

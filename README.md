@@ -6,6 +6,10 @@ redesign
 * move user menu options to main menu for slick nav to access (but hide them normally)
 * disable unused f6 components
 * cache pie chart dataa
+* category index should only getAmount of current fund
+* funds index balance (in each currency)
+* filters in top bar, if fund exists
+* links active when on page, hide links when not signed in?
 
 TODO
 * garvitar
