@@ -6,7 +6,20 @@ class HomeController extends BaseController
     /**
      * Get categories for the autocomplete
      */
-    public function index($request, $response, $args)
+    public function welcome($request, $response, $args)
+    {
+        $currentUser = $this->getCurrentUser();
+        if ($currentUser) {
+            return $this->forward('dashboard', func_get_args());
+        }
+
+        return $this->render('home/welcome');
+    }
+
+    /**
+     * Get categories for the autocomplete
+     */
+    public function dashboard($request, $response, $args)
     {
         $monthlyStatsData = [
             date('Y-m') => [],
@@ -87,8 +100,8 @@ class HomeController extends BaseController
             $data['expenses']['average_diff'] = $averageExpensesPercent;
             $data['expenses']['average_ratio'] = $averageExpensesRatio;
         }
-// var_dump($monthlyStatsData); exit;
-        return $this->render('home/index', [
+
+        return $this->render('home/dashboard', [
             'monthly_stats_data' => $monthlyStatsData,
         ]);
     }

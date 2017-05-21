@@ -7,7 +7,7 @@ $container = $app->getContainer();
 // $requireAuth = new \App\Middleware\SetFilters($container);
 
 // home will use transactions (for now)
-$app->get('/', '\App\Controller\HomeController:index')->setName('home');
+$app->get('/', '\App\Controller\HomeController:welcome')->setName('home');
 $app->post('/switch-language', '\App\Controller\HomeController:switchLanguage');
 
 // session routes
