@@ -121,10 +121,10 @@ keep the resulting css file small(ish)
     }
     .earnings .diff.up,
     .expenses .diff.down {
-        color: #0c6;
+        color: green; //#0c6; // green
     }
     .earnings .diff.down,
     .expenses .diff.up {
-        color: #c66;
+        color: red; //#c66;
     }
 }

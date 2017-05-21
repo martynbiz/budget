@@ -60,6 +60,8 @@ class BaseController
             // funds for the fund switcher
             $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
             $data['funds'] = $funds;
+
+            $data['current_fund'] = $this->currentFund;
         }
 
         if ($container->has('flash')) {

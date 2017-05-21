@@ -6,10 +6,6 @@
 <?php $this->section('content') ?>
 
 <div class="row">
-    <div class="small-12 medium-4 columns widget widget__categories">
-        <h3>Categories</h3>
-        <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
-    </div>
     <div class="small-12 medium-6 columns widget widget__monthly-stats">
         <h3>Monthly stats</h3>
         <table class="unstriped">
@@ -22,62 +18,25 @@
                 </tr>
             </thead>
             <tbody>
+                <?php foreach ($this->monthly_stats_data as $month => $data): ?>
                 <tr>
-                    <td><a href="#">May, 2017</a></td>
+                    <?php if ($data['earnings']['amount'] || $data['expenses']['amount']): ?>
+                        <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M Y', strtotime($month . '-01')) ?></a></td>
+                    <?php else: ?>
+                        <td><?= date('M Y', strtotime($month . '-01')) ?></td>
+                    <?php endif; ?>
                     <td class="earnings">
-                        <span class="amount">&pound;2040.40</span>
-                        <span class="diff up">(+11%)</span>
+                        <span class="amount"><?= sprintf($this->current_fund->currency->format, $data['earnings']['amount']) ?></span>
+                        <span class="diff <?= ($data['earnings']['average_ratio'] > 1) ? 'up' : ($data['earnings']['average_ratio'] <= 0) ? '' : 'down' ?>"><?= $data['earnings']['average_diff'] ?></span>
                     </td>
                     <td class="expenses">
-                        <span class="amount">&pound;1240.40</span>
-                        <span class="diff up">(+11%)</span>
+                        <span class="amount"><?= sprintf($this->current_fund->currency->format, abs($data['expenses']['amount'])) ?></span>
+                        <span class="diff <?= ($data['expenses']['average_ratio'] > 1) ? 'up' : (($data['expenses']['average_ratio'] <= 0) ? '' : 'down') ?>"><?= $data['expenses']['average_diff'] ?></span>
                     </td>
                 </tr>
-                <tr>
-                    <td><a href="#">April, 2017</a></td>
-                    <td class="earnings">
-                        <span class="amount">&pound;2040.40</span>
-                        <span class="diff up">(+11%)</span>
-                    </td>
-                    <td class="expenses">
-                        <span class="amount">&pound;1240.40</span>
-                        <span class="diff up">(+11%)</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td><a href="#">March, 2017</a></td>
-                    <td class="earnings">
-                        <span class="amount">&pound;2040.40</span>
-                        <span class="diff up">(+11%)</span>
-                    </td>
-                    <td class="expenses">
-                        <span class="amount">&pound;1240.40</span>
-                        <span class="diff up">(+11%)</span>
-                    </td>
-                </tr>
+                <?php endforeach; ?>
             </tbody>
         </table>
     </div>
 </div>
 <?php $this->replace() ?>
-
-<?php $this->section('scripts') ?>
-    <script>
-
-    // init the chart
-    $.getJSON("/data/expenses", function(data) {
-
-        Highcharts.chart('container', {
-            chart: {
-                type: 'pie'
-            },
-            title: data["title"],
-            plotOptions: data['plotOptions'],
-            tooltip: data["tooltip"],
-            series: data["series"],
-            drilldown: data["drilldown"]
-        });
-    });
-
-    </script>
-<?php $this->append() ?>

@@ -2,12 +2,10 @@
 
 redesign
 * category index should only getAmount of current fund
-* breadcrumbs
-* filter categories
-* stats widget
-* cache pie chart data
+* cache widget
 * funds index balance (in each currency)
 * totals on trans table should be for all pages
+* filter categories
 * restore sliding-menu.js
 * move user menu options to main menu for slick nav to access (but hide them normally)
 * add theme.css to app.scss - rename styles, use sass vars?

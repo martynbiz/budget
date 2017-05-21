@@ -53,9 +53,6 @@ class TransactionsController extends BaseController
             'transactions' => $transactions,
             'total_amount' => $totalAmount,
 
-            // 'funds' => $funds,
-            'current_fund' => $this->currentFund,
-
             'params' => $params,
 
             // pagination
