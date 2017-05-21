@@ -1,23 +1,20 @@
 # Budget
 
-redesign
-* add theme.css to app.scss - rename styles, use sass vars?
-* filter categories
-* restore sliding-menu.js
-* move user menu options to main menu for slick nav to access (but hide them normally)
-
 TODO
+* testing - sessions causing issues huh
 * redis
-* garvitar
 * transtool not checking valid lang array (e.g. translatetool update ar)
-* http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 * scheduled backups of mysql, sync script
-
-* when redirect to login, store returnTo
 * reset password
 * can auth use aura for sessions?
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string,
+
+maybe
+* filter categories
+* restore sliding-menu.js
+
+http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 
 
 ## Install the Application
@@ -81,7 +78,7 @@ $ bower install
 To make Gulp run everytime a scss/css/js file is saved:
 
 ```
-$ gulp watch
+$ gulp
 ```
 
 ## Testing

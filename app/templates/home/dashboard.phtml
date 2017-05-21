@@ -3,8 +3,13 @@
     'selected_menu' => 'dashboard',
 ]); ?>
 
-<?php $this->section('content') ?>
+<?php $this->section('breadcrumbs') ?>
+    <li>
+        <span class="show-for-sr">Current: </span> Dashboard
+    </li>
+<?php $this->replace() ?>
 
+<?php $this->section('content') ?>
 <div class="row">
     <div class="small-12 medium-6 columns widget widget__monthly-stats">
         <h3>Monthly stats</h3>

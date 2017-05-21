@@ -4,11 +4,8 @@
 ]); ?>
 
 <?php $this->section('breadcrumbs') ?>
-    <ul class="breadcrumbs">
-        <li><i class="icon-home" style="color: #999;"></i></li>
-        <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions_link') ?></a></li>
-        <li><span class="show-for-sr">Current: </span> Create</li>
-    </ul>
+    <li><a href="<?= $this->pathFor('transactions') ?>"><?= $this->translate('transactions_link') ?></a></li>
+    <li><span class="show-for-sr">Current: </span> Create</li>
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
