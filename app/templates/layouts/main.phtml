@@ -43,15 +43,15 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('funds') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-external-link" aria-hidden="true" style="margin-right: 10px;"></i>
-                                <?= $this->translate('funds_link') ?>
-                            </a>
-                        </li>
-                        <li style="border-bottom: 1px solid #222;">
                             <a href="<?= $this->pathFor('categories') ?>" style="padding: 10px 20px;">
                                 <i class="fa fa-pie-chart" aria-hidden="true" style="margin-right: 10px;"></i>
                                 <?= $this->translate('categories_link') ?>
+                            </a>
+                        </li>
+                        <li style="border-bottom: 1px solid #222;">
+                            <a href="<?= $this->pathFor('funds') ?>" style="padding: 10px 20px;">
+                                <i class="fa fa-external-link" aria-hidden="true" style="margin-right: 10px;"></i>
+                                <?= $this->translate('funds_link') ?>
                             </a>
                         </li>
                         <li>
@@ -106,15 +106,15 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>" href="<?= $this->pathFor('funds') ?>">
-                                                <i class="fa fa-external-link" aria-hidden="true"></i>
-                                                <?= $this->translate('funds_link') ?>
-                                            </a>
-                                        </li>
-                                        <li>
                                             <a class="<?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>" href="<?= $this->pathFor('categories') ?>">
                                                 <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                                 <?= $this->translate('categories_link') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>" href="<?= $this->pathFor('funds') ?>">
+                                                <i class="fa fa-external-link" aria-hidden="true"></i>
+                                                <?= $this->translate('funds_link') ?>
                                             </a>
                                         </li>
                                     <?php endif ?>

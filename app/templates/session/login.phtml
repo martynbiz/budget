@@ -26,9 +26,6 @@
                         <?= $this->translate('login_button') ?>
                     </button>
 
-                    <p><a href="<?= $this->pathFor('register') ?>"><?= $this->translate('register_button') ?></a><br>
-                    <a href="/accounts/resetpassword"><?= $this->translate('forgot_password_link') ?></a></p>
-
                     <?php if(isset($this->params['returnTo'])): ?>
                         <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">
                     <?php endif ?>

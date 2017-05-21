@@ -1,11 +1,22 @@
 # Budget
 
 TODO
+
 * testing - sessions causing issues huh
 * redis
+* logo on mobile
+* auth_token working?
+* right and left padding not same on mobile
+* how does +/- % look on mobile?
+* mobile menu links - make bigger, easier to read (white?)
+* make tables responsive
+* is-active in mobile menu, login/register/logout is-active in main menu too
+currency not showing in /funds
+* reset password, forgot password
+
+* graph on homepage - look at other sites
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * scheduled backups of mysql, sync script
-* reset password
 * can auth use aura for sessions?
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string,
