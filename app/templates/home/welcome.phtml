@@ -1,8 +1,18 @@
 <?php $this->layout('layouts/main', [
     'title' => 'Budget - Home',
-    'selected_menu' => 'dashboard',
+    'selected_menu' => 'home',
 ]); ?>
 
 <?php $this->section('content') ?>
     Welcome
 <?php $this->replace() ?>
+
+<?php $this->section('head') ?>
+    <style>
+    @media screen and (max-width: 40em) {
+        .top-bar {
+            display: none;
+        }
+    }
+    </style>
+<?php $this->append() ?>

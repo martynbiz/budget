@@ -4,7 +4,10 @@ TODO
 
 * testing - sessions causing issues huh
 * redis
-* logo on mobile
+* style mobile menu - use gravatar, logo
+* welcome page
+* welcome page serves dashboard when logged in
+* login / register links not aligned
 * auth_token working?
 * right and left padding not same on mobile
 * how does +/- % look on mobile?

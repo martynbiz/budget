@@ -1,12 +1,11 @@
 <?php
 
 return array (
+  'category_header' => 'Category',
+  'home_link' => 'Home',
+  'groups_link' => 'Groups',
   'dashboard_link' => 'Dashboard',
-  'na_text' => 'n/a',
   'month_label' => 'Month',
-  'budget_remaining_header' => 'Remaining',
-  'budget_label' => 'Budget',
-  'budget_missing' => 'Budget is missing',
   'delete_button' => 'Delete',
   'username_label' => 'Username',
   'password_label' => 'Password',
@@ -29,7 +28,6 @@ return array (
   'logout_intro' => '<p>You are currently logged in. Please click below to logout:</p>',
   'logout_button' => 'Logout',
   'remember_me_text' => 'Remember me',
-  'forgot_password_link' => 'Forgot password',
   'pagination_previous' => 'Previous <span class="show-for-sr">page</span>',
   'pagination_youre_on_page' => '<span class="show-for-sr">You\'re on page</span> %s',
   'pagination_next' => 'Next <span class="show-for-sr">page</span>',
@@ -72,7 +70,6 @@ return array (
   'email' => 'Email',
   'password' => 'Password',
   'read_tc_agreement' => 'I have read the terms and agreements',
-  'have_an_account_button' => 'Already have an account',
   'register_button' => 'Register',
   'login_button' => 'Login',
 );
