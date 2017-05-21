@@ -29,25 +29,31 @@ class TransactionsController extends BaseController
         $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
         $endDate = date('Y-m-t', strtotime($startDate));
 
-        // base query will be used for both transactions and totalTransactions
-        $baseQuery = $this->currentFund->transactions()
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate);
-
         // get total transactions for calculating pagination
-        $totalTransactions = $baseQuery->get();
-        $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions->count() / $limit) : 1;
+        $totalTransactions = $this->currentFund->transactions()
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
+            ->count();
+        $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions / $limit) : 1;
 
         // get paginated transactions for dispaying in the table
-        $transactions = $baseQuery
+        $transactions = $this->currentFund->transactions()
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
             ->with('fund')
+            ->with('category')
             ->skip($start)
             ->take($limit)
             ->orderBy('purchased_at', 'desc')
+            ->orderBy('id', 'desc')
             ->get();
 
         // get total amounts
-        $totalAmount = $baseQuery->pluck('amount')->sum();
+        $totalAmount = $this->currentFund->transactions()
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
+            ->pluck('amount')
+            ->sum();
 
         return $this->render('transactions/index', [
             'transactions' => $transactions,

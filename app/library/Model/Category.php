@@ -10,7 +10,6 @@ class Category extends Model
     */
     protected $fillable = array(
         'name',
-        'budget',
         'group_id',
     );
 
@@ -34,21 +33,28 @@ class Category extends Model
         return $this->belongsTo('App\\Model\\Group'); //, 'user_id');
     }
 
-    public function getAmount($startDate, $endDate)
+    public function getTransactionsAmount($query=[])
     {
+        $baseQuery = $this->transactions();
+
+        if ($query['start_date']) {
+            $baseQuery->where('purchased_at', '>=', $query['start_date']);
+        }
+
+        if ($query['end_date']) {
+            $baseQuery->where('purchased_at', '<=', $query['end_date']);
+        }
+
+        if ($query['fund']) {
+            $baseQuery->where('fund_id', $query['fund']->id);
+        }
+
         if (is_null($this->transactionsAmount)) {
-            $this->transactionsAmount = $this->transactions()
-                ->where('purchased_at', '>=', $startDate)
-                ->where('purchased_at', '<=', $endDate)
+            $this->transactionsAmount = $baseQuery
                 ->pluck('amount')
                 ->sum();
         }
 
         return $this->transactionsAmount; //, 'user_id');
-    }
-
-    public function getBalance($startDate, $endDate)
-    {
-        return $this->budget + $this->getAmount($startDate, $endDate); //, 'user_id');
     }
 }

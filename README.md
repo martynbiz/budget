@@ -1,18 +1,13 @@
 # Budget
 
 redesign
-* remove passive login, tests
-* category index should only getAmount of current fund
-* cache widget
-* funds index balance (in each currency)
-* totals on trans table should be for all pages
+* add theme.css to app.scss - rename styles, use sass vars?
 * filter categories
 * restore sliding-menu.js
 * move user menu options to main menu for slick nav to access (but hide them normally)
-* add theme.css to app.scss - rename styles, use sass vars?
-* rename methods to getRemainingBudget, getBalance
 
 TODO
+* redis
 * garvitar
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,

@@ -22,18 +22,13 @@ class Group extends Model
         return $this->hasMany('App\\Model\\Category');
     }
 
-    public function getAmount($startDate, $endDate)
+    public function getTransactionsAmount($query=[])
     {
         $categories = $this->categories()->with('transactions')->get();
 
         $amount = 0;
-        foreach($categories as $category) $amount += $category->amount;
+        foreach($categories as $category) $amount += $category->getTransactionsAmount($query);
 
         return $amount;
-    }
-
-    public function getBalance($startDate, $endDate)
-    {
-        return $this->budget + $this->getAmount($startDate, $endDate); //, 'user_id');
     }
 }

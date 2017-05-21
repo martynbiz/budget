@@ -133,6 +133,12 @@ $container['debugbar'] = function ($c) {
     return $debugbar;
 };
 
+// cache
+$container['cache'] = function ($c) {
+
+    return new \Desarrolla2\Cache\Cache(new \Desarrolla2\Cache\Adapter\NotCache());
+};
+
 
 // Models
 

@@ -71,9 +71,7 @@ class CategoriesController extends BaseController
         $currentUser = $this->getCurrentUser();
 
         // if errors found from post, this will contain data
-        $params = array_merge([
-            'budget' => '0',
-        ], $request->getParams());
+        $params = $request->getParams();
 
         $groups = $currentUser->categories()
             ->orderBy('name', 'asc')
@@ -101,10 +99,6 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
             ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories());
-
-        // budget
-        $validator->check('budget')
-            ->isNotEmpty( $i18n->translate('budget_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {
@@ -141,9 +135,7 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        $params = array_merge([ // defaults
-            'budget' => '0',
-        ], $category->toArray(), [
+        $params = array_merge($category->toArray(), [
             'group' => $category->group->name,
         ], $request->getParams());
 
@@ -176,10 +168,6 @@ class CategoriesController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
             ->isUniqueCategory( $i18n->translate('category_name_not_unique'), $currentUser->categories(), $category);
-
-        // budget
-        $validator->check('budget')
-            ->isNotEmpty( $i18n->translate('budget_missing') );
 
         // if valid, create category
         if ($validator->isValid()) {

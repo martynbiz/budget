@@ -94,49 +94,14 @@ class SessionController extends BaseController
             ]);
         }
 
-        // at this stage the user may have been set here as a passive login request
-        // now that they have been autosigned in with the cookie perhaps, or we just
-        // wanna check if they were logged in anyway, we'll check if "passive" param
-        // is present and return them to the required url (loginreturnTo if not)
-        if (isset($params['passive'])) {
-
-            // this is passive login, so the return will differ depending on whether
-            // the user is signed in or not.
-            if ($isAuthenticated) {
-
-                // user is authenticated, so return them back to the loginCallback
-                return $this->returnTo($params['returnTo']);
-            } else {
-
-                // user is not logged in, so extract the returnTo from the returnTo
-                // e.g. returnTo=jt.com/login?returnTo=http%3A%2F%2Fjt.com/here > jt.com/here
-                $queryString = parse_url($params['returnTo'], PHP_URL_QUERY);
-                parse_str($queryString, $queryArray);
-                $returnTo = $queryArray['returnTo'];
-
-                // user is NOT authenticated, so return them back to returnTo
-                return $this->returnTo($returnTo);
-            }
-        }
-
-        if (@$params['passive']) {
-
-            // return user
-            isset($params['returnTo']) or $params['returnTo'] = $settings->get('defaultLogoutRedirect', '/session');
-            return $this->returnTo($params['returnTo']);
-
+        // if the user is authenticated then we will show the logout page which
+        // will serve as a landing page, although most typically apps will send
+        // a DELETE request which will be handled by the delete() method
+        // if the user is not authenticated, the show the login page
+        if ($currentUser = $this->getCurrentUser()) {
+            return $this->render('session/logout', compact('params'));
         } else {
-
-            // if the user is authenticated then we will show the logout page which
-            // will serve as a landing page, although most typically apps will send
-            // a DELETE request which will be handled by the delete() method
-            // if the user is not authenticated, the show the login page
-            if ($isAuthenticated) {
-                return $this->render('session/logout', compact('params'));
-            } else {
-                return $this->render('session/login', compact('params'));
-            }
-
+            return $this->render('session/login', compact('params'));
         }
     }
 

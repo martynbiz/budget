@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4fab220ed7f8d827392bf8f766d9caf2",
-    "content-hash": "2a25f433c132d604c85f8915265260db",
+    "hash": "28df705536b239b2b7e28889d229ece2",
+    "content-hash": "f33866cb703bac06b8d1b969a43b45e0",
     "packages": [
         {
             "name": "aura/html",
@@ -162,6 +162,61 @@
             "description": "Promoting the interoperability of container objects (DIC, SL, etc.)",
             "homepage": "https://github.com/container-interop/container-interop",
             "time": "2017-02-14 19:40:03"
+        },
+        {
+            "name": "desarrolla2/cache",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/desarrolla2/Cache.git",
+                "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/desarrolla2/Cache/zipball/ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+                "reference": "ebd1f7bfd1be605a9b5fbb0a4b25a948a31fe963",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "predis/predis": "~1.0.0"
+            },
+            "suggest": {
+                "predis/predis": "Predis support"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Desarrolla2\\Cache\\": "src/",
+                    "Desarrolla2\\Test\\Cache\\": "test/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel González",
+                    "homepage": "http://desarrolla2.com/"
+                }
+            ],
+            "description": "Provides an cache interface for several adapters Apc, Apcu, File, Mongo, Memcache, Memcached, Mysql, Mongo, Redis is supported. New adapters is comming!",
+            "homepage": "https://github.com/desarrolla2/Cache/",
+            "keywords": [
+                "apc",
+                "apcu",
+                "cache",
+                "file",
+                "memcache",
+                "memcached",
+                "mongo",
+                "mysql",
+                "redis"
+            ],
+            "time": "2017-01-18 12:58:33"
         },
         {
             "name": "doctrine/inflector",
