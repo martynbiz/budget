@@ -28,33 +28,35 @@
                             </div>
                             <div class="side-bar">
                                 <ul id="menu-showhide" class="topnav slicknav" style="height: auto; margin: -13px 0px 0px;">
-                                    <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'dashboard') ? 'is-active' : '' ?>" href="<?= $this->pathFor('home') ?>">
-                                        <i class="icon-monitor" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                        <span style="display: inline-block; float: none;"><?= $this->translate('dashboard_link') ?></span>
-                                        </a>
-                                    </li>
-                                    <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'transactions') ? 'is-active' : '' ?>" href="<?= $this->pathFor('transactions') ?>">
-                                            <i class="icon-view-list" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;"><?= $this->translate('transactions_link') ?></span>
-                                            <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
-                                        </a>
-                                    </li>
-                                    <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>" href="<?= $this->pathFor('funds') ?>">
-                                            <i class="icon-export" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;"><?= $this->translate('funds_link') ?></span>
-                                            <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
-                                        </a>
-                                    </li>
-                                    <li style="text-align: left;">
-                                        <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>" href="<?= $this->pathFor('categories') ?>">
-                                            <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
-                                            <span style="display: inline-block; float: none;"><?= $this->translate('categories_link') ?></span>
-                                            <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
-                                        </a>
-                                    </li>
+                                    <?php if ($this->currentUser): ?>
+                                        <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'dashboard') ? 'is-active' : '' ?>" href="<?= $this->pathFor('dashboard') ?>">
+                                            <i class="icon-monitor" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                            <span style="display: inline-block; float: none;"><?= $this->translate('dashboard_link') ?></span>
+                                            </a>
+                                        </li>
+                                        <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'transactions') ? 'is-active' : '' ?>" href="<?= $this->pathFor('transactions') ?>">
+                                                <i class="icon-view-list" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('transactions_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li>
+                                        <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>" href="<?= $this->pathFor('funds') ?>">
+                                                <i class="icon-export" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('funds_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li>
+                                        <li style="text-align: left;">
+                                            <a class="tooltip-tip tooltipster-disable <?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>" href="<?= $this->pathFor('categories') ?>">
+                                                <i class="icon-graph-pie" style="top: 0px; left: -15px; padding: 8px 0px;"></i>
+                                                <span style="display: inline-block; float: none;"><?= $this->translate('categories_link') ?></span>
+                                                <h4 style="display: inline-block; float: none;"><b class="fa fa-circle"></b></h4>
+                                            </a>
+                                        </li>
+                                    <?php endif ?>
                                 </ul>
                             </div>
                         </div>

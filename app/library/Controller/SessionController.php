@@ -76,8 +76,7 @@ class SessionController extends BaseController
                 $container->get('auth')->setAttributes($user->toArray());
 
                 // redirect back to returnTo, or /session (logout page) if not provided
-                isset($params['returnTo']) or $params['returnTo'] = '/';
-                return $this->returnTo($params['returnTo']);
+                return $this->returnTo( $container->get('router')->pathFor('dashboard') );
 
             } catch (\Exception $e) {
 
@@ -172,9 +171,8 @@ class SessionController extends BaseController
             // want to be avialable (e.g. not password)
             $container->get('auth')->setAttributes($user->toArray());
 
-            // redirect back to returnTo, or /session (logout page - default) if not provided
-            isset($params['returnTo']) or $params['returnTo'] = $settings->get('defaultLoginRedirect', '/');
-            return $this->returnTo($params['returnTo']);
+            // redirect
+            return $this->returnTo( $container->get('router')->pathFor('dashboard') );
 
         } else {
 

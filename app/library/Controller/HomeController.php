@@ -6,13 +6,8 @@ class HomeController extends BaseController
     /**
      * Get categories for the autocomplete
      */
-    public function welcome($request, $response, $args)
+    public function index($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
-        if ($currentUser) {
-            return $this->forward('dashboard', func_get_args());
-        }
-
         return $this->render('home/welcome');
     }
 

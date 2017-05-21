@@ -1,6 +1,7 @@
 # Budget
 
 redesign
+* remove passive login, tests
 * category index should only getAmount of current fund
 * cache widget
 * funds index balance (in each currency)
