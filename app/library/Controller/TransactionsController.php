@@ -131,7 +131,7 @@ class TransactionsController extends BaseController
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 // redirect
-                return $this->redirect('/transactions');
+                return $response->withRedirect('/transactions');
 
             } else {
                 $errors = $transaction->errors();
@@ -142,7 +142,7 @@ class TransactionsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('create', func_get_args());
+        return $this->create($request, $response, $args);
     }
 
     public function edit($request, $response, $args)
@@ -221,7 +221,7 @@ class TransactionsController extends BaseController
             if ($transaction->update($params)) {
 
                 // redirect
-                return $this->redirect('/transactions');
+                return $response->withRedirect('/transactions');
 
             } else {
                 $errors = $transaction->errors();
@@ -232,7 +232,7 @@ class TransactionsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('create', func_get_args());
+        return $this->create($request, $response, $args);
     }
 
     public function delete($request, $response, $args)
@@ -258,6 +258,6 @@ class TransactionsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('index', func_get_args());
+        return $this->index($request, $response, $args);
     }
 }

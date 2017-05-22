@@ -12,6 +12,7 @@ class DataController extends BaseController
     {
         $currentUser = $this->getCurrentUser();
         $categories = $currentUser->categories()->pluck('name');
+
         return $this->renderJSON($categories->toArray());
     }
 
@@ -22,6 +23,7 @@ class DataController extends BaseController
     {
         $currentUser = $this->getCurrentUser();
         $categories = $currentUser->groups()->pluck('name');
+        
         return $this->renderJSON($categories->toArray());
     }
 

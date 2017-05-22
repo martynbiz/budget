@@ -14,7 +14,7 @@ class SessionController extends BaseController
 
         // if authenticated, return to the homepage
         if ($currentUser = $this->getCurrentUser()) {
-            return $this->redirect('/');
+            return $response->withRedirect('/');
         }
 
         // check for remember me cookie.
@@ -76,7 +76,7 @@ class SessionController extends BaseController
                 $container->get('auth')->setAttributes($user->toArray());
 
                 // redirect back to returnTo, or /session (logout page) if not provided
-                return $this->returnTo( $container->get('router')->pathFor('dashboard') );
+                return $response->withRedirect( $container->get('router')->pathFor('dashboard') );
 
             } catch (\Exception $e) {
 
@@ -137,7 +137,7 @@ class SessionController extends BaseController
             $container->get('auth')->setAttributes($user->toArray());
 
             // redirect
-            return $this->returnTo( $container->get('router')->pathFor('dashboard') );
+            return $response->withRedirect( $container->get('router')->pathFor('dashboard') );
 
         } else {
 
@@ -146,7 +146,7 @@ class SessionController extends BaseController
                 $container->get('i18n')->translate('invalid_username_password'),
             ));
 
-            return $this->forward('login', func_get_args());
+            return $this->login($request, $response, $args);
 
         }
     }
@@ -156,7 +156,7 @@ class SessionController extends BaseController
         // if authenticated, return to the homepage
         $container = $this->getContainer();
         if (!$container->get('auth')->isAuthenticated()) {
-            return $this->redirect('/');
+            return $response->withRedirect('/');
         }
 
         return $this->render('session/logout');
@@ -180,8 +180,7 @@ class SessionController extends BaseController
         $container->get('auth')->clearAttributes();
 
         // redirect back to returnTo, or /session (logout page) if not provided
-        isset($params['returnTo']) or $params['returnTo'] = $settings->get('defaultLogoutRedirect', '/');
-        return $this->returnTo($params['returnTo']);
+        return $response->withRedirect('/');
     }
 
 }

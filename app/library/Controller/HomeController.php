@@ -120,6 +120,6 @@ class HomeController extends BaseController
         // set language cookie
         setcookie('language', $params['language']);
 
-        return $this->redirect('/');
+        return $response->withRedirect('/');
     }
 }

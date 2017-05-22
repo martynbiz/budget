@@ -79,7 +79,7 @@ class UsersController extends BaseController
                 $container->get('mail_manager')->sendWelcomeEmail($user);
 
                 // redirect
-                return $this->redirect('/');
+                return $response->withRedirect('/');
 
             } else {
                 $errors = $user->errors();
@@ -90,7 +90,7 @@ class UsersController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('register', func_get_args());
+        return $this->register($request, $response, $args);
     }
 
     public function delete($request, $response, $args)
@@ -127,13 +127,13 @@ class UsersController extends BaseController
         if ($user->delete()) {
 
             // redirect
-            return $this->redirect('users');
+            return $response->withRedirect('users');
 
         } else {
             $errors = $user->errors();
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->forward('index', func_get_args());
+        return $this->index($request, $response, $args);
     }
 }

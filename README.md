@@ -2,9 +2,6 @@
 
 TODO
 
-* redis
-* style mobile menu - use gravatar, logo
-* welcome page
 * welcome page serves dashboard when logged in
 * login / register links not aligned
 * auth_token working?
@@ -16,6 +13,10 @@ TODO
 currency not showing in /funds
 * reset password, forgot password
 * expenses.json to show currency symbol?
+* redis
+* style mobile menu - use gravatar, logo
+* welcome page
+* we don't need returnTo (settigns etc)
 
 * graph on homepage - look at other sites
 * transtool not checking valid lang array (e.g. translatetool update ar)
