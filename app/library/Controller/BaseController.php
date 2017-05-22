@@ -22,7 +22,8 @@ class BaseController
     protected $currentFund;
 
     //
-    public function __construct(Container $container) {
+    public function __construct(Container $container)
+    {
 
         $this->container = $container;
 
@@ -77,7 +78,9 @@ class BaseController
         }
 
         if ($container->has('csrf')) {
+
             $request = $container->get('request');
+
             $data['csrfName'] = $request->getAttribute('csrf_name');
             $data['csrfValue'] = $request->getAttribute('csrf_value');
         }

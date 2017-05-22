@@ -14,7 +14,7 @@ class GroupsControllerTest extends BaseTestCase
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testIndexShowsLogoutMenuWhenAuthenticated()
+    public function testIndexShowsTableMenuWhenAuthenticated()
     {
         $this->login( $this->user );
 
@@ -135,7 +135,7 @@ class GroupsControllerTest extends BaseTestCase
     {
         return [
             static::getGroupValues(['name' => '']),
-            static::getGroupValues(['name' => 'Food']), // duplicate
+            static::getGroupValues(['name' => 'Food2']), // duplicate
         ];
     }
 

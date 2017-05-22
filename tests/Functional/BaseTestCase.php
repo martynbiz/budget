@@ -46,6 +46,36 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
     protected $user = null;
 
     /**
+     * @var App\Model\Group
+     */
+    protected $group = null;
+
+    /**
+     * @var App\Model\Group
+     */
+    protected $group2 = null;
+
+    /**
+     * @var App\Model\Fund
+     */
+    protected $fund = null;
+
+    /**
+     * @var App\Model\Currency
+     */
+    protected $currency = null;
+
+    /**
+     * @var App\Model\Category
+     */
+    protected $category = null;
+
+    /**
+     * @var App\Model\Category
+     */
+    protected $category2 = null;
+
+    /**
      * @var App\Model\Meta
      */
     protected $transaction = null;
@@ -65,6 +95,9 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         // Instantiate the application
         $app = new App($settings);
+
+        // Register constants
+        require_once __DIR__ . '/../../app/constants.php';
 
         // Set up dependencies
         require __DIR__ . '/../../app/dependencies.php';
@@ -139,24 +172,28 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'name' => 'Food',
         ]);
 
+        // to test duplicates
+        $this->group2 = $this->user->groups()->create([
+            'name' => 'Food2',
+        ]);
+
         $this->category = $this->user->categories()->create([
             'name' => 'Groceries',
-            'budget' => 0,
             'group_id' => $this->group->id,
         ]);
 
+        $this->category2 = $this->user->categories()->create([
+            'name' => 'Groceries2',
+            'group_id' => $this->group->id,
+        ]);
 
-        // mock session values
+        // Configure the stub.
         $container->get('session')
-            ->expects($this->any())
             ->method('get')
-            ->with(SESSION_FILTER_MONTH)
-            ->willReturn(date("Y-m"));
-        $container->get('session')
-            ->expects($this->any())
-            ->method('get')
-            ->with(SESSION_FILTER_FUND)
-            ->willReturn($this->fund->id);
+            ->will($this->returnValueMap([
+                [SESSION_FILTER_MONTH, null, date('Y-m')],
+                [SESSION_FILTER_FUND, null, $this->fund->id]
+            ]));
     }
 
     public function tearDown()

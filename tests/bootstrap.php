@@ -12,6 +12,4 @@ defined('APPLICATION_PATH')
 defined('APPLICATION_ENV')
     || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'vagranttest'));
 
-require __DIR__ . '/../app/constants.php';
-
 require APPLICATION_PATH . '/../vendor/autoload.php';

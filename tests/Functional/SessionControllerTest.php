@@ -62,7 +62,7 @@ class SessionControllerTest extends BaseTestCase
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertQuery('form#logout_form', (string)$response->getBody()); // has form
+        $this->assertQuery('.content-wrapper form#logout_form', (string)$response->getBody()); // has form
     }
 
     public function testGetLogoutRedirectsWhenAuthenticated()

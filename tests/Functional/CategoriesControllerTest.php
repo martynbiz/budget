@@ -147,8 +147,8 @@ class CategoriesControllerTest extends BaseTestCase
     public function getInvalidData()
     {
         return [
-            // static::getCategoryValues(['name' => '']),
-            static::getCategoryValues(['name' => 'Groceries']), // duplicate
+            static::getCategoryValues(['name' => '']),
+            static::getCategoryValues(['name' => 'Groceries2']), // duplicate
         ];
     }
 

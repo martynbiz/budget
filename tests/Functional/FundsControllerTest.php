@@ -14,10 +14,10 @@ class FundsControllerTest extends BaseTestCase
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testIndexShowsLogoutMenuWhenAuthenticated()
+    public function testIndexShowsTableMenuWhenAuthenticated()
     {
         $this->login( $this->user );
-        $response = $this->runApp('GET', '/');
+        $response = $this->runApp('GET', '/funds');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -136,8 +136,6 @@ class FundsControllerTest extends BaseTestCase
     {
         return [
             static::getFundValues(['name' => '']),
-            // static::getFundValues(['amount' => '']),
-            // static::getFundValues(['currency_id' => '']),
         ];
     }
 

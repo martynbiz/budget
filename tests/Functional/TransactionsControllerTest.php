@@ -14,7 +14,7 @@ class TransactionsControllerTest extends BaseTestCase
         $this->assertEquals(302, $response->getStatusCode());
     }
 
-    public function testIndexShowsLogoutMenuWhenAuthenticated()
+    public function testIndexShowsTableMenuWhenAuthenticated()
     {
         $this->login( $this->user );
 
@@ -124,7 +124,7 @@ class TransactionsControllerTest extends BaseTestCase
 
     public function testDeleteTransaction()
     {
-        $this->login( $this->user );
+        $this->login($this->user);
 
         $values = [
             '_METHOD' => 'DELETE',
@@ -155,7 +155,6 @@ class TransactionsControllerTest extends BaseTestCase
             static::getTransactionValues(['description' => '']),
             static::getTransactionValues(['amount' => '']),
             static::getTransactionValues(['purchased_at' => '']),
-            // static::getTransactionValues(['category' => '']),
         ];
     }
 

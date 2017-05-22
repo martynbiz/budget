@@ -152,11 +152,10 @@ class GroupsController extends BaseController
         if ($group->delete()) {
 
             // update transactions assigned to this category
-            $uncatogorizedGroup = $this->findOrCreateGroupByName('');
             $group->categories()
                 ->where('group_id', $groupId)
                 ->update([
-                    'group_id' => $uncatogorizedGroup->id,
+                    'group_id' => null,
                 ]);
 
             // redirect

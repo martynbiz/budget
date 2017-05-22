@@ -204,11 +204,10 @@ class CategoriesController extends BaseController
         if ($category->delete()) {
 
             // update transactions assigned to this category
-            $uncatogorizedCategory = $this->findOrCreateCategoryByName('');
             $category->transactions()
                 ->where('category_id', $categoryId)
                 ->update([
-                    'category_id' => $uncatogorizedCategory->id,
+                    'category_id' => null,
                 ]);
 
             // redirect
