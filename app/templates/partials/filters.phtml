@@ -2,7 +2,7 @@
     <form id="switch_fund_form" method="get" action="">
         <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
         <select name="filter__fund_id">
-            <?php foreach($this->funds as $fund): ?>
+            <?php foreach($this->all_funds as $fund): ?>
                 <option value="<?= $fund->id ?>" <?= ($this->current_fund->id == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
             <?php endforeach ?>
         </select>

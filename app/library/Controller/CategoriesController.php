@@ -15,7 +15,7 @@ class CategoriesController extends BaseController
         ], $request->getQueryParams());
 
         $page = (int)$options['page'];
-        $limit = 10;
+        $limit = 20;
         $start = ($page-1) * $limit;
 
         // categories is actually a combined list of categories and groups

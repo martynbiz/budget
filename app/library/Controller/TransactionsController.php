@@ -19,7 +19,7 @@ class TransactionsController extends BaseController
         ], $params);
 
         $page = (int)$params['page'];
-        $limit = 10;
+        $limit = 20;
         $start = ($page-1) * $limit;
 
         $currentUser = $this->getCurrentUser();

@@ -15,7 +15,7 @@ class GroupsController extends BaseController
         ], $request->getQueryParams());
 
         $page = (int)$options['page'];
-        $limit = 10;
+        $limit = 20;
         $start = ($page-1) * $limit;
 
         // get paginated rows

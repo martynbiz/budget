@@ -2,7 +2,6 @@
 
 TODO
 
-* more category listings (20?)
 * expenses.json to show currency symbol?
 * redis
 * style mobile menu - use gravatar, logo
