@@ -2,7 +2,6 @@
 
 TODO
 
-* expenses.json to show currency symbol?
 * redis
 * style mobile menu - use gravatar, logo
 * welcome page
@@ -16,6 +15,7 @@ TODO
 * is-active in mobile menu, login/register/logout is-active in main menu too
 currency not showing in /funds
 * reset password, forgot password
+* expenses.json to show currency symbol?
 
 * graph on homepage - look at other sites
 * transtool not checking valid lang array (e.g. translatetool update ar)
