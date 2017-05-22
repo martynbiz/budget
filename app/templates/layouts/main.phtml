@@ -16,8 +16,8 @@
 
         <div class="mobile-top-bar">
             <div class="row">
-                <div class="small-6 columns" style="font-size: 20px; font-weight: bold; padding: 15px; text-transform: uppercase;">
-                    Budget
+                <div class="small-6 columns mobile-logo">
+                    <a href="<?= $this->pathFor('home') ?>">Budget</a>
                 </div>
                 <div class="small-6 columns text-right" style="padding: 10px;">
                     <a href="#" class="toggle" onclick="$('.reveal-menu').slideToggle();">
@@ -31,51 +31,45 @@
                 <ul>
                     <?php if ($this->currentUser): ?>
                         <li>
-                            <a href="<?= $this->pathFor('dashboard') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-desktop" aria-hidden="true" style="margin-right: 10px;"></i>
+                            <a href="<?= $this->pathFor('home') ?>" class="<?= ($this->selected_menu == 'home') ? 'is-active' : '' ?>">
+                                <i class="fa fa-home" aria-hidden="true"></i>
                                 <?= $this->translate('dashboard_link') ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('transactions') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-list" aria-hidden="true" style="margin-right: 10px;"></i>
+                            <a href="<?= $this->pathFor('transactions') ?>" class="<?= ($this->selected_menu == 'transactions') ? 'is-active' : '' ?>">
+                                <i class="fa fa-list" aria-hidden="true"></i>
                                 <?= $this->translate('transactions_link') ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('categories') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-pie-chart" aria-hidden="true" style="margin-right: 10px;"></i>
+                            <a href="<?= $this->pathFor('categories') ?>" class="<?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>">
+                                <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                 <?= $this->translate('categories_link') ?>
                             </a>
                         </li>
-                        <li style="border-bottom: 1px solid #222;">
-                            <a href="<?= $this->pathFor('funds') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-external-link" aria-hidden="true" style="margin-right: 10px;"></i>
+                        <li>
+                            <a href="<?= $this->pathFor('funds') ?>" class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
                                 <?= $this->translate('funds_link') ?>
                             </a>
                         </li>
-                        <li>
-                            <a href="<?= $this->pathFor('logout') ?>" style="padding: 10px 20px;" onclick="$('form#logout_form').submit(); return false;">
-                                <i class="fa fa-sign-out" aria-hidden="true" style="margin-right: 10px;"></i>
+                        <li style="border-top: 1px solid #222;">
+                            <a href="<?= $this->pathFor('logout') ?>" class="<?= ($this->selected_menu == 'logout') ? 'is-active' : '' ?>" onclick="$('form#logout_form').submit(); return false;">
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
                                 <?= $this->translate('logout_link') ?>
                             </a>
                         </li>
                     <?php else: ?>
-                        <li style="border-bottom: 1px solid #222;">
-                            <a href="<?= $this->pathFor('home') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-home" aria-hidden="true" style="margin-right: 10px;"></i>
-                                <?= $this->translate('home_link') ?>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="<?= $this->pathFor('login') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-sign-in" aria-hidden="true" style="margin-right: 10px;"></i>
+                        <li style="border-top: 1px solid #222;">
+                            <a href="<?= $this->pathFor('login') ?>" class="<?= ($this->selected_menu == 'login') ? 'is-active' : '' ?>">
+                                <i class="fa fa-sign-in" aria-hidden="true"></i>
                                 <?= $this->translate('login_link') ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('register') ?>" style="padding: 10px 20px;">
-                                <i class="fa fa-user" aria-hidden="true" style="margin-right: 10px;"></i>
+                            <a href="<?= $this->pathFor('register') ?>" class="<?= ($this->selected_menu == 'register') ? 'is-active' : '' ?>">
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 <?= $this->translate('register_link') ?>
                             </a>
                         </li>
@@ -100,7 +94,7 @@
                                 <ul class="topnav">
                                     <?php if ($this->currentUser): ?>
                                         <li>
-                                            <a class="<?= ($this->selected_menu == 'dashboard') ? 'is-active' : '' ?>" href="<?= $this->pathFor('dashboard') ?>">
+                                            <a class="<?= ($this->selected_menu == 'dashboard') ? 'is-active' : '' ?>" href="<?= $this->pathFor('home') ?>">
                                                 <i class="fa fa-desktop" aria-hidden="true"></i>
                                                 <?= $this->translate('dashboard_link') ?>
                                             </a>

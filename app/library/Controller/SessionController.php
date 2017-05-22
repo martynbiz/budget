@@ -76,7 +76,7 @@ class SessionController extends BaseController
                 $container->get('auth')->setAttributes($user->toArray());
 
                 // redirect back to returnTo, or /session (logout page) if not provided
-                return $response->withRedirect( $container->get('router')->pathFor('dashboard') );
+                return $response->withRedirect( $container->get('router')->pathFor('home') );
 
             } catch (\Exception $e) {
 
@@ -137,7 +137,7 @@ class SessionController extends BaseController
             $container->get('auth')->setAttributes($user->toArray());
 
             // redirect
-            return $response->withRedirect( $container->get('router')->pathFor('dashboard') );
+            return $response->withRedirect( $container->get('router')->pathFor('home') );
 
         } else {
 

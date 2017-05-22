@@ -2,22 +2,17 @@
 
 TODO
 
-* welcome page serves dashboard when logged in
-* login / register links not aligned
+* 404
+* csrf
+* mail settings on production, test
 * auth_token working?
-* right and left padding not same on mobile
-* how does +/- % look on mobile?
-* mobile menu links - make bigger, easier to read (white?)
-* make tables responsive
-* is-active in mobile menu, login/register/logout is-active in main menu too
-currency not showing in /funds
 * reset password, forgot password
-* expenses.json to show currency symbol?
 * redis
-* style mobile menu - use gravatar, logo
 * welcome page
-* we don't need returnTo (settigns etc)
 
+* style mobile menu - use gravatar, logo
+* how does +/- % look on mobile?
+* right and left padding not same on mobile
 * graph on homepage - look at other sites
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * scheduled backups of mysql, sync script

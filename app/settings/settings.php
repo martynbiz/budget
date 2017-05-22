@@ -66,7 +66,6 @@ $settings = [
                 'last_name',
                 'email',
                 'username',
-                'name',
                 'id',
             ],
 

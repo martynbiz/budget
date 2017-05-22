@@ -24,10 +24,10 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 sudo apt-get install -y mysql-server
 
 
-# # ========================================
-# # install redis
-#
-# sudo apt-get install -y redis-server
+# ========================================
+# install redis
+
+sudo apt-get install -y redis-server
 
 
 # ========================================

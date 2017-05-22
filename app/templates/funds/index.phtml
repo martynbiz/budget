@@ -33,7 +33,7 @@
                     <?php foreach($this->funds as $fund): ?>
                         <tr>
                             <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => $fund->id]) ?>"><?= $fund->name ?></a></td>
-                            <td><?= $fund->purchased_at ?></td>
+                            <td><?= $fund->currency->name ?></td>
                             <td class="<?= (($fund->getAmount() > 0) ? 'balance-in' : (($fund->getAmount() < 0) ? 'balance-out' : 'balance-even')) ?>"><?= sprintf($fund->currency->format, $fund->getAmount()) ?></td>
                         </tr>
                     <?php endforeach ?>

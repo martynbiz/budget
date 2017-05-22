@@ -4,17 +4,30 @@ namespace App\Controller;
 class HomeController extends BaseController
 {
     /**
-     * Get categories for the autocomplete
+     * Homepage
      */
     public function index($request, $response, $args)
+    {
+        // if user is logged in, show different page
+        if ($currentUser = $this->getCurrentUser()) {
+            return $this->dashboard($request, $response, $args);
+        } else {
+            return $this->welcome($request, $response, $args);
+        }
+    }
+
+    /**
+     * Show welcome screen
+     */
+    protected function welcome($request, $response, $args)
     {
         return $this->render('home/welcome');
     }
 
     /**
-     * Get categories for the autocomplete
+     * Show dashboard
      */
-    public function dashboard($request, $response, $args)
+    protected function dashboard($request, $response, $args)
     {
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
@@ -102,7 +115,7 @@ class HomeController extends BaseController
                 $data['expenses']['average_ratio'] = $averageExpensesRatio;
             }
 
-            $container->get('cache')->set($cacheId, $monthlyStatsData, 1); // 3600);
+            $container->get('cache')->set($cacheId, $monthlyStatsData, 3600); // 3600);
         }
 
         return $this->render('home/dashboard', [

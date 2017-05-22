@@ -76,8 +76,15 @@ keep the resulting css file small(ish)
 
 
 .top-bar-left {
-    padding-top: 1.2rem;
-    padding-left: 1rem;
+    ul.breadcrumbs {
+        padding-top: 1.2rem;
+        padding-left: 1rem;
+    }
+}
+.top-bar-right {
+    > ul li a {
+        line-height: 30px;
+    }
 }
 
 .widget {
@@ -374,10 +381,7 @@ ul.topnav {
 .top-bar {
     min-height: 72px;
 }
-/*.top-bar-left,
-.top-bar-right {
-    padding-top: 0.7rem;
-}*/
+
 .gravatar-img {
     border-radius: 16px;
     border: 1px solid #666;
@@ -428,6 +432,17 @@ ul.topnav {
     min-height: 50px;
     display: none;
 
+    .mobile-logo {
+        font-size: 20px;
+        font-weight: bold;
+        padding: 15px;
+        text-transform: uppercase;
+
+        a {
+            color: $dark-gray;
+        }
+    }
+
     a.toggle {
         background: $white;
         color: $black;
@@ -450,8 +465,10 @@ ul.topnav {
                 a {
                     background: lighten($black, 5%);
                     display: block;
-                    padding: 10px 20px;
+                    padding: 15px 20px;
+                    color: $light-gray;
 
+                    &.is-active,
                     &:hover {
                         background: lighten($black, 10%);
                     }

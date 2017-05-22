@@ -42,6 +42,7 @@ $container['logger'] = function ($c) {
 // locale - required by a few services, so easier to put in container
 $container['locale'] = function($c) use ($app) {
     $settings = $c->get('settings')['i18n'];
+
     $locale = $c['request']->getCookieParam('language', $settings['default_locale']);
 
     return $locale;
@@ -136,7 +137,12 @@ $container['debugbar'] = function ($c) {
 // cache
 $container['cache'] = function ($c) {
 
-    return new \Desarrolla2\Cache\Cache(new \Desarrolla2\Cache\Adapter\NotCache());
+    $client = new \Predis\Client();
+
+    $adapter = new \Desarrolla2\Cache\Adapter\Predis($client);
+    // $adapter = new \Desarrolla2\Cache\Adapter\NotCache();
+
+    return new \Desarrolla2\Cache\Cache($adapter);
 };
 
 

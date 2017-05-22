@@ -17,7 +17,7 @@ class SetFilters extends Base
         $params = $request->getQueryParams();
         $container = $this->container;
 
-        if ($currentUser = $container->get('auth')->isAuthenticated()) {
+        if ($container->get('auth')->isAuthenticated()) {
 
             // fund filter
             if ($fundId = $request->getQueryParam('filter__fund_id')) {

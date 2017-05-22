@@ -3,11 +3,13 @@
 
 $container = $app->getContainer();
 
-// $requireAuth = new \App\Middleware\RequireAuth($container);
-// $requireAuth = new \App\Middleware\SetFilters($container);
+$requireAuth = new \App\Middleware\RequireAuth($container);
+$setFilters = new \App\Middleware\SetFilters($container);
 
 // home will use transactions (for now)
-$app->get('/', '\App\Controller\HomeController:index')->setName('home');
+// we add setFilters coz it's required by dashboard - which we serve under / now
+$app->get('/', '\App\Controller\HomeController:index')->setName('home')->add($setFilters);
+
 $app->post('/switch-language', '\App\Controller\HomeController:switchLanguage');
 
 // session routes
@@ -21,7 +23,7 @@ $app->get('/register', '\App\Controller\UsersController:register')->setName('reg
 $app->post('/register', '\App\Controller\UsersController:post')->setName('register_post');
 
 $app->group('', function() use ($app) {
-    $app->get('/dashboard', '\App\Controller\HomeController:dashboard')->setName('dashboard');
+    // $app->get('/dashboard', '\App\Controller\HomeController:dashboard')->setName('dashboard');
 
     $app->group('/transactions', function() use ($app) {
         $app->get('', '\App\Controller\TransactionsController:index')->setName('transactions');
@@ -73,5 +75,5 @@ $app->group('', function() use ($app) {
         $app->delete('/{group_id}', '\App\Controller\GroupsController:delete')->setName('groups_delete');
     });
 })
-->add(new \App\Middleware\RequireAuth($container))
-->add(new \App\Middleware\SetFilters($container));
+->add($requireAuth)
+->add($setFilters);
