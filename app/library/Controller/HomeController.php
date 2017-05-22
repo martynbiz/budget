@@ -115,7 +115,7 @@ class HomeController extends BaseController
                 $data['expenses']['average_ratio'] = $averageExpensesRatio;
             }
 
-            $container->get('cache')->set($cacheId, $monthlyStatsData, 3600); // 3600);
+            $container->get('cache')->set($cacheId, $monthlyStatsData, 3600);
         }
 
         return $this->render('home/dashboard', [
