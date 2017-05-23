@@ -24,7 +24,6 @@ class BaseController
     //
     public function __construct(Container $container)
     {
-
         $this->container = $container;
 
         $fundId = $container->get('session')->get(SESSION_FILTER_FUND);

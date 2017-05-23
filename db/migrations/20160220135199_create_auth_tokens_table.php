@@ -20,7 +20,7 @@ class CreateAuthTokensTable extends AbstractMigration
 
         $table->addForeignKey('user_id', 'users', 'id', array('delete'=> 'CASCADE', 'update'=> 'NO_ACTION'));
         $table->addIndex('selector', array('unique' => true));
-        $table->addIndex('user_id', array('unique' => true));
+        $table->addIndex('user_id'); //, array('unique' => true));
 
         $table->addColumn('expire', 'datetime');
 

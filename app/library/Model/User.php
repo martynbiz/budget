@@ -44,9 +44,9 @@ class User extends Model
         return $this->hasMany('App\\Model\\Group'); //, 'user_id');
     }
 
-    public function auth_token()
+    public function auth_tokens()
     {
-        return $this->hasOne('App\\Model\\AuthToken'); //, 'user_id');
+        return $this->hasMany('App\\Model\\AuthToken'); //, 'user_id');
     }
 
     public function recovery_token()

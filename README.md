@@ -2,15 +2,15 @@
 
 TODO
 
+* before deploy: take table up of live db
+* version budgets by month, don't overwrite
 * mail settings on production, test
-* auth_token working?
 * reset password, forgot password
 * welcome page
-* if amount has change in trans, delete cache
 * eloquent events again? .. remove key from cache when amount changes
 * how to tidy up empty groups
 
-* style mobile menu - use gravatar, logo
+* cache homepage etc
 * how does +/- % look on mobile?
 * right and left padding not same on mobile
 * graph on homepage - look at other sites

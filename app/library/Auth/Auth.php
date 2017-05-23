@@ -149,25 +149,31 @@ class Auth
         // look for remember_me entry in database for this user
         // we wanna update (rather than delete) because we don't want to change
         // the data - or do we? reset each time to 1/2/3 months?
-        $authToken = $user->auth_token;
-        if ($authToken) {
+        // FIX as we wanna support multiple devices with the same user, we
+        //   wanna store multiple auth tokens
 
-            // update with new selector and token value
-            $authToken->selector = $selector;
-            $authToken->token = $token;
-            // $authToken->expire = date('Y-m-d: H:i:s', time() + $this->settings['expire']);
-            $authToken->save();
-        } else {
+        // $authToken = $user->auth_token;
+        // if ($authToken) {
+        //
+        //     // update with new selector and token value
+        //     $authToken->selector = $selector;
+        //     $authToken->token = $token;
+        //     // $authToken->expire = date('Y-m-d: H:i:s', time() + $this->settings['expire']);
+        //     $authToken->save();
+        // } else {
+
+            // ..create a new token regardless of whether they have on saved or
+            // not, if they logout it should remove ALL tokens (see forget)
 
             $expire = date('Y-m-d: H:i:s', $this->settings['auth_token']['expire']);
 
             // create a new selector to identify this user
-            $authToken = $user->auth_token()->create( array(
+            $authToken = $user->auth_tokens()->create( array(
                 'selector' => $selector,
                 'token' => $token,
                 'expire' => $expire,
             ) );
-        }
+        // }
 
         // write new value to cookie
         $name = $this->settings['auth_token']['cookie_name'];
@@ -184,11 +190,14 @@ class Auth
      */
     public function forget(User $user)
     {
-        // look for remember_me entry in database for this user, delete it
-        $authToken = $user->auth_token;
-        if ($authToken) {
-            $authToken->delete();
-        }
+        // // look for remember_me entry in database for this user, delete it
+        // $authToken = $user->auth_token;
+        // if ($authToken) {
+        //     $authToken->delete();
+        // }
+
+        // delete ALL tokens for this user
+        $user->auth_tokens()->delete();
 
         // and delete any auth_token cookie this client may have
         $this->deleteAuthTokenCookie();

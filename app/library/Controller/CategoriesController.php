@@ -191,6 +191,7 @@ class CategoriesController extends BaseController
 
                 // update or create budget
                 // TODO this ought to be an event
+                // TODO fetch current month, only create new if none
                 $budgetAmount = (int)$params['budget'];// if budget is 0, then delete it
                 $budget = $category->budgets()
                     ->where('fund_id', $this->currentFund->id)

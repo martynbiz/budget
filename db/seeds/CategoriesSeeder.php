@@ -9,7 +9,6 @@ class CategoriesSeeder extends AbstractSeed
         $data = [
             [
                 'name' => 'Groceries',
-                'budget' => 100,
                 'group_id' => 1,
                 'user_id' => 1,
                 'created_at' => date('Y-m-d H:i:s'),
