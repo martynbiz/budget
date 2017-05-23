@@ -3,6 +3,17 @@
 
 $container = $app->getContainer();
 
+//Override the default Not Found Handler
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+
+        $html = $c->get('renderer')->render('404');
+        $response->getBody()->write($html);
+
+        return $response;
+    };
+};
+
 // view renderer
 $container['renderer'] = function ($c) {
 
