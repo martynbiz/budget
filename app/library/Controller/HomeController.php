@@ -35,61 +35,52 @@ class HomeController extends BaseController
         $cacheId = 'monthly_stats_data_' . $currentUser->id;
         if (!$monthlyStatsData = $container->get('cache')->get($cacheId)) {
 
-            $monthlyStatsData = [
-                date('Y-m') => [],
-                date('Y-m', strtotime("-1 month")) => [],
-                date('Y-m', strtotime("-2 month")) => [],
-            ];
+            $monthlyStatsData = [];
 
-            // we only wanna calculate averages on months that have transactions logged
-            // here we'll increment if any for that given month found
-            $monthsWithTransactions = 0;
+            $fromMonth = date('Y-m-01', strtotime('-3 Months'));
+            $transactions = $this->currentFund->transactions()
+                ->where('purchased_at', '>=', $fromMonth)
+                ->orderBy('purchased_at', 'desc')
+                ->get();
 
             // get averate
             $totalEarnings = 0;
             $totalExpenses = 0;
-            foreach ($monthlyStatsData as $month => &$data) {
-                $startDate = date('Y-m-01', strtotime($month . '-01'));
-                $endDate = date('Y-m-t', strtotime($startDate));
+            foreach ($transactions as $transaction) {
 
-                $earningsAmount = $this->currentFund->transactions()
-                    ->where('purchased_at', '>=', $startDate)
-                    ->where('purchased_at', '<=', $endDate)
-                    ->where('amount', '>', 0)
-                    ->pluck('amount')
-                    ->sum();
+                $month = date('Y-m', strtotime($transaction->purchased_at));
+                if (!isset($monthlyStatsData[$month])) {
+                    $monthlyStatsData[$month] = [
+                        'earnings' => [
+                            'amount' => 0,
+                        ],
+                        'expenses' => [
+                            'amount' => 0,
+                        ],
+                    ];
 
-                $expensesAmount = $this->currentFund->transactions()
-                    ->where('purchased_at', '>=', $startDate)
-                    ->where('purchased_at', '<=', $endDate)
-                    ->where('amount', '<', 0)
-                    ->pluck('amount')
-                    ->sum();
-
-                if ($earningsAmount || $expensesAmount) {
-                    $monthsWithTransactions++;
+                    $data = &$monthlyStatsData[$month];
                 }
 
-                $data['earnings'] = [
-                    'amount' => $earningsAmount,
-                ];
-
-                $data['expenses'] = [
-                    'amount' => $expensesAmount,
-                ];
-
-                $totalEarnings+= $earningsAmount;
-                $totalEarnings+= $expensesAmount;
+                if ($transaction->amount > 0) { // is earning
+                    $data['earnings']['amount']+= $transaction->amount;
+                    $totalEarnings+= $transaction->amount;
+                } else {
+                    $data['expenses']['amount']+= abs($transaction->amount);
+                    $totalExpenses+= abs($transaction->amount);
+                }
             }
 
-            $averageMonthlyEarnings = $totalEarnings / $monthsWithTransactions;
-            $averageMonthlyExpenses = $totalExpenses / $monthsWithTransactions;
+            // calculate the average
+            $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
+            $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
+
 
             // set average_diff
             foreach ($monthlyStatsData as $month => &$data) {
 
                 $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
-                $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyEarnings);
+                $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
 
                 // convert ration to percentage
                 if ($averageEarningsRatio > 1) {
