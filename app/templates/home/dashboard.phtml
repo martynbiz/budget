@@ -10,38 +10,46 @@
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
-<div class="row">
-    <div class="small-12 medium-6 columns widget widget__monthly-stats">
-        <h3>Monthly stats</h3>
-        <table class="unstriped">
-            <thead>
-                <tr>
-                    <th><span class="show-for-sr">Month</span></th>
-                    <th>Earnings</th>
-                    <th>Expenses</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($this->monthly_stats_data as $month => $data): ?>
-                <tr>
-                    <?php if ($data['earnings']['amount'] || $data['expenses']['amount']): ?>
-                        <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M Y', strtotime($month . '-01')) ?></a></td>
-                    <?php else: ?>
-                        <td><?= date('M Y', strtotime($month . '-01')) ?></td>
-                    <?php endif; ?>
-                    <td class="earnings">
-                        <span class="amount"><?= sprintf($this->current_fund->currency->format, $data['earnings']['amount']) ?></span>
-                        <span class="diff <?= ($data['earnings']['average_ratio'] > 1) ? 'up' : ($data['earnings']['average_ratio'] <= 0) ? '' : 'down' ?>"><?= $data['earnings']['average_diff'] ?></span>
-                    </td>
-                    <td class="expenses">
-                        <span class="amount"><?= sprintf($this->current_fund->currency->format, abs($data['expenses']['amount'])) ?></span>
-                        <span class="diff <?= ($data['expenses']['average_ratio'] > 1) ? 'up' : (($data['expenses']['average_ratio'] <= 0) ? '' : 'down') ?>"><?= $data['expenses']['average_diff'] ?></span>
-                    </td>
-                </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+    <div class="row">
+        <div class="small-12 medium-6 columns widget widget__monthly-stats">
+            <h3>Monthly stats</h3>
+            <table class="unstriped">
+                <thead>
+                    <tr>
+                        <th><span class="show-for-sr">Month</span></th>
+                        <th>Earnings</th>
+                        <th>Expenses</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($this->monthly_stats_data as $month => $data): ?>
+                    <tr>
+                        <?php if ($data['earnings']['amount'] || $data['expenses']['amount']): ?>
+                            <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M Y', strtotime($month . '-01')) ?></a></td>
+                        <?php else: ?>
+                            <td><?= date('M Y', strtotime($month . '-01')) ?></td>
+                        <?php endif; ?>
+                        <td class="earnings">
+                            <span class="amount"><?= sprintf($this->current_fund->currency->format, $data['earnings']['amount']) ?></span>
+                            <span class="diff <?= ($data['earnings']['average_ratio'] > 1) ? 'up' : ($data['earnings']['average_ratio'] <= 0) ? '' : 'down' ?>"><?= $data['earnings']['average_diff'] ?></span>
+                        </td>
+                        <td class="expenses">
+                            <span class="amount"><?= sprintf($this->current_fund->currency->format, abs($data['expenses']['amount'])) ?></span>
+                            <span class="diff <?= ($data['expenses']['average_ratio'] > 1) ? 'up' : (($data['expenses']['average_ratio'] <= 0) ? '' : 'down') ?>"><?= $data['expenses']['average_diff'] ?></span>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 <?php $this->replace() ?>
+
+<?php $this->section('head') ?>
+    <style>
+    select[name='filter__month'] {
+        display: none;
+    }
+    </style>
+<?php $this->append() ?>

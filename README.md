@@ -8,6 +8,7 @@ TODO
 * welcome page
 * if amount has change in trans, delete cache
 * eloquent events again? .. remove key from cache when amount changes
+* how to tidy up empty groups
 
 * style mobile menu - use gravatar, logo
 * how does +/- % look on mobile?

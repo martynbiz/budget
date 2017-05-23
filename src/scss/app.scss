@@ -65,14 +65,14 @@ keep the resulting css file small(ish)
 //     border-top: 1px solid $medium-gray;
 // }
 
-// .balance-in {
-//     color: #0a3;
-//     font-weight: bold;
-// }
-// .balance-out {
-//     color: #c66;
-//     font-weight: bold;
-// }
+.in-budget {
+    color: #0a3;
+    font-weight: bold;
+}
+.over-budget {
+    color: #c66;
+    font-weight: bold;
+}
 
 
 .top-bar-left {

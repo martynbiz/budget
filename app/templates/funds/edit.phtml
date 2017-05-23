@@ -11,8 +11,10 @@
 <?php $this->section('content') ?>
     <div class="row">
         <div class="small-12 columns">
-            <form id="fund_form" method="post" action="<?= $this->pathFor('funds_post') ?>">
+            <form id="fund_form" method="post" action="<?= $this->pathFor('funds_update', ['fund_id' => $this->fund->id]) ?>">
                 <?= $this->insert('funds/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
 
                 <button class="button primary" type="submit">
                     <?= $this->translate('save_button') ?>
@@ -25,6 +27,8 @@
 
             <form method="POST" action="<?= $this->pathFor('funds_delete', ['fund_id' => $this->fund->id]) ?>" onsubmit="return confirm('Are you sure you want to submit?');">
                 <input type="hidden" name="_METHOD" value="DELETE"/>
+
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
 
                 <button class="button alert" type="submit">
                     <?= $this->translate('delete_button') ?>

@@ -2658,6 +2658,14 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
     .show-for-portrait {
       display: block !important; } }
 
+.in-budget {
+  color: #0a3;
+  font-weight: bold; }
+
+.over-budget {
+  color: #c66;
+  font-weight: bold; }
+
 .top-bar-left ul.breadcrumbs {
   padding-top: 1.2rem;
   padding-left: 1rem; }

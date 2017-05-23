@@ -1,8 +1,10 @@
 <?php
 
 return array (
+  'budget_label' => 'Budget',
+  'budget_header' => 'Budget',
+  'remaining_header' => 'Remaining',
   'category_header' => 'Category',
-  'home_link' => 'Home',
   'groups_link' => 'Groups',
   'dashboard_link' => 'Dashboard',
   'month_label' => 'Month',

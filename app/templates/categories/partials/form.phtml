@@ -2,6 +2,10 @@
     <input type="text" name="name" placeholder="<?= $this->translate('name_label') ?>" value="<?= @$this->params['name'] ?>">
 </label>
 
+<label><?= $this->translate('budget_label') ?>
+    <input type="text" name="budget" placeholder="<?= $this->translate('budget_label') ?>" value="<?= (int)@$this->params['budget'] ?>">
+</label>
+
 <label><?= $this->translate('group_label') ?>
     <input type="text" name="group" placeholder="<?= $this->translate('group_label') ?>" value="<?= @$this->params['group'] ?>">
 </label>

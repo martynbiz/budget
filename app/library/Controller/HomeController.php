@@ -32,81 +32,75 @@ class HomeController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        $cacheId = 'monthly_stats_data_' . $currentUser->id;
-        if (!$monthlyStatsData = $container->get('cache')->get($cacheId)) {
+        $monthlyStatsData = [];
 
-            $monthlyStatsData = [];
+        $fromMonth = date('Y-m-01', strtotime('-3 Months'));
+        $transactions = $this->currentFund->transactions()
+            ->where('purchased_at', '>=', $fromMonth)
+            ->orderBy('purchased_at', 'desc')
+            ->get();
 
-            $fromMonth = date('Y-m-01', strtotime('-3 Months'));
-            $transactions = $this->currentFund->transactions()
-                ->where('purchased_at', '>=', $fromMonth)
-                ->orderBy('purchased_at', 'desc')
-                ->get();
+        // get averate
+        $totalEarnings = 0;
+        $totalExpenses = 0;
+        foreach ($transactions as $transaction) {
 
-            // get averate
-            $totalEarnings = 0;
-            $totalExpenses = 0;
-            foreach ($transactions as $transaction) {
+            $month = date('Y-m', strtotime($transaction->purchased_at));
+            if (!isset($monthlyStatsData[$month])) {
+                $monthlyStatsData[$month] = [
+                    'earnings' => [
+                        'amount' => 0,
+                    ],
+                    'expenses' => [
+                        'amount' => 0,
+                    ],
+                ];
 
-                $month = date('Y-m', strtotime($transaction->purchased_at));
-                if (!isset($monthlyStatsData[$month])) {
-                    $monthlyStatsData[$month] = [
-                        'earnings' => [
-                            'amount' => 0,
-                        ],
-                        'expenses' => [
-                            'amount' => 0,
-                        ],
-                    ];
-
-                    $data = &$monthlyStatsData[$month];
-                }
-
-                if ($transaction->amount > 0) { // is earning
-                    $data['earnings']['amount']+= $transaction->amount;
-                    $totalEarnings+= $transaction->amount;
-                } else {
-                    $data['expenses']['amount']+= abs($transaction->amount);
-                    $totalExpenses+= abs($transaction->amount);
-                }
+                $data = &$monthlyStatsData[$month];
             }
 
-            // calculate the average
-            $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
-            $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
+            if ($transaction->amount > 0) { // is earning
+                $data['earnings']['amount']+= $transaction->amount;
+                $totalEarnings+= $transaction->amount;
+            } else {
+                $data['expenses']['amount']+= abs($transaction->amount);
+                $totalExpenses+= abs($transaction->amount);
+            }
+        }
+
+        // calculate the average
+        $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
+        $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
 
 
-            // set average_diff
-            foreach ($monthlyStatsData as $month => &$data) {
+        // set average_diff
+        foreach ($monthlyStatsData as $month => &$data) {
 
-                $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
-                $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
+            $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
+            $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
 
-                // convert ration to percentage
-                if ($averageEarningsRatio > 1) {
-                    $averageEarningsPercent = '+' . round(($averageEarningsRatio-1) * 100) . '%';
-                } elseif ($averageEarningsRatio <= 0) {
-                    $averageEarningsPercent = '';
-                } elseif ($averageEarningsRatio < 1) {
-                    $averageEarningsPercent = '-' . round((1 - $averageEarningsRatio) * 100) . '%';
-                }
-
-                if ($averageExpensesRatio > 1) {
-                    $averageExpensesPercent = '+' . round(($averageExpensesRatio-1) * 100) . '%';
-                } elseif ($averageExpensesRatio <= 0) {
-                    $averageExpensesPercent = '';
-                } elseif ($averageExpensesRatio < 1) {
-                    $averageExpensesPercent = '-' . round((1 - $averageExpensesRatio) * 100) . '%';
-                }
-
-                $data['earnings']['average_diff'] = $averageEarningsPercent;
-                $data['earnings']['average_ratio'] = $averageEarningsRatio;
-
-                $data['expenses']['average_diff'] = $averageExpensesPercent;
-                $data['expenses']['average_ratio'] = $averageExpensesRatio;
+            // convert ration to percentage
+            if ($averageEarningsRatio > 1) {
+                $averageEarningsPercent = '+' . round(($averageEarningsRatio-1) * 100) . '%';
+            } elseif ($averageEarningsRatio <= 0) {
+                $averageEarningsPercent = '';
+            } elseif ($averageEarningsRatio < 1) {
+                $averageEarningsPercent = '-' . round((1 - $averageEarningsRatio) * 100) . '%';
             }
 
-            $container->get('cache')->set($cacheId, $monthlyStatsData, 3600);
+            if ($averageExpensesRatio > 1) {
+                $averageExpensesPercent = '+' . round(($averageExpensesRatio-1) * 100) . '%';
+            } elseif ($averageExpensesRatio <= 0) {
+                $averageExpensesPercent = '';
+            } elseif ($averageExpensesRatio < 1) {
+                $averageExpensesPercent = '-' . round((1 - $averageExpensesRatio) * 100) . '%';
+            }
+
+            $data['earnings']['average_diff'] = $averageEarningsPercent;
+            $data['earnings']['average_ratio'] = $averageEarningsRatio;
+
+            $data['expenses']['average_diff'] = $averageExpensesPercent;
+            $data['expenses']['average_ratio'] = $averageExpensesRatio;
         }
 
         return $this->render('home/dashboard', [

@@ -111,6 +111,15 @@ class CategoriesController extends BaseController
 
             if ($category = $currentUser->categories()->create($params)) {
 
+                // create budget in budgets
+                // TODO this ought to be an event
+                if ($budgetAmount = (int)$params['budget']) {
+                    $category->budgets()->create([
+                        'amount' => $budgetAmount,
+                        'fund_id' => $this->currentFund->id,
+                    ]);
+                }
+
                 // redirect
                 return $response->withRedirect('/categories');
 
@@ -135,7 +144,9 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        $params = array_merge($category->toArray(), [
+        $params = array_merge([
+            'budget' => $category->getBudget($this->currentFund),
+        ], $category->toArray(), [
             'group' => $category->group->name,
         ], $request->getParams());
 
@@ -177,6 +188,27 @@ class CategoriesController extends BaseController
             $params['group_id'] = $group->id;
 
             if ($category->update($params)) {
+
+                // update or create budget
+                // TODO this ought to be an event
+                $budgetAmount = (int)$params['budget'];// if budget is 0, then delete it
+                $budget = $category->budgets()
+                    ->where('fund_id', $this->currentFund->id)
+                    ->first();
+                if ($budgetAmount > 0 && $budget) {
+                    if ($budgetAmount != $budget->amount) {
+                        $budget->update([
+                            'amount' => $params['budget'],
+                        ]);
+                    }
+                } elseif ($budgetAmount > 0) {
+                    $category->budgets()->create([
+                        'amount' => $params['budget'],
+                        'fund_id' => $this->currentFund->id,
+                    ]);
+                } elseif ($budget) {
+                    $budget->delete();
+                }
 
                 // redirect
                 return $response->withRedirect('/categories');

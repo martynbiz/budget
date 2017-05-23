@@ -28,6 +28,11 @@ class Category extends Model
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
     }
 
+    public function budgets()
+    {
+        return $this->hasMany('App\\Model\\Budget'); //, 'user_id');
+    }
+
     public function group()
     {
         return $this->belongsTo('App\\Model\\Group'); //, 'user_id');
@@ -56,5 +61,14 @@ class Category extends Model
         }
 
         return $this->transactionsAmount; //, 'user_id');
+    }
+
+    public function getBudget($fund)
+    {
+        $budget = $this->budgets()
+            ->where('fund_id', $fund->id)
+            ->first();
+
+        return $budget->amount;
     }
 }

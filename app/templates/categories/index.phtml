@@ -47,6 +47,8 @@ $currencyFormat = $this->current_fund->currency->format;
                     <tr>
                         <th><span class="show-for-sr"><?= $this->translate('name_header') ?></span></th>
                         <th width="15%"><?= $this->translate('total_header') ?></th>
+                        <th width="15%"><?= $this->translate('budget_header') ?></th>
+                        <th width="15%"><?= $this->translate('remaining_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,13 +59,19 @@ $currencyFormat = $this->current_fund->currency->format;
                             <tr class="text-left">
                                 <th><a href="<?= $this->pathFor('groups_edit', ['group_id' => $group->id]) ?>"><?= $group->name ?></a></th>
                                 <th><?= sprintf($currencyFormat, $transactionsAmount) ?></th>
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
                             </tr>
                         <?php else:
                             $group = $category;
-                            $transactionsAmount = $group->getTransactionsAmount($transactionsQuery); ?>
+                            $transactionsAmount = $group->getTransactionsAmount($transactionsQuery);
+                            $budgetAmount = $category->getBudget($this->current_fund);
+                            $remainingBudget = $budgetAmount - abs($transactionsAmount); ?>
                             <tr>
                                 <td><a href="<?= $this->pathFor('categories_edit', ['category_id' => $category->id]) ?>">- <?= $category->name ?></a></td>
                                 <td><?= sprintf($currencyFormat, $transactionsAmount) ?></td>
+                                <td><?= sprintf($currencyFormat, $budgetAmount) ?></td>
+                                <td class="<?= ($budgetAmount) ? (($remainingBudget > 0) ? 'in-budget' : (($remainingBudget < 0) ? 'over-budget' : '')) : '' ?>"><?= ($budgetAmount) ?  sprintf($currencyFormat, $remainingBudget) : '&nbsp;' ?></td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach ?>

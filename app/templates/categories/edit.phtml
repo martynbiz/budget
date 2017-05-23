@@ -28,6 +28,8 @@
             <form method="POST" action="<?= $this->pathFor('categories_delete', ['category_id' => $this->category->id]) ?>" onsubmit="return confirm('Are you sure you want to delete?');">
                 <input type="hidden" name="_METHOD" value="DELETE"/>
 
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
                 <button class="button alert" type="submit">
                     <?= $this->translate('delete_button') ?>
                 </button>
