@@ -139,7 +139,10 @@
                         </div>
                         <div class="top-bar-right">
                             <?php if ($this->currentUser): ?>
-                                <form id="logout_form" method="post" action="<?= $this->pathFor('logout_post') ?>"><input type="hidden" name="_METHOD" value="DELETE"></form>
+                                <form id="logout_form" method="post" action="<?= $this->pathFor('logout_post') ?>">
+                                    <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+                                    <input type="hidden" name="_METHOD" value="DELETE">
+                                </form>
 
                                 <ul class="dropdown menu" data-dropdown-menu>
                                     <li>

@@ -23,6 +23,8 @@
 
                     <label><input type="checkbox" name="remember_me" value="1" checked="checked"> <?= $this->translate('remember_me_text') ?></label>
 
+                    <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
                     <button class="button" type="submit">
                         <?= $this->translate('login_button') ?>
                     </button>

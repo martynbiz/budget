@@ -13,3 +13,5 @@
 <label><?= $this->translate('purchased_at_label') ?>
     <input type="text" name="purchased_at" placeholder="<?= $this->translate('purchased_at_label') ?>" value="<?= @$this->params['purchased_at'] ?>">
 </label>
+
+<input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">

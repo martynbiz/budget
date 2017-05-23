@@ -77,13 +77,8 @@ class BaseController
             $data['debugbar'] = $container->get('debugbar');
         }
 
-        if ($container->has('csrf')) {
-
-            $request = $container->get('request');
-
-            $data['csrfName'] = $request->getAttribute('csrf_name');
-            $data['csrfValue'] = $request->getAttribute('csrf_value');
-        }
+        $data['csrf_name'] = $container->get('session')->get('csrf_name');
+        $data['csrf_value'] = $container->get('session')->get('csrf_value');
 
         // get start and end date from the month filter
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);

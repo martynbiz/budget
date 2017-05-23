@@ -17,6 +17,8 @@
 
                 <input type="hidden" name="_METHOD" value="DELETE">
 
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
                 <?php if(isset($this->params['returnTo'])): ?>
                     <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">
                 <?php endif; ?>
