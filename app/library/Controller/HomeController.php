@@ -126,4 +126,12 @@ class HomeController extends BaseController
 
         return $response->withRedirect('/');
     }
+
+    /**
+     * Show welcome screen
+     */
+    public function notFound($request, $response)
+    {
+        return $this->render('404');
+    }
 }

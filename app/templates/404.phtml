@@ -1,1 +1,13 @@
-Page not found
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget - 404',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li>
+        <span class="show-for-sr">Current: </span> 
+    </li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <p>Page not found</p>
+<?php $this->replace() ?>

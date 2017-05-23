@@ -2,14 +2,9 @@
 
 TODO
 
-* change stats widget data code to simper, just fetch all transactions from 3 months ago
-  and build array from that 
-* 404
-* csrf
 * mail settings on production, test
 * auth_token working?
 * reset password, forgot password
-* redis
 * welcome page
 * if amount has change in trans, delete cache
 * eloquent events again? .. remove key from cache when amount changes

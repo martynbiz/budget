@@ -7,10 +7,9 @@ $container = $app->getContainer();
 $container['notFoundHandler'] = function ($c) {
     return function ($request, $response) use ($c) {
 
-        $html = $c->get('renderer')->render('404');
-        $response->getBody()->write($html);
+        $controller = new \App\Controller\HomeController($c);
 
-        return $response;
+        return $controller->notFound($request, $response);
     };
 };
 
