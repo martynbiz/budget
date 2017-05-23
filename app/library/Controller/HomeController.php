@@ -132,6 +132,6 @@ class HomeController extends BaseController
      */
     public function notFound($request, $response)
     {
-        return $this->render('404');
+        return $this->render('404')->withStatus(404);
     }
 }
