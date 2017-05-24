@@ -7,3 +7,4 @@ phinx.yml
 node_modules/
 .vagrant
 bower_components
+.DS_Store
