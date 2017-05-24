@@ -32,6 +32,9 @@ class HomeController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
+
+        // monthly stats widget
+
         $monthlyStatsData = [];
 
         $fromMonth = date('Y-m-01', strtotime('-3 Months'));
@@ -70,44 +73,38 @@ class HomeController extends BaseController
             $data['balance']['amount']+= $transaction->amount;
         }
 
-        // // calculate the average
-        // $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
-        // $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
 
+        // category stats widget
 
-        // // set average_diff
-        // foreach ($monthlyStatsData as $month => &$data) {
-        //
-        //     $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
-        //     $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
-        //
-        //     // convert ration to percentage
-        //     if ($averageEarningsRatio > 1) {
-        //         $averageEarningsPercent = '+' . round(($averageEarningsRatio-1) * 100) . '%';
-        //     } elseif ($averageEarningsRatio <= 0) {
-        //         $averageEarningsPercent = '&nbsp;';
-        //     } elseif ($averageEarningsRatio < 1) {
-        //         $averageEarningsPercent = '-' . round((1 - $averageEarningsRatio) * 100) . '%';
-        //     }
-        //
-        //     if ($averageExpensesRatio > 1) {
-        //         $averageExpensesPercent = '+' . round(($averageExpensesRatio-1) * 100) . '%';
-        //     } elseif ($averageExpensesRatio <= 0) {
-        //         $averageExpensesPercent = '&nbsp;';
-        //     } elseif ($averageExpensesRatio < 1) {
-        //         $averageExpensesPercent = '-' . round((1 - $averageExpensesRatio) * 100) . '%';
-        //     }
-        //
-        //     $data['earnings']['average_diff'] = $averageEarningsPercent;
-        //     $data['earnings']['average_ratio'] = $averageEarningsRatio;
-        //
-        //     $data['expenses']['average_diff'] = $averageExpensesPercent;
-        //     $data['expenses']['average_ratio'] = $averageExpensesRatio;
-        // 
-        // }
+        // first get the categories
+        $categories = $currentUser->categories()
+            ->with('transactions')
+            ->orderBy('group_id')
+            ->get();
+
+        // build array with remaining budget
+        $budgetStatsData = [];
+        foreach ($categories as $category) {
+
+            $transactionsAmount = $category->getTransactionsAmount(); // TODO pass in start/end
+            $budget = $category->getBudgetByMonth($this->currentFund, date('Y-m'));
+            if ($budget) {
+                $remainingBudget = $budget->amount - abs($transactionsAmount);
+
+                array_push($budgetStatsData, [
+                    'name' => $category->name,
+                    'remaning_budget' => $remainingBudget,
+                ]);
+            }
+        }
+
+        usort($budgetStatsData, function($a, $b) {
+            return $a['remaning_budget'] - $b['remaning_budget'];
+        });
 
         return $this->render('home/dashboard', [
             'monthly_stats_data' => $monthlyStatsData,
+            'budget_stats_data' => $budgetStatsData,
         ]);
     }
 

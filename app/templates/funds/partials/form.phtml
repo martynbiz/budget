@@ -6,12 +6,17 @@
     <input type="text" name="amount" placeholder="<?= $this->translate('amount_label') ?>" value="<?= (isset($this->params['amount'])) ? $this->params['amount'] : 0 ?>">
 </label>
 
-<label><?= $this->translate('currency_label') ?>
-    <select name="currency_id">
-        <?php foreach ($this->currencies as $currency): ?>
-            <option value="<?= $currency->id ?>"><?= $currency->name ?></option>
-        <?php endforeach ?>
-    </select>
-</label>
+<div class="callout">
+    <label><?= $this->translate('currency_label') ?>
+        <select name="currency_id">
+            <option value=""><?= $this->translate('please_select') ?></option>
+            <?php foreach ($this->currencies as $currency): ?>
+                <option value="<?= $currency->id ?>"><?= $currency->name ?></option>
+            <?php endforeach ?>
+        </select>
+        <p>OR</p>
+        <p><a href="#">Create new currency</a></p>
+    </label>
+</div>
 
 <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">

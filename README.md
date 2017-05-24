@@ -2,17 +2,14 @@
 
 TODO
 
-* add more currencies (dollars, euros, etc)
-* set targets? projections
-* fund types - saving, etc
-* rename funds as accounts
-* reset password, forgot password, ! mail not working
-* welcome page
-* eloquent events again? .. remove key from cache when amount changes
-* how to tidy up empty groups - events
-* mobile access
-* dashboard widget: Budgeted items - budgeted items order of remaining and overspent
+* don't we need $transactionsQuery in dashboard.phtml?
 
+* monthly_budgets, widget for dashboard
+* fund types - saving, etc
+* reset password, forgot password, ! mail not working
+* welcome page - one page template
+* eloquent events again? .. remove key from cache when amount changes, tidy up empty groups
+* dashboard widget: Budgeted items - budgeted items order of remaining and overspent
 
 * cache homepage etc
 * how does +/- % look on mobile?
@@ -24,6 +21,8 @@ TODO
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models,
 * favicon
+* rename funds as accounts
+* create your own currencies - alter table currencies add column user_id int;
 
 maybe
 * filter categories

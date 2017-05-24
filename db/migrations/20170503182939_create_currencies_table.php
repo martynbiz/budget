@@ -16,6 +16,7 @@ class CreateCurrenciesTable extends AbstractMigration
 
         $table->addColumn('name', 'string', array( 'limit' => 64 ));
         $table->addColumn('format', 'string');
+        $table->addColumn('user_id', 'integer', array( 'null' => true ));
 
         // timestamps
         $table->addColumn('created_at', 'datetime');

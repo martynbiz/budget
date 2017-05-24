@@ -1,30 +1,33 @@
-<?php $this->layout('layouts/main', [
+<?php
+
+$currencyFormat = $this->current_fund->currency->format;
+
+$this->layout('layouts/main', [
     'title' => 'Budget - Home',
     'selected_menu' => 'dashboard',
 ]); ?>
 
 <?php $this->section('breadcrumbs') ?>
     <li>
-        <span class="show-for-sr">Current: </span> Dashboard
+        <span class="show-for-sr">Current: </span> <?= $this->translate('dashboard_header') ?>
     </li>
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
     <div class="row">
         <div class="small-12 medium-6 columns widget widget__monthly-stats">
-            <h3>Monthly stats</h3>
+            <h3><?= $this->translate('monthly_stats_header') ?></h3>
             <table class="unstriped">
                 <thead>
                     <tr>
-                        <th><span class="show-for-sr">Month</span></th>
-                        <th>Earnings</th>
-                        <th>Expenses</th>
-                        <th>Balance</th>
+                        <th><span class="show-for-sr"><?= $this->translate('month_header') ?></span></th>
+                        <th><?= $this->translate('earnings_header') ?></th>
+                        <th><?= $this->translate('expenses_header') ?></th>
+                        <th><?= $this->translate('balance_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($this->monthly_stats_data as $month => $data):
-                        $currencyFormat = $this->current_fund->currency->format;
                         $earningsAmount = $data['earnings']['amount'];
                         $expensesAmount = $data['expenses']['amount'];
                         $balance = $data['balance']['amount']; ?>
@@ -45,6 +48,25 @@
                         </td>
                     </tr>
                     <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="small-12 medium-6 columns widget widget__budget-stats">
+            <h3><?= $this->translate('budget_stats_header') ?></h3>
+            <table class="unstriped">
+                <thead>
+                    <tr>
+                        <th><span class="show-for-sr"><?= $this->translate('category_header') ?></span></th>
+                        <th><?= $this->translate('remaining_header') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($this->budget_stats_data as $data): ?>
+                        <tr>
+                            <td><?= $data['name'] ?></td>
+                            <td><?= sprintf($currencyFormat, $data['remaning_budget']) ?></td>
+                        </tr>
+                    <?php endforeach ?>
                 </tbody>
             </table>
         </div>

@@ -17,6 +17,16 @@ class CurrenciesSeeder extends AbstractSeed
                 'format' => '&yen;%01.0f',
                 'created_at' => date('Y-m-d H:i:s'),
             ],
+            [
+                'name' => 'USB',
+                'format' => '&dollar;%01.0f',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
+            [
+                'name' => 'EUR',
+                'format' => '&euro;%01.0f',
+                'created_at' => date('Y-m-d H:i:s'),
+            ],
         ];
 
         $oauth_clients = $this->table('currencies');
