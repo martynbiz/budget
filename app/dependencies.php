@@ -106,7 +106,7 @@ $container['mail_manager'] = function ($c) {
     $settings = $c->get('settings')['mail'];
 
     // if not in production, we will write to file
-    if (APPLICATION_ENV == 'production') {
+    if (APPLICATION_ENV == ENV_PRODUCTION) {
         $transport = new Zend\Mail\Transport\Sendmail();
     } else {
         $transport = new \Zend\Mail\Transport\File();
