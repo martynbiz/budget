@@ -35,4 +35,19 @@ class Transaction extends Model
     {
         return $this->belongsTo('App\\Model\\Category'); //, 'user_id');
     }
+
+    public function getPurchasedStringAttribute()
+    {
+        if (strtotime($this->purchased_at) >= strtotime("today")) {
+            $purchasedString = 'Today';
+        }else if (strtotime($this->purchased_at) >= strtotime("yesterday")) {
+            $purchasedString = 'Yesterday';
+        }else if (strtotime($this->purchased_at) <= strtotime('Y-01-01 00:00:00')) {
+            $purchasedString = date('j M, Y', strtotime($this->purchased_at));
+        } else {
+            $purchasedString = date('j M', strtotime($this->purchased_at));
+        }
+
+        return $purchasedString;
+    }
 }

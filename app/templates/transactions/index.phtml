@@ -38,7 +38,7 @@
                             <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => $transaction->id]) ?>"><?= $transaction->description ?></a></td>
                             <td><?= sprintf($this->current_fund->currency->format, $transaction->amount) ?></td>
                             <td class="hide-for-small-only"><?= $transaction->category->name ?></td>
-                            <td><?= $transaction->purchased_at ?></td>
+                            <td><?= $transaction->purchased_string ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
