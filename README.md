@@ -2,7 +2,6 @@
 
 TODO
 
-* mail settings on production, test
 * reset password, forgot password
 * welcome page
 * eloquent events again? .. remove key from cache when amount changes
@@ -17,6 +16,7 @@ TODO
 * can auth use aura for sessions?
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models,
+* mail settings on production, test
 
 maybe
 * filter categories
