@@ -99,7 +99,7 @@ keep the resulting css file small(ish)
 
         color: lighten($dark-gray, 15%);
         .amount {
-            font-size: 150%;
+            font-size: 100%;
             font-weight: bold;
         }
     }
@@ -110,7 +110,7 @@ keep the resulting css file small(ish)
             font-weight: bold;
         }
         .amount {
-            font-size: 200%;
+            font-size: 100%;
             font-weight: bold;
         }
     }

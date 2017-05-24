@@ -66,42 +66,45 @@ class HomeController extends BaseController
                 $data['expenses']['amount']+= abs($transaction->amount);
                 $totalExpenses+= abs($transaction->amount);
             }
+
+            $data['balance']['amount']+= $transaction->amount;
         }
 
-        // calculate the average
-        $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
-        $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
+        // // calculate the average
+        // $averageMonthlyEarnings = $totalEarnings / count($monthlyStatsData);
+        // $averageMonthlyExpenses = $totalExpenses / count($monthlyStatsData);
 
 
-        // set average_diff
-        foreach ($monthlyStatsData as $month => &$data) {
-
-            $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
-            $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
-
-            // convert ration to percentage
-            if ($averageEarningsRatio > 1) {
-                $averageEarningsPercent = '+' . round(($averageEarningsRatio-1) * 100) . '%';
-            } elseif ($averageEarningsRatio <= 0) {
-                $averageEarningsPercent = '';
-            } elseif ($averageEarningsRatio < 1) {
-                $averageEarningsPercent = '-' . round((1 - $averageEarningsRatio) * 100) . '%';
-            }
-
-            if ($averageExpensesRatio > 1) {
-                $averageExpensesPercent = '+' . round(($averageExpensesRatio-1) * 100) . '%';
-            } elseif ($averageExpensesRatio <= 0) {
-                $averageExpensesPercent = '';
-            } elseif ($averageExpensesRatio < 1) {
-                $averageExpensesPercent = '-' . round((1 - $averageExpensesRatio) * 100) . '%';
-            }
-
-            $data['earnings']['average_diff'] = $averageEarningsPercent;
-            $data['earnings']['average_ratio'] = $averageEarningsRatio;
-
-            $data['expenses']['average_diff'] = $averageExpensesPercent;
-            $data['expenses']['average_ratio'] = $averageExpensesRatio;
-        }
+        // // set average_diff
+        // foreach ($monthlyStatsData as $month => &$data) {
+        //
+        //     $averageEarningsRatio = abs($data['earnings']['amount'] / $averageMonthlyEarnings);
+        //     $averageExpensesRatio = abs($data['expenses']['amount'] / $averageMonthlyExpenses);
+        //
+        //     // convert ration to percentage
+        //     if ($averageEarningsRatio > 1) {
+        //         $averageEarningsPercent = '+' . round(($averageEarningsRatio-1) * 100) . '%';
+        //     } elseif ($averageEarningsRatio <= 0) {
+        //         $averageEarningsPercent = '&nbsp;';
+        //     } elseif ($averageEarningsRatio < 1) {
+        //         $averageEarningsPercent = '-' . round((1 - $averageEarningsRatio) * 100) . '%';
+        //     }
+        //
+        //     if ($averageExpensesRatio > 1) {
+        //         $averageExpensesPercent = '+' . round(($averageExpensesRatio-1) * 100) . '%';
+        //     } elseif ($averageExpensesRatio <= 0) {
+        //         $averageExpensesPercent = '&nbsp;';
+        //     } elseif ($averageExpensesRatio < 1) {
+        //         $averageExpensesPercent = '-' . round((1 - $averageExpensesRatio) * 100) . '%';
+        //     }
+        //
+        //     $data['earnings']['average_diff'] = $averageEarningsPercent;
+        //     $data['earnings']['average_ratio'] = $averageEarningsRatio;
+        //
+        //     $data['expenses']['average_diff'] = $averageExpensesPercent;
+        //     $data['expenses']['average_ratio'] = $averageExpensesRatio;
+        // 
+        // }
 
         return $this->render('home/dashboard', [
             'monthly_stats_data' => $monthlyStatsData,
