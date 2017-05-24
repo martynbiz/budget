@@ -2,10 +2,17 @@
 
 TODO
 
-* reset password, forgot password
+* add more currencies (dollars, euros, etc)
+* set targets? projections
+* fund types - saving, etc
+* rename funds as accounts
+* reset password, forgot password, ! mail not working
 * welcome page
 * eloquent events again? .. remove key from cache when amount changes
-* how to tidy up empty groups
+* how to tidy up empty groups - events
+* mobile access
+* dashboard widget: Budgeted items - budgeted items order of remaining and overspent
+
 
 * cache homepage etc
 * how does +/- % look on mobile?
@@ -16,7 +23,7 @@ TODO
 * can auth use aura for sessions?
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models,
-* mail settings on production, test
+* favicon
 
 maybe
 * filter categories
