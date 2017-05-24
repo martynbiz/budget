@@ -2,7 +2,7 @@
 
 TODO
 
-* before deploy: take table up of live db
+* display for purchased_at on index
 * version budgets by month, don't overwrite
 * mail settings on production, test
 * reset password, forgot password
@@ -18,7 +18,7 @@ TODO
 * scheduled backups of mysql, sync script
 * can auth use aura for sessions?
 * switch to aura session for flash messages
-* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string,
+* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models, 
 
 maybe
 * filter categories

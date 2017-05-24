@@ -3,6 +3,7 @@ namespace App\Controller;
 
 use App\Model\Categories;
 use App\Validator;
+use App\Utils;
 
 class CategoriesController extends BaseController
 {
@@ -145,7 +146,7 @@ class CategoriesController extends BaseController
             ->findOrFail((int)$args['category_id']);
 
         $params = array_merge([
-            'budget' => $category->getBudget($this->currentFund),
+            'budget' => (int)@$category->getBudgetByMonth($this->currentFund)->amount,
         ], $category->toArray(), [
             'group' => $category->group->name,
         ], $request->getParams());
@@ -190,11 +191,12 @@ class CategoriesController extends BaseController
             if ($category->update($params)) {
 
                 // update or create budget
-                // TODO this ought to be an event
-                // TODO fetch current month, only create new if none
+                // we only want one budget row per month. only create if one
+                // doesn't exist for the month
                 $budgetAmount = (int)$params['budget'];// if budget is 0, then delete it
                 $budget = $category->budgets()
                     ->where('fund_id', $this->currentFund->id)
+                    ->whereBetween('created_at', Utils::getStartEndDateByMonth( date('Y-m') )) // this month
                     ->first();
                 if ($budgetAmount > 0 && $budget) {
                     if ($budgetAmount != $budget->amount) {
