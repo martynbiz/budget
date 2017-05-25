@@ -38,11 +38,13 @@ class Transaction extends Model
 
     public function getPurchasedStringAttribute()
     {
-        if (strtotime($this->purchased_at) >= strtotime("today")) {
+        if (strtotime($this->purchased_at) >= strtotime("tomorrow")) {
+            $purchasedString = date('j M', strtotime($this->purchased_at));
+        } else if (strtotime($this->purchased_at) >= strtotime("today")) {
             $purchasedString = 'Today';
-        }else if (strtotime($this->purchased_at) >= strtotime("yesterday")) {
+        } else if (strtotime($this->purchased_at) >= strtotime("yesterday")) {
             $purchasedString = 'Yesterday';
-        }else if (strtotime($this->purchased_at) <= strtotime('Y-01-01 00:00:00')) {
+        } else if (strtotime($this->purchased_at) <= strtotime('Y-01-01 00:00:00')) {
             $purchasedString = date('j M, Y', strtotime($this->purchased_at));
         } else {
             $purchasedString = date('j M', strtotime($this->purchased_at));

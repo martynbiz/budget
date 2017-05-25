@@ -3,6 +3,8 @@
 TODO
 
 * don't we need $transactionsQuery in dashboard.phtml?
+* tags: e.g. London,Glen's Stag
+* Money owed to me
 
 * monthly_budgets, widget for dashboard
 * fund types - saving, etc
