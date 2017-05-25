@@ -483,3 +483,13 @@ ul.topnav {
         display: block;
     }
 }
+
+div.tagsinput span.tag {
+    background: $light-gray;
+    border: none;
+    color: $dark-gray;
+
+    a {
+        color: $medium-gray;
+    }
+}

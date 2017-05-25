@@ -14,6 +14,17 @@ $this->layout('layouts/main', [
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
+    <div class="rows">
+        <?= $this->insert('partials/filters') ?>
+
+        <div class="small-12 offset-medium-3 medium-3 columns">
+            <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('new_transaction_button') ?>
+            </a>
+        </div>
+    </div>
+
     <div class="row">
         <div class="small-12 medium-6 columns widget widget__monthly-stats">
             <h3><?= $this->translate('monthly_stats_header') ?></h3>
@@ -61,13 +72,23 @@ $this->layout('layouts/main', [
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($this->budget_stats_data as $data): ?>
+                    <?php foreach($this->budget_stats_data['categories'] as $data): ?>
                         <tr>
                             <td><?= $data['name'] ?></td>
                             <td><?= sprintf($currencyFormat, $data['remaning_budget']) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th><?= $this->translate('total_budgets_header') ?></th>
+                        <td><?= sprintf($currencyFormat, $this->budget_stats_data['total_budgets']) ?></td>
+                    </tr>
+                    <tr>
+                        <th><?= $this->translate('total_remaining_budgets_header') ?></th>
+                        <td><?= sprintf($currencyFormat, $this->budget_stats_data['total_remaining_budgets']) ?></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>

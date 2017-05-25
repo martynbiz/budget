@@ -1,4 +1,8 @@
-<?php $this->layout('layouts/main', [
+<?php
+
+$currencyFormat = $this->current_fund->currency->format;
+
+$this->layout('layouts/main', [
     'title' => 'Budget',
     'selected_menu' => 'transactions',
 ]); ?>
@@ -36,7 +40,7 @@
                     <?php foreach($this->transactions as $transaction): ?>
                         <tr>
                             <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => $transaction->id]) ?>"><?= $transaction->description ?></a></td>
-                            <td><?= sprintf($this->current_fund->currency->format, $transaction->amount) ?></td>
+                            <td><?= sprintf($currencyFormat, $transaction->amount) ?></td>
                             <td class="hide-for-small-only"><?= $transaction->category->name ?></td>
                             <td><?= $transaction->purchased_string ?></td>
                         </tr>
@@ -45,7 +49,7 @@
                 <tfoot>
                     <tr>
                         <th><?= $this->translate('total_header') ?></th>
-                        <td><?= sprintf($this->current_fund->currency->format, $this->total_amount) ?></td>
+                        <td><?= sprintf($currencyFormat, $this->total_amount) ?></td>
                     </tr>
                 </tfoot>
             </table>

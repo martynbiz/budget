@@ -88,7 +88,7 @@ class FundsController extends BaseController
                 $this->currentFund = $fund;
 
                 // redirect
-                return $response->withRedirect('/transactions');
+                return $response->withRedirect('/');
 
             } else {
                 $errors = $fund->errors();

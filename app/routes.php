@@ -60,6 +60,7 @@ $app->group('', function() use ($app) {
     $app->group('/data', function() use ($app) {
         $app->get('/categories', '\App\Controller\DataController:categories')->setName('data_categories');
         $app->get('/groups', '\App\Controller\DataController:groups')->setName('data_groups');
+        $app->get('/tags', '\App\Controller\DataController:tags')->setName('data_tags');
 
         // highcharts
         $app->get('/expenses', '\App\Controller\DataController:expenses')->setName('data_groups');

@@ -50,6 +50,7 @@ gulp.task('css', function() {
         // 'bower_components/slicknav/dist/slicknav.css',
         'bower_components/font-awesome/css/font-awesome.css',
         'bower_components/jquery-ui/themes/base/jquery-ui.css',
+        'bower_components/jquery.tagsinput/src/jquery.tagsinput.css',
         //...
         'src/css/app.css', // compiled app.sass (includes foundation css)
         'src/css/theme.css'
@@ -76,6 +77,7 @@ gulp.task('js', function() {
         'bower_components/highcharts/highcharts.js',
         'bower_components/highcharts/modules/data.js',
         'bower_components/highcharts/modules/drilldown.js',
+        'bower_components/jquery.tagsinput/src/jquery.tagsinput.js',
         //...
         'src/js/sliding-menu.js',
         'src/js/app.js'

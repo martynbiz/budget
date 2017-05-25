@@ -23,7 +23,7 @@ class DataController extends BaseController
     {
         $currentUser = $this->getCurrentUser();
         $categories = $currentUser->groups()->pluck('name');
-        
+
         return $this->renderJSON($categories->toArray());
     }
 
@@ -136,5 +136,26 @@ class DataController extends BaseController
             'series' => $series,
             'drilldown' => $drilldown,
         ]);
+    }
+
+    /**
+     * Provide the datasets for expenses pie chart
+     */
+    public function tags($request, $response, $args)
+    {
+        $term = $request->getParam('term');
+
+        $tags = [ // mock
+            'Test',
+            'London',
+            'London201705',
+            'Glen\'s Stag'
+        ];
+
+        $filtered = array_filter($tags, function($tag) use ($term) {
+            return (strpos($tag, $term) === 0);
+        });
+
+        return $this->renderJSON(array_values($filtered));
     }
 }

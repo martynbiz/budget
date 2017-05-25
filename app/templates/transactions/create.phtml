@@ -43,6 +43,13 @@
                 source: data
             });
         });
+
+        // init tags
+        $("input[name='tags']").tagsInput({
+            width:'auto',
+            height:'auto',
+            autocomplete_url: '/data/tags'
+        });
     });
     </script>
 <?php $this->append() ?>

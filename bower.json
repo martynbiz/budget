@@ -17,6 +17,7 @@
     "slicknav": "~1.0.10",
     "highcharts": "~5.0.11",
     "jquery-ui": "~1.12.1",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "jquery.tagsinput": "~1.3.6"
   }
 }

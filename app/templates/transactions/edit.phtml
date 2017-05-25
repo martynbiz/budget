@@ -46,12 +46,19 @@
         $("input[name='purchased_at']").datepicker({
             dateFormat: "yyyy-mm-dd"
         });
-    });
 
-    // init the autocomplete
-    $.getJSON("/data/categories", function(data) {
-        $("input[name='category']").autocomplete({
-            source: data
+        // init tags
+        $("input[name='tags']").tagsInput({
+            width:'auto',
+            height:'auto',
+            autocomplete_url: '/data/tags'
+        });
+
+        // init the autocomplete
+        $.getJSON("/data/categories", function(data) {
+            $("input[name='category']").autocomplete({
+                source: data
+            });
         });
     });
     </script>

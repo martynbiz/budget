@@ -83,7 +83,12 @@ class HomeController extends BaseController
             ->get();
 
         // build array with remaining budget
-        $budgetStatsData = [];
+        $budgetStatsData = [
+            'categories' => [],
+            'total_budgets' => 0,
+            'total_remaining_budgets' => 0,
+
+        ];
         foreach ($categories as $category) {
 
             $transactionsAmount = $category->getTransactionsAmount(); // TODO pass in start/end
@@ -91,14 +96,17 @@ class HomeController extends BaseController
             if ($budget) {
                 $remainingBudget = $budget->amount - abs($transactionsAmount);
 
-                array_push($budgetStatsData, [
+                array_push($budgetStatsData['categories'], [
                     'name' => $category->name,
                     'remaning_budget' => $remainingBudget,
                 ]);
+
+                $budgetStatsData['total_budgets']+= $budget->amount;
+                $budgetStatsData['total_remaining_budgets']+= $remainingBudget;
             }
         }
 
-        usort($budgetStatsData, function($a, $b) {
+        usort($budgetStatsData['categories'], function($a, $b) {
             return $a['remaning_budget'] - $b['remaning_budget'];
         });
 

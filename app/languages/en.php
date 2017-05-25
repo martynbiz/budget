@@ -1,6 +1,15 @@
 <?php
 
 return array (
+  'tags_label' => 'Tags',
+  'dashboard_header' => 'Dashboard',
+  'monthly_stats_header' => 'Monthly Stats',
+  'month_header' => 'Month',
+  'earnings_header' => 'Earnings',
+  'budget_stats_header' => 'Budget Stats',
+  'total_budgets_header' => 'Total budgets',
+  'total_remaining_budgets_header' => 'Total remaning budget',
+  'please_select' => 'Please select',
   'budget_label' => 'Budget',
   'budget_header' => 'Budget',
   'remaining_header' => 'Remaining',

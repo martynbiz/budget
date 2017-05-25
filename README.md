@@ -13,6 +13,8 @@ TODO
 * eloquent events again? .. remove key from cache when amount changes, tidy up empty groups
 * dashboard widget: Budgeted items - budgeted items order of remaining and overspent
 
+* edit profile - connect with gravatar
+
 * cache homepage etc
 * how does +/- % look on mobile?
 * right and left padding not same on mobile
