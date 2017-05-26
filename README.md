@@ -3,24 +3,20 @@
 TODO
 
 * don't we need $transactionsQuery in dashboard.phtml?
-* tags: e.g. London,Glen's Stag
 * Money owed to me
-
 * how to attach tags to funds? (e.g. we need to show currency formatting), should be cross fund (e.g. credit card, savings accounts etc)
-
-* monthly_budgets, widget for dashboard
+* Make /reports controller - move /tags to there
 * fund types - saving, etc
 * reset password, forgot password, ! mail not working
-* welcome page - one page template
+* welcome page - one page template, https://startbootstrap.com/template-overviews/creative/
 * eloquent events again? .. remove key from cache when amount changes, tidy up empty groups
 * dashboard widget: Budgeted items - budgeted items order of remaining and overspent
 
 * edit profile - connect with gravatar
 
-* cache homepage etc
 * how does +/- % look on mobile?
 * right and left padding not same on mobile
-* graph on homepage - look at other sites
+* graph on homepage - look at other sites, projected savings?
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * scheduled backups of mysql, sync script
 * can auth use aura for sessions?
@@ -29,6 +25,8 @@ TODO
 * favicon
 * rename funds as accounts
 * create your own currencies - alter table currencies add column user_id int;
+* security! all good?
+* performance! all good? cache homepage,
 
 maybe
 * filter categories
