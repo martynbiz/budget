@@ -143,19 +143,10 @@ class DataController extends BaseController
      */
     public function tags($request, $response, $args)
     {
+        $currentUser = $this->getCurrentUser();
         $term = $request->getParam('term');
+        $tags = $currentUser->tags()->where('name', 'like', $term . '%')->pluck('name')->toArray();
 
-        $tags = [ // mock
-            'Test',
-            'London',
-            'London201705',
-            'Glen\'s Stag'
-        ];
-
-        $filtered = array_filter($tags, function($tag) use ($term) {
-            return (strpos($tag, $term) === 0);
-        });
-
-        return $this->renderJSON(array_values($filtered));
+        return $this->renderJSON($tags);
     }
 }

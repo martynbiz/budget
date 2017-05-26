@@ -132,14 +132,20 @@ class TransactionsController extends BaseController
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 // create tags (if any)
-                $tagNames = array_map('trim', explode(',', $params['tags']));
-                foreach ($tagNames as $name) {
+                if (!empty(trim($params['tags']))) {
+                    $tagNames = array_map('trim', explode(',', $params['tags']));
+                    foreach ($tagNames as $name) {
 
-                    $tag = $currentUser->tags()->create([
-                        'name' => $name,
-                    ]);
+                        // first try to find an existing tag, if none exist, create a
+                        // new one
+                        if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
+                            $tag = $currentUser->tags()->create([
+                                'name' => $name,
+                            ]);
+                        }
 
-                    $transaction->tags()->attach($tag);
+                        $transaction->tags()->attach($tag);
+                    }
                 }
 
                 // redirect
@@ -233,6 +239,26 @@ class TransactionsController extends BaseController
                 ->findOrFail((int)$args['transaction_id']);
 
             if ($transaction->update($params)) {
+
+                // just clear existing tags as we'll create new pivot links
+                $transaction->tags()->detach();
+
+                // create tags (if any)
+                if (!empty(trim($params['tags']))) {
+                    $tagNames = array_map('trim', explode(',', $params['tags']));
+                    foreach ($tagNames as $name) {
+
+                        // first try to find an existing tag, if none exist, create a
+                        // new one
+                        if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
+                            $tag = $currentUser->tags()->create([
+                                'name' => $name,
+                            ]);
+                        }
+
+                        $transaction->tags()->attach($tag);
+                    }
+                }
 
                 // redirect
                 return $response->withRedirect('/transactions');
