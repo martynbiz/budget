@@ -1,9 +1,7 @@
 <?php
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Transaction extends Model
+class Transaction extends Base
 {
     // const SESSION_FILTER_START_DATE = 'transactions-filter__start-date';
     // const SESSION_FILTER_END_DATE = 'transactions-filter__end-date';
@@ -34,6 +32,11 @@ class Transaction extends Model
     public function category()
     {
         return $this->belongsTo('App\\Model\\Category'); //, 'user_id');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\\Model\\Tag')->withTimestamps(); //, 'user_id');
     }
 
     public function getPurchasedStringAttribute()

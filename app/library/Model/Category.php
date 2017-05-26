@@ -1,10 +1,9 @@
 <?php
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Utils;
 
-class Category extends Model
+class Category extends Base
 {
     /**
     * @var array

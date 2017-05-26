@@ -42,6 +42,7 @@ class TransactionsController extends BaseController
             ->where('purchased_at', '<=', $endDate)
             ->with('fund')
             ->with('category')
+            ->with('tags')
             ->skip($start)
             ->take($limit)
             ->orderBy('purchased_at', 'desc')
@@ -130,6 +131,17 @@ class TransactionsController extends BaseController
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
+                // create tags (if any)
+                $tagNames = array_map('trim', explode(',', $params['tags']));
+                foreach ($tagNames as $name) {
+
+                    $tag = $currentUser->tags()->create([
+                        'name' => $name,
+                    ]);
+
+                    $transaction->tags()->attach($tag);
+                }
+
                 // redirect
                 return $response->withRedirect('/transactions');
 
@@ -159,10 +171,12 @@ class TransactionsController extends BaseController
         $transaction = $this->getCurrentUser()->transactions()
             ->with('category')
             ->with('fund')
+            ->with('tags')
             ->findOrFail((int)$args['transaction_id']);
 
         $params = array_merge($transaction->toArray(), $request->getParams(), [
             'category' => $transaction->category->name,
+            'tags' => implode(',', $transaction->tags()->pluck('name')->toArray())
         ]);
 
         return $this->render('transactions/edit', [
