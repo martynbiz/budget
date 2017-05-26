@@ -46,7 +46,7 @@ $app->group('', function() use ($app) {
         $app->post('/switch', '\App\Controller\FundsController:switch')->setName('funds_switch');
     });
 
-    // transactions routes
+    // categories routes
     $app->group('/categories', function() use ($app) {
         $app->get('', '\App\Controller\CategoriesController:index')->setName('categories');
         $app->get('/create', '\App\Controller\CategoriesController:create')->setName('categories_create');
@@ -56,7 +56,7 @@ $app->group('', function() use ($app) {
         $app->delete('/{category_id}', '\App\Controller\CategoriesController:delete')->setName('categories_delete');
     });
 
-    // transactions routes
+    // data routes
     $app->group('/data', function() use ($app) {
         $app->get('/categories', '\App\Controller\DataController:categories')->setName('data_categories');
         $app->get('/groups', '\App\Controller\DataController:groups')->setName('data_groups');
@@ -66,7 +66,7 @@ $app->group('', function() use ($app) {
         $app->get('/expenses', '\App\Controller\DataController:expenses')->setName('data_groups');
     });
 
-    // transactions routes
+    // groups routes
     $app->group('/groups', function() use ($app) {
         $app->get('', '\App\Controller\GroupsController:index')->setName('groups');
         $app->get('/create', '\App\Controller\GroupsController:create')->setName('groups_create');
@@ -74,6 +74,11 @@ $app->group('', function() use ($app) {
         $app->get('/{group_id}/edit', '\App\Controller\GroupsController:edit')->setName('groups_edit');
         $app->put('/{group_id}', '\App\Controller\GroupsController:update')->setName('groups_update');
         $app->delete('/{group_id}', '\App\Controller\GroupsController:delete')->setName('groups_delete');
+    });
+
+    // tags routes
+    $app->group('/tags', function() use ($app) {
+        $app->get('', '\App\Controller\TagsController:index')->setName('tags');
     });
 })
 ->add($requireAuth)

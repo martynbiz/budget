@@ -6,6 +6,8 @@ TODO
 * tags: e.g. London,Glen's Stag
 * Money owed to me
 
+* how to attach tags to funds? (e.g. we need to show currency formatting), should be cross fund (e.g. credit card, savings accounts etc)
+
 * monthly_budgets, widget for dashboard
 * fund types - saving, etc
 * reset password, forgot password, ! mail not working
