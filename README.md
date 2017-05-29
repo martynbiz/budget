@@ -2,6 +2,11 @@
 
 TODO
 
+* budget stats - order by percentage
+* monthly widgets - Total -> Balance
+* Tip: how to assign budgets (identify things that can be budgeted - e.g. if you shop a lot for clothes but wanna put a cap on things, or take aways vs home cooking )
+* click on table headers to orderBy
+
 * don't we need $transactionsQuery in dashboard.phtml?
 * tags: e.g. London,Glen's Stag
 * Money owed to me
