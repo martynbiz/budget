@@ -42,6 +42,7 @@ class TransactionsController extends BaseController
             ->where('purchased_at', '<=', $endDate)
             ->with('fund')
             ->with('category')
+            ->with('tags')
             ->skip($start)
             ->take($limit)
             ->orderBy('purchased_at', 'desc')
@@ -130,6 +131,23 @@ class TransactionsController extends BaseController
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
+                // create tags (if any)
+                if (!empty(trim($params['tags']))) {
+                    $tagNames = array_map('trim', explode(',', $params['tags']));
+                    foreach ($tagNames as $name) {
+
+                        // first try to find an existing tag, if none exist, create a
+                        // new one
+                        if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
+                            $tag = $currentUser->tags()->create([
+                                'name' => $name,
+                            ]);
+                        }
+
+                        $transaction->tags()->attach($tag);
+                    }
+                }
+
                 // redirect
                 return $response->withRedirect('/transactions');
 
@@ -159,10 +177,12 @@ class TransactionsController extends BaseController
         $transaction = $this->getCurrentUser()->transactions()
             ->with('category')
             ->with('fund')
+            ->with('tags')
             ->findOrFail((int)$args['transaction_id']);
 
         $params = array_merge($transaction->toArray(), $request->getParams(), [
             'category' => $transaction->category->name,
+            'tags' => implode(',', $transaction->tags()->pluck('name')->toArray())
         ]);
 
         return $this->render('transactions/edit', [
@@ -219,6 +239,26 @@ class TransactionsController extends BaseController
                 ->findOrFail((int)$args['transaction_id']);
 
             if ($transaction->update($params)) {
+
+                // just clear existing tags as we'll create new pivot links
+                $transaction->tags()->detach();
+
+                // create tags (if any)
+                if (!empty(trim($params['tags']))) {
+                    $tagNames = array_map('trim', explode(',', $params['tags']));
+                    foreach ($tagNames as $name) {
+
+                        // first try to find an existing tag, if none exist, create a
+                        // new one
+                        if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
+                            $tag = $currentUser->tags()->create([
+                                'name' => $name,
+                            ]);
+                        }
+
+                        $transaction->tags()->attach($tag);
+                    }
+                }
 
                 // redirect
                 return $response->withRedirect('/transactions');

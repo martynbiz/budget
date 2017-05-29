@@ -39,7 +39,12 @@ $this->layout('layouts/main', [
                 <tbody>
                     <?php foreach($this->transactions as $transaction): ?>
                         <tr>
-                            <td><a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => $transaction->id]) ?>"><?= $transaction->description ?></a></td>
+                            <td>
+                                <a href="<?= $this->pathFor('transactions_edit', ['transaction_id' => $transaction->id]) ?>"><?= $transaction->description ?></a>
+                                <?php foreach ($transaction->tags as $tag): ?>
+                                    <span class="tag">#<?= $tag->name ?></span>
+                                <?php endforeach ?>
+                            </td>
                             <td><?= sprintf($currencyFormat, $transaction->amount) ?></td>
                             <td class="hide-for-small-only"><?= $transaction->category->name ?></td>
                             <td><?= $transaction->purchased_string ?></td>

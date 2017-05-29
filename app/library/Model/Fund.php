@@ -1,9 +1,7 @@
 <?php
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class Fund extends Model
+class Fund extends Base
 {
     /**
     * @var array

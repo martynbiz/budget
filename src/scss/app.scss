@@ -493,3 +493,9 @@ div.tagsinput span.tag {
         color: $medium-gray;
     }
 }
+
+.tag {
+    display: inline-block;
+    background: #eee;
+    font-weight: bold;
+}

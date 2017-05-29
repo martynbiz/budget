@@ -1,9 +1,7 @@
 <?php
 namespace App\Model;
 
-use Illuminate\Database\Eloquent\Model;
-
-class User extends Model
+class User extends Base
 {
     /**
      * @var array
@@ -27,6 +25,11 @@ class User extends Model
     public function transactions()
     {
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
+    }
+
+    public function tags()
+    {
+        return $this->hasMany('App\\Model\\Tag'); //, 'user_id');
     }
 
     public function funds()
