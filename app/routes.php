@@ -91,6 +91,13 @@ $app->group('', function() use ($app) { // attach middleware: requireAuth, setFi
         $app->put('/{tag_id}', '\App\Controller\TagsController:update')->setName('tags_update');
         $app->delete('/{tag_id}', '\App\Controller\TagsController:delete')->setName('tags_delete');
     });
+
+    // users routes
+    $app->group('/users', function() use ($app) {
+        $app->get('/settings', '\App\Controller\UsersController:edit')->setName('users_edit');
+        $app->put('/settings', '\App\Controller\UsersController:update')->setName('users_update');
+        $app->delete('/{user_id}', '\App\Controller\UsersController:delete')->setName('users_delete');
+    });
 })
 ->add($requireAuth)
 ->add($setFilters);

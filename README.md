@@ -7,23 +7,15 @@ TODO
 settings
 * users::edit/update/delete
 * feature: edit profile, dashboard settings, lang etc
-* make currency a setting
+* drop support for multiple currencies per user (instead, user can set their currency in settings)
 
 * docblocks
 
 !!! mail not working
 * reset password, forgot password, ! mail not working
 
-Tags
-* drop support for multiple currencies per user (instead, user can set their currency in settings)
-
 * category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
 ! as a transaction can exist under multiple tags, doesn't work for categories
-
-
-* move pie to dash as widget
-* set budget on tags
-
 
 
 * feature: view transactions for categories (check trains is adding up), categories filter

@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'language_label' => 'Language',
+  'language_missing' => 'Language is missing',
   'tag_stats_header' => 'Tag stats',
   'tag_header' => 'Tag',
   'new_tag_button' => 'New tag',

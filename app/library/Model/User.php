@@ -22,6 +22,19 @@ class User extends Base
         'password',
     );
 
+    /**
+     *
+     */
+    protected static $validSettings = [
+        USER_SETTING_LANGUAGE,
+        USER_SETTING_DASHBOARD_WIDGETS,
+    ];
+
+    public function settings()
+    {
+        return $this->hasMany('App\\Model\\UserSetting'); //, 'user_id');
+    }
+
     public function transactions()
     {
         return $this->hasMany('App\\Model\\Transaction'); //, 'user_id');
@@ -55,6 +68,52 @@ class User extends Base
     public function recovery_token()
     {
         return $this->hasOne('App\\Model\\RecoveryToken'); //, 'user_id');
+    }
+
+    public function getSetting($name)
+    {
+        if (!in_array(self::$validSettings, $settings->name)) {
+            throw new \Exception("Trying to set invalid setting");
+        }
+
+        if ($setting = $this->settings()->where('name', $name)->first()) {
+            return $setting->value;
+        }
+    }
+
+    public function getSettings()
+    {
+        $settings = [];
+        foreach ($this->settings()->get() as $setting) {
+            $settings[$setting->name] = $setting->value;
+        }
+
+        return $settings;
+    }
+
+    public function setSetting($name, $value)
+    {
+        if (!in_array(self::$validSettings, $settings->name)) {
+            throw new \Exception("Trying to set invalid setting");
+        }
+
+        if (!$setting = $this->settings()->where('name', $name)->first()) {
+            $this->settings()->create([
+                'name' => $name,
+                'value' => $value,
+            ]);
+        }
+    }
+
+    public function setSettings($settings)
+    {
+        $settings = array_intersect_key($settings, array_flip(self::$validSettings));
+
+        foreach ($settings as $name => $value) {
+            $setting = $this->settings()->firstOrNew(['name' => $name]);
+            $setting->value = $value;
+            $setting->save();
+        }
     }
 
     /**

@@ -93,6 +93,71 @@ class UsersController extends BaseController
         return $this->register($request, $response, $args);
     }
 
+    /**
+     * edit transaction form
+     */
+    public function edit($request, $response, $args)
+    {
+        $currentUser = $this->getCurrentUser();
+
+        $params = array_merge($currentUser->toArray(), $currentUser->getSettings(), $request->getParams());
+
+        return $this->render('users/edit', [
+            'params' => $params,
+        ]);
+    }
+
+    /**
+     * edit transaction form action
+     */
+    public function update($request, $response, $args)
+    {
+        $container = $this->getContainer();
+
+        $params = $request->getParams();
+        $currentUser = $this->getCurrentUser();
+
+        // validate form data
+
+        // our simple custom validator for the form
+        $validator = new Validator();
+        $validator->setData($params);
+        $i18n = $container->get('i18n');
+
+        // language
+        $validator->check('language')
+            ->isNotEmpty( $i18n->translate('language_missing') );
+
+        // // amount
+        // $validator->check('amount')
+        //     ->isNotEmpty( $i18n->translate('amount_missing') );
+        //
+        // // purchased at
+        // $validator->check('purchased_at')
+        //     ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+
+        // if valid, create transaction
+        if ($validator->isValid()) {
+
+            if ($currentUser->update($params)) {
+
+                $currentUser->setSettings($params);
+
+                // redirect
+                return $response->withRedirect( $container->get('router')->pathFor('home') );
+
+            } else {
+                $errors = $currentUser->errors();
+            }
+
+        } else {
+            $errors = $validator->getErrors();
+        }
+
+        $container->get('flash')->addMessage('errors', $errors);
+        return $this->edit($request, $response, $args);
+    }
+
     public function delete($request, $response, $args)
     {
         $params = $request->getParams();

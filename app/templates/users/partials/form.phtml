@@ -1,0 +1,5 @@
+<label><?= $this->translate('language_label') ?>
+    <input type="text" name="language" placeholder="<?= $this->translate('language_label') ?>" value="<?= @$this->params['language'] ?>">
+</label>
+
+<input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
