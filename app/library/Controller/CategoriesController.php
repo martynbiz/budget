@@ -7,6 +7,9 @@ use App\Utils;
 
 class CategoriesController extends BaseController
 {
+    /**
+     * List categories
+     */
     public function index($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
@@ -28,8 +31,6 @@ class CategoriesController extends BaseController
             ->with('group')
             ->with('transactions')
             ->orderBy('group_id')
-            // ->skip($start)
-            // ->take($limit)
             ->get();
 
         $currentGroupId = null; // so we know when to insert a group
@@ -47,17 +48,14 @@ class CategoriesController extends BaseController
         }
 
         // set totals based on full categoriesAndGroups array
-        $totalCategories = count($categoriesAndGroups); //$currentUser->categories()->count();
+        $totalCategories = count($categoriesAndGroups);
         $totalPages = ($totalCategories > 0) ? (int)ceil($totalCategories/$limit) : 1;
 
         // now, slice the array based on pagination
         $categoriesAndGroups = array_slice($categoriesAndGroups, $start, $limit);
 
-        // $parents = $currentUser->categories()->get();
-
         return $this->render('categories/index', [
             'categories' => $categoriesAndGroups,
-            // 'parent' => $parents,
 
             'current_fund' => $this->currentFund,
 
@@ -67,6 +65,9 @@ class CategoriesController extends BaseController
         ]);
     }
 
+    /**
+     * create category form
+     */
     public function create($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
@@ -83,6 +84,9 @@ class CategoriesController extends BaseController
         ]);
     }
 
+    /**
+     * create category form action
+     */
     public function post($request, $response, $args)
     {
         $container = $this->getContainer();
@@ -104,32 +108,16 @@ class CategoriesController extends BaseController
         // if valid, create category
         if ($validator->isValid()) {
 
-            // // get group
-            // if (!empty($params['group'])) {
-            //     $group = $this->findOrCreateGroupByName($params['group']);
-            //     $params['group_id'] = $group->id;
-            // }
-
             // get group
             if (!empty($params['group'])) {
 
                 $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']], [
-                    'budget' => 0,
                     'group_id' => 0,
                 ]);
             }
             $params['group_id'] = (int)$group->id;
 
             if ($category = $currentUser->categories()->create($params)) {
-
-                // create budget in budgets
-                // TODO this ought to be an event
-                if ($budgetAmount = (int)$params['budget']) {
-                    $category->budgets()->create([
-                        'amount' => $budgetAmount,
-                        'fund_id' => $this->currentFund->id,
-                    ]);
-                }
 
                 // redirect
                 return $response->withRedirect('/categories');
@@ -146,6 +134,9 @@ class CategoriesController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * edit category form
+     */
     public function edit($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
@@ -155,9 +146,7 @@ class CategoriesController extends BaseController
             ->with('group')
             ->findOrFail((int)$args['category_id']);
 
-        $params = array_merge([
-            'budget' => (int)@$category->getBudgetByMonth($this->currentFund)->amount,
-        ], $category->toArray(), [
+        $params = array_merge($category->toArray(), [
             'group' => $category->group->name,
         ], $request->getParams());
 
@@ -171,6 +160,9 @@ class CategoriesController extends BaseController
         ]);
     }
 
+    /**
+     * edit category form action
+     */
     public function update($request, $response, $args)
     {
         $params = $request->getParams();
@@ -194,44 +186,14 @@ class CategoriesController extends BaseController
         // if valid, create category
         if ($validator->isValid()) {
 
-            // // get category
-            // $group = $this->findOrCreateGroupByName($params['group']);
-            // $params['group_id'] = $group->id;
-
             // get group
             if (!empty($params['group'])) {
 
-                $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']], [
-                    'budget' => 0,
-                    'group_id' => 0,
-                ]);
+                $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']]);
             }
             $params['group_id'] = (int)$group->id;
 
             if ($category->update($params)) {
-
-                // update or create budget
-                // we only want one budget row per month. only create if one
-                // doesn't exist for the month
-                $budgetAmount = (int)$params['budget'];// if budget is 0, then delete it
-                $budget = $category->budgets()
-                    ->where('fund_id', $this->currentFund->id)
-                    ->whereBetween('created_at', Utils::getStartEndDateByMonth( date('Y-m') )) // this month
-                    ->first();
-                if ($budgetAmount > 0 && $budget) {
-                    if ($budgetAmount != $budget->amount) {
-                        $budget->update([
-                            'amount' => $params['budget'],
-                        ]);
-                    }
-                } elseif ($budgetAmount > 0) {
-                    $category->budgets()->create([
-                        'amount' => $params['budget'],
-                        'fund_id' => $this->currentFund->id,
-                    ]);
-                } elseif ($budget) {
-                    $budget->delete();
-                }
 
                 // redirect
                 return $response->withRedirect('/categories');
@@ -248,6 +210,9 @@ class CategoriesController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * delete category form action
+     */
     public function delete($request, $response, $args)
     {
         $params = $request->getParams();

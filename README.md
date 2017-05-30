@@ -4,9 +4,12 @@ TODO
 
 !? angular
 
+
+!!!!! only one currency per user 
+
 * docblocks
 
-!!!
+!!! mail not working
 * reset password, forgot password, ! mail not working
 
 Quickies
@@ -15,12 +18,14 @@ Quickies
 * tags in left menu etc
 
 Tags
+* drop support for multiple currencies per user (instead, user can set their currency in settings)
 * tabs crud, test.
 * big replacement of categories
 * needs a fund
 * add budget to tags
 * make getBalance, budgets methods a trait
 * category/tag with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
+! as a transaction can exist under multiple tags, doesn't work for categories
 
 widgets
 * modularize widgets
@@ -40,6 +45,7 @@ widgets
 * feature: edit profile, dashboard settings, lang etc
 * feature: projected savings?
 * feature: create your own currencies - alter table currencies add column user_id int;
+* filter categories/ tags
 
 
 * welcome page - one page template, https://startbootstrap.com/template-overviews/creative/
@@ -58,10 +64,6 @@ widgets
 * favicon
 * security! all good?
 * performance! all good? cache homepage,
-
-maybe
-* filter categories
-* restore sliding-menu.js
 
 http://www.pcworld.com/article/3093363/data-center-cloud/the-5-best-budgeting-apps-for-tracking-and-planning-your-financial-life.html, http://ndesaintheme.com/edumix/version_1.2/,
 

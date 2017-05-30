@@ -40,8 +40,10 @@ class TransactionsController extends BaseController
 
         // get paginated transactions for dispaying in the table
         $transactions = $this->currentFund->transactions()
-            ->whereBetween('created_at', $startEndDates)
+            ->with('fund')
+            ->with('category')
             ->with('tags')
+            ->whereBetween('created_at', $startEndDates)
             ->skip($start)
             ->take($limit)
             ->orderBy('purchased_at', 'desc')
@@ -76,6 +78,7 @@ class TransactionsController extends BaseController
         // if errors found from post, this will contain data
         $params = array_merge([
             'purchased_at' => date('Y-m-d'),
+            'budget' => 0,
         ], $request->getParams());
         $currentUser = $this->getCurrentUser();
 
@@ -89,7 +92,7 @@ class TransactionsController extends BaseController
      */
     public function post($request, $response, $args)
     {
-        $params = $request->getParams();
+        $params = array_map('trim', $request->getParams());
         $container = $this->getContainer();
 
         $currentUser = $this->getCurrentUser();
@@ -117,8 +120,10 @@ class TransactionsController extends BaseController
         if ($validator->isValid()) {
 
             // find category by name if specified (or create a new one)
-            if (!empty($params['category'])) {
-                $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
                     'budget' => 0,
                     'group_id' => 0,
                 ]);
@@ -133,7 +138,7 @@ class TransactionsController extends BaseController
                 $transaction->setTagsByTagsString($params['tags']);
 
                 // redirect
-                return $response->withRedirect('/transactions');
+                return $response->withRedirect( $container->get('router')->pathFor('transactions') );
 
             } else {
                 $errors = $transaction->errors();
@@ -156,11 +161,7 @@ class TransactionsController extends BaseController
 
         $currentUser = $this->getCurrentUser();
 
-        $transaction = $this->getCurrentUser()->transactions()
-            ->with('category')
-            // ->with('fund') // TODO is this required?
-            ->with('tags')
-            ->findOrFail((int)$args['transaction_id']);
+        $transaction = $this->getCurrentUser()->transactions()->findOrFail((int)$args['transaction_id']);
 
         $params = array_merge($transaction->toArray(), $request->getParams(), [
             'category' => $transaction->category->name,
@@ -206,8 +207,10 @@ class TransactionsController extends BaseController
         if ($validator->isValid()) {
 
             // find category by name if specified (or create a new one)
-            if (!empty($params['category'])) {
-                $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
                     'budget' => 0,
                     'group_id' => 0,
                 ]);
@@ -221,7 +224,7 @@ class TransactionsController extends BaseController
                 $transaction->setTagsByTagsString($params['tags']);
 
                 // redirect
-                return $response->withRedirect('/transactions');
+                return $response->withRedirect( $container->get('router')->pathFor('transactions') );
 
             } else {
                 $errors = $transaction->errors();
@@ -248,7 +251,7 @@ class TransactionsController extends BaseController
         if ($transaction->delete()) {
 
             // redirect
-            return $response->withRedirect('/transactions');
+            return $response->withRedirect( $container->get('router')->pathFor('transactions') );
 
         } else {
             $errors = $transaction->errors();

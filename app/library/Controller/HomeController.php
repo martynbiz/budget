@@ -95,16 +95,15 @@ class HomeController extends BaseController
         foreach ($categories as $category) {
 
             $transactionsAmount = $category->getTransactionsAmount(); // TODO pass in start/end
-            $budget = $category->getBudgetByMonth($this->currentFund, date('Y-m'));
-            if ($budget) {
-                $remainingBudget = $budget->amount - abs($transactionsAmount);
+            if ($category->budget > 0) {
+                $remainingBudget = $category->budget - abs($transactionsAmount);
 
                 array_push($budgetStatsData['categories'], [
                     'name' => $category->name,
                     'remaning_budget' => $remainingBudget,
                 ]);
 
-                $budgetStatsData['total_budgets']+= $budget->amount;
+                $budgetStatsData['total_budgets']+= $category->budget;
                 $budgetStatsData['total_remaining_budgets']+= $remainingBudget;
             }
         }
