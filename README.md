@@ -2,6 +2,25 @@
 
 TODO
 
+!? agular
+
+widgets
+* modularize widgets
+* new widget: recent trans, tags budget (better name for tags?)
+* order, close on dash. save as user settings. user settings page.
+
+* move pie to dash as widget
+* set budget on tags
+
+
+* tabs crud, test.
+* is trains correct balance?
+* split transactions up
+
+* category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
+* Transaction model ::setTagsByTagsString
+
+
 * budget stats - order by percentage
 * monthly widgets - Total -> Balance
 * Tip: how to assign budgets (identify things that can be budgeted - e.g. if you shop a lot for clothes but wanna put a cap on things, or take aways vs home cooking )
@@ -26,7 +45,7 @@ TODO
 * scheduled backups of mysql, sync script
 * can auth use aura for sessions?
 * switch to aura session for flash messages
-* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models,
+* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models - deletes, tidy ups .. 
 * favicon
 * rename funds as accounts
 * create your own currencies - alter table currencies add column user_id int;

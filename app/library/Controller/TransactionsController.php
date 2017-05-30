@@ -132,6 +132,7 @@ class TransactionsController extends BaseController
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 // create tags (if any)
+                // TODO move to Transaction model ::setTagsByTagsString
                 if (!empty(trim($params['tags']))) {
                     $tagNames = array_map('trim', explode(',', $params['tags']));
                     foreach ($tagNames as $name) {
