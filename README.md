@@ -5,7 +5,7 @@ TODO
 !? angular
 
 
-!!!!! only one currency per user 
+!!!!! only one currency per user
 
 * docblocks
 
@@ -16,6 +16,7 @@ Quickies
 * monthly widgets - Total -> Balance
 * don't we need $transactionsQuery in dashboard.phtml?
 * tags in left menu etc
+* isUpdateUniqueEmail is same as isUniqueEmail
 
 Tags
 * drop support for multiple currencies per user (instead, user can set their currency in settings)

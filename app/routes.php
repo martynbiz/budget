@@ -85,6 +85,11 @@ $app->group('', function() use ($app) { // attach middleware: requireAuth, setFi
     // tags routes
     $app->group('/tags', function() use ($app) {
         $app->get('', '\App\Controller\TagsController:index')->setName('tags');
+        $app->get('/create', '\App\Controller\TagsController:create')->setName('tags_create');
+        $app->post('', '\App\Controller\TagsController:post')->setName('tags_post');
+        $app->get('/{tag_id}/edit', '\App\Controller\TagsController:edit')->setName('tags_edit');
+        $app->put('/{tag_id}', '\App\Controller\TagsController:update')->setName('tags_update');
+        $app->delete('/{tag_id}', '\App\Controller\TagsController:delete')->setName('tags_delete');
     });
 })
 ->add($requireAuth)

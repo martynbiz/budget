@@ -1,0 +1,39 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+    'selected_menu' => 'tags',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li><a href="<?= $this->pathFor('tags') ?>"><?= $this->translate('tags_link') ?></a></li>
+    <li><span class="show-for-sr">Current: </span> <?= $this->tag->name ?></li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="tag_form" method="post" action="<?= $this->pathFor('tags_update', ['tag_id' => $this->tag->id]) ?>">
+                <?= $this->insert('tags/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('tags') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+            </form>
+
+            <hr>
+
+            <form method="POST" action="<?= $this->pathFor('tags_delete', ['tag_id' => $this->tag->id]) ?>" onsubmit="return confirm('Are you sure you want to delete?');">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
+                <button class="button alert" type="submit">
+                    <?= $this->translate('delete_button') ?>
+                </button>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>

@@ -38,6 +38,9 @@ class TagsController extends BaseController
         ]);
     }
 
+    /**
+     * create tag form
+     */
     public function create($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
@@ -45,15 +48,14 @@ class TagsController extends BaseController
         // if errors found from post, this will contain data
         $params = $request->getParams();
 
-        $groups = $currentUser->tags()
-            ->orderBy('name', 'asc')
-            ->get();
-
         return $this->render('tags/create', [
             'params' => $params,
         ]);
     }
 
+    /**
+     * create tag form action
+     */
     public function post($request, $response, $args)
     {
         $container = $this->getContainer();
@@ -70,21 +72,12 @@ class TagsController extends BaseController
         // name
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
-            ->isUniqueCategory( $i18n->translate('tag_name_not_unique'), $currentUser->tags());
+            ->isUniqueTag( $i18n->translate('tag_name_not_unique'), $currentUser->tags());
 
         // if valid, create tag
         if ($validator->isValid()) {
 
             if ($tag = $currentUser->tags()->create($params)) {
-
-                // // create budget in budgets
-                // // TODO this ought to be an event
-                // if ($budgetAmount = (int)$params['budget']) {
-                //     $tag->budgets()->create([
-                //         'amount' => $budgetAmount,
-                //         'fund_id' => $this->currentFund->id,
-                //     ]);
-                // }
 
                 // redirect
                 return $response->withRedirect('/tags');
@@ -101,24 +94,17 @@ class TagsController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * edit tag form
+     */
     public function edit($request, $response, $args)
     {
         $currentUser = $this->getCurrentUser();
 
         $container = $this->getContainer();
-        $tag = $this->getCurrentUser()->tags()
-            ->with('group')
-            ->findOrFail((int)$args['tag_id']);
+        $tag = $this->getCurrentUser()->tags()->findOrFail((int)$args['tag_id']);
 
-        $params = array_merge([
-            'budget' => (int)@$tag->getBudgetByMonth($this->currentFund)->amount,
-        ], $tag->toArray(), [
-            'group' => $tag->group->name,
-        ], $request->getParams());
-
-        $groups = $currentUser->tags()
-            ->orderBy('name', 'asc')
-            ->get();
+        $params = array_merge($tag->toArray(), $request->getParams());
 
         return $this->render('tags/edit', [
             'params' => $params,
@@ -126,6 +112,9 @@ class TagsController extends BaseController
         ]);
     }
 
+    /**
+     * edit tag form action
+     */
     public function update($request, $response, $args)
     {
         $params = $request->getParams();
@@ -144,49 +133,12 @@ class TagsController extends BaseController
         // name
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') )
-            ->isUniqueCategory( $i18n->translate('tag_name_not_unique'), $currentUser->tags(), $tag);
+            ->isUniqueTag( $i18n->translate('tag_name_not_unique'), $currentUser->tags(), $tag);
 
         // if valid, create tag
         if ($validator->isValid()) {
 
-            // // get tag
-            // $group = $this->findOrCreateGroupByName($params['group']);
-            // $params['group_id'] = $group->id;
-
-            // get group
-            if (!empty($params['group'])) {
-
-                $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']], [
-                    'budget' => 0,
-                    'group_id' => 0,
-                ]);
-            }
-            $params['group_id'] = (int)$group->id;
-
             if ($tag->update($params)) {
-
-                // update or create budget
-                // we only want one budget row per month. only create if one
-                // doesn't exist for the month
-                $budgetAmount = (int)$params['budget'];// if budget is 0, then delete it
-                $budget = $tag->budgets()
-                    ->where('fund_id', $this->currentFund->id)
-                    ->whereBetween('created_at', Utils::getStartEndDateByMonth( date('Y-m') )) // this month
-                    ->first();
-                if ($budgetAmount > 0 && $budget) {
-                    if ($budgetAmount != $budget->amount) {
-                        $budget->update([
-                            'amount' => $params['budget'],
-                        ]);
-                    }
-                } elseif ($budgetAmount > 0) {
-                    $tag->budgets()->create([
-                        'amount' => $params['budget'],
-                        'fund_id' => $this->currentFund->id,
-                    ]);
-                } elseif ($budget) {
-                    $budget->delete();
-                }
 
                 // redirect
                 return $response->withRedirect('/tags');
@@ -203,6 +155,9 @@ class TagsController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * delete tag form action
+     */
     public function delete($request, $response, $args)
     {
         $params = $request->getParams();
@@ -213,13 +168,6 @@ class TagsController extends BaseController
 
         if ($tag->delete()) {
 
-            // update transactions assigned to this tag
-            $tag->transactions()
-                ->where('tag_id', $tagId)
-                ->update([
-                    'tag_id' => null,
-                ]);
-
             // redirect
             return $response->withRedirect('/tags');
 
@@ -228,6 +176,6 @@ class TagsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->create($request, $response, $args);
+        return $this->edit($request, $response, $args);
     }
 }

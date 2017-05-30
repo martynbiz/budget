@@ -58,6 +58,34 @@ class Validator extends \MartynBiz\Validator
     }
 
     /**
+     * Check that the tag is valid
+     * @param string $message Custom message when validation fails
+     * @param User $model This will be used to query the db
+     * @param mixed $updateItem The item that is being updated, can be the same as itself
+     * @return Validator
+     */
+    public function isUniqueTag($message, HasMany $model, $updateItem=null)
+    {
+        //check whether this email exists in the db
+        $query = $model->where('name', '=', $this->value);
+
+        // if updatedItem
+        if (!is_null($updateItem)) {
+            $query = $model->where('id', '!=', $updateItem->id);
+        }
+
+        $tag = $query->first();
+
+        // log error
+        if ($tag) {
+            $this->logError($this->key, $message);
+        }
+
+        // return instance
+        return $this;
+    }
+
+    /**
      * Check that the group is valid
      * @param string $message Custom message when validation fails
      * @param User $model This will be used to query the db
@@ -129,21 +157,4 @@ class Validator extends \MartynBiz\Validator
             ->hasLowerCase($message)
             ->hasNumber($message);
     }
-
-    // /**
-    //  * Will compare two fields are the same (e.g. password, password_confirm)
-    //  * @param string $message Custom message when validation fails
-    //  * @param string $compareKey The other value key to compare with
-    //  * @return Validator
-    //  */
-    // public function isSameAs($message, $compareKey)
-    // {
-    //     //check whether this email exists in the db
-    //     if ($this->params[$this->key] != $this->params[$compareKey]) {
-    //         $this->logError($this->key, $message);
-    //     }
-    //
-    //     // return instance
-    //     return $this;
-    // }
 }

@@ -150,10 +150,6 @@ class CategoriesController extends BaseController
             'group' => $category->group->name,
         ], $request->getParams());
 
-        $groups = $currentUser->categories()
-            ->orderBy('name', 'asc')
-            ->get();
-
         return $this->render('categories/edit', [
             'params' => $params,
             'category' => $category,
@@ -238,6 +234,6 @@ class CategoriesController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->create($request, $response, $args);
+        return $this->edit($request, $response, $args);
     }
 }

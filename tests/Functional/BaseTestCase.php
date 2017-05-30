@@ -17,6 +17,7 @@ use App\Model\Category;
 use App\Model\Group;
 use App\Model\CategoryGroup;
 use App\Model\Currency;
+use App\Model\Tag;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -179,12 +180,24 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
 
         $this->category = $this->user->categories()->create([
             'name' => 'Groceries',
+            'budget' => 100,
             'group_id' => $this->group->id,
         ]);
 
         $this->category2 = $this->user->categories()->create([
             'name' => 'Groceries2',
+            'budget' => 100,
             'group_id' => $this->group->id,
+        ]);
+
+        $this->tag = $this->user->tags()->create([
+            'name' => 'Tag1',
+            'budget' => 100,
+        ]);
+
+        $this->tag2 = $this->user->tags()->create([
+            'name' => 'Tag2',
+            'budget' => 100,
         ]);
 
         // Configure the stub.
@@ -228,6 +241,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         Group::truncate();
         Fund::truncate();
         Currency::truncate();
+        Tag::truncate();
 
         // turn foreign key checks back on
         switch($settings['eloquent']['driver']) {

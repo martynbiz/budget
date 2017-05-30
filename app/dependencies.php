@@ -199,3 +199,7 @@ $container['model.currency'] = function($c) {
 $container['model.category'] = function($c) {
     return new \App\Model\Category();
 };
+
+$container['model.tag'] = function($c) {
+    return new \App\Model\Tag();
+};

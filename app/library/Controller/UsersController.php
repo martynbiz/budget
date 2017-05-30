@@ -134,7 +134,7 @@ class UsersController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->index($request, $response, $args);
+        return $this->edit($request, $response, $args);
     }
 
     /**

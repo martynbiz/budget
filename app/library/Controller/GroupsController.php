@@ -166,6 +166,6 @@ class GroupsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->create($request, $response, $args);
+        return $this->edit($request, $response, $args);
     }
 }

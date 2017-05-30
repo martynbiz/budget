@@ -8,7 +8,7 @@ class Tag extends Base
     */
     protected $fillable = array(
         'name',
-        'amount',
+        'budget',
         'currency_id',
     );
 
