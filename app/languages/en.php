@@ -1,6 +1,9 @@
 <?php
 
 return array (
+  'new_tag_button' => 'New tag',
+  'tags_link' => 'Tags',
+  'tag_name_not_unique' => 'Tag name not unique',
   'tags_label' => 'Tags',
   'dashboard_header' => 'Dashboard',
   'monthly_stats_header' => 'Monthly Stats',
@@ -53,7 +56,7 @@ return array (
   'new_fund_button' => 'New fund',
   'name_header' => 'Name',
   'currency_header' => 'Currency',
-  'balance_header' => 'Total',
+  'balance_header' => 'Balance',
   'new_category_button' => 'New category',
   'name_missing' => 'Missing name',
   'send_recovery_email_button' => 'Send recovery email',

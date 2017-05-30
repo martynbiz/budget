@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Model\Categories;
 use App\Validator;
-use App\Utils;
 
 class CategoriesController extends BaseController
 {

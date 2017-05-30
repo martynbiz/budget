@@ -12,20 +12,10 @@ TODO
 !!! mail not working
 * reset password, forgot password, ! mail not working
 
-Quickies
-* monthly widgets - Total -> Balance
-* don't we need $transactionsQuery in dashboard.phtml?
-* tags in left menu etc
-* isUpdateUniqueEmail is same as isUniqueEmail
-
 Tags
 * drop support for multiple currencies per user (instead, user can set their currency in settings)
-* tabs crud, test.
-* big replacement of categories
-* needs a fund
-* add budget to tags
-* make getBalance, budgets methods a trait
-* category/tag with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
+
+* category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
 ! as a transaction can exist under multiple tags, doesn't work for categories
 
 widgets

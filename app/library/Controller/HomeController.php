@@ -1,6 +1,8 @@
 <?php
 namespace App\Controller;
 
+use App\Utils;
+
 class HomeController extends BaseController
 {
     /**
@@ -31,6 +33,8 @@ class HomeController extends BaseController
     {
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
+
+        list($startDate, $endDate) = Utils::getStartEndDateByMonth($month);
 
 
         // monthly stats widget
@@ -94,7 +98,11 @@ class HomeController extends BaseController
         ];
         foreach ($categories as $category) {
 
-            $transactionsAmount = $category->getTransactionsAmount(); // TODO pass in start/end
+            $transactionsAmount = $category->getTransactionsAmount([
+                'start_date' => $startDate,
+                'end_date' => $endDate,
+            ]);
+
             if ($category->budget > 0) {
                 $remainingBudget = $category->budget - abs($transactionsAmount);
 

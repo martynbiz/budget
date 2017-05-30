@@ -51,6 +51,12 @@
                             </a>
                         </li>
                         <li>
+                            <a href="<?= $this->pathFor('tags') ?>" class="<?= ($this->selected_menu == 'tags') ? 'is-active' : '' ?>">
+                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                <?= $this->translate('tags_link') ?>
+                            </a>
+                        </li>
+                        <li>
                             <a href="<?= $this->pathFor('funds') ?>" class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>">
                                 <i class="fa fa-external-link" aria-hidden="true"></i>
                                 <?= $this->translate('funds_link') ?>
@@ -111,6 +117,12 @@
                                             <a class="<?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>" href="<?= $this->pathFor('categories') ?>">
                                                 <i class="fa fa-pie-chart" aria-hidden="true"></i>
                                                 <?= $this->translate('categories_link') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="<?= ($this->selected_menu == 'tags') ? 'is-active' : '' ?>" href="<?= $this->pathFor('tags') ?>">
+                                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                                <?= $this->translate('tags_link') ?>
                                             </a>
                                         </li>
                                         <li>
