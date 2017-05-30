@@ -5,9 +5,13 @@ use Slim\Container;
 
 use App\Model\Transaction;
 use App\Validator;
+use App\Utils;
 
 class TransactionsController extends BaseController
 {
+    /**
+     * List transactions
+     */
     public function index($request, $response, $args)
     {
         $container = $this->getContainer();
@@ -24,24 +28,19 @@ class TransactionsController extends BaseController
 
         $currentUser = $this->getCurrentUser();
 
-        // get start and end date from the month filter
+        // // get start and end date from the month filter
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
-        $endDate = date('Y-m-t', strtotime($startDate));
+        $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
 
         // get total transactions for calculating pagination
         $totalTransactions = $this->currentFund->transactions()
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
+            ->whereBetween('created_at', $startEndDates)
             ->count();
         $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions / $limit) : 1;
 
         // get paginated transactions for dispaying in the table
         $transactions = $this->currentFund->transactions()
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
-            ->with('fund')
-            ->with('category')
+            ->whereBetween('created_at', $startEndDates)
             ->with('tags')
             ->skip($start)
             ->take($limit)
@@ -51,8 +50,7 @@ class TransactionsController extends BaseController
 
         // get total amounts
         $totalAmount = $this->currentFund->transactions()
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
+            ->whereBetween('created_at', $startEndDates)
             ->pluck('amount')
             ->sum();
 
@@ -68,14 +66,12 @@ class TransactionsController extends BaseController
         ]);
     }
 
+    /**
+     * create transaction form
+     */
     public function create($request, $response, $args)
     {
         $container = $this->getContainer();
-
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
 
         // if errors found from post, this will contain data
         $params = array_merge([
@@ -88,15 +84,13 @@ class TransactionsController extends BaseController
         ]);
     }
 
+    /**
+     * create transaction form action
+     */
     public function post($request, $response, $args)
     {
         $params = $request->getParams();
         $container = $this->getContainer();
-
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
 
         $currentUser = $this->getCurrentUser();
 
@@ -122,23 +116,14 @@ class TransactionsController extends BaseController
         // if valid, create transaction
         if ($validator->isValid()) {
 
-            // get category
-            // $category = $this->findOrCreateCategoryByName($params['category']);
-
-            // get category
+            // find category by name if specified (or create a new one)
             if (!empty($params['category'])) {
-
-                // // TODO move this to $transaction->findOrCreateCategoryByName
-                // $category = $this->findOrCreateCategoryByName($params['category']);
-                // $params['category_id'] = $category->id;
-
                 $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
-                    // 'name' => $categoryName,
                     'budget' => 0,
                     'group_id' => 0,
                 ]);
             }
-            $params['category_id'] = (int)$category->id;
+            $params['category_id'] = @$category->id;
 
             // get current fund
             $params['fund_id'] = $this->currentFund->id;
@@ -146,24 +131,6 @@ class TransactionsController extends BaseController
             if ($transaction = $currentUser->transactions()->create($params)) {
 
                 $transaction->setTagsByTagsString($params['tags']);
-
-                // // create tags (if any)
-                // // TODO move to Transaction model ::setTagsByTagsString
-                // if (!empty(trim($params['tags']))) {
-                //     $tagNames = array_map('trim', explode(',', $params['tags']));
-                //     foreach ($tagNames as $name) {
-                //
-                //         // first try to find an existing tag, if none exist, create a
-                //         // new one
-                //         if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
-                //             $tag = $currentUser->tags()->create([
-                //                 'name' => $name,
-                //             ]);
-                //         }
-                //
-                //         $transaction->tags()->attach($tag);
-                //     }
-                // }
 
                 // redirect
                 return $response->withRedirect('/transactions');
@@ -180,15 +147,12 @@ class TransactionsController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * edit transaction form
+     */
     public function edit($request, $response, $args)
     {
         $container = $this->getContainer();
-
-        // // TODO move this to middleware
-        // if (!$this->currentFund) {
-        //     $container->get('flash')->addMessage('errors', ['Please create a fund']);
-        //     return $response->withRedirect('/funds');
-        // }
 
         $currentUser = $this->getCurrentUser();
 
@@ -209,14 +173,12 @@ class TransactionsController extends BaseController
         ]);
     }
 
+    /**
+     * edit transaction form action
+     */
     public function update($request, $response, $args)
     {
         $container = $this->getContainer();
-
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
 
         $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
@@ -243,22 +205,13 @@ class TransactionsController extends BaseController
         // if valid, create transaction
         if ($validator->isValid()) {
 
-            // get category
+            // find category by name if specified (or create a new one)
             if (!empty($params['category'])) {
-
-                // // TODO move this to $transaction->findOrCreateCategoryByName
-                // $category = $this->findOrCreateCategoryByName($params['category']);
-                // $params['category_id'] = $category->id;
-
                 $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
-                    // 'name' => $params['category'],
                     'budget' => 0,
                     'group_id' => 0,
                 ]);
-
-                $params['category_id'] = $category->id;
             }
-
             $params['category_id'] = @$category->id;
 
             $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
@@ -266,26 +219,6 @@ class TransactionsController extends BaseController
             if ($transaction->update($params)) {
 
                 $transaction->setTagsByTagsString($params['tags']);
-
-                // // just clear existing tags as we'll create new pivot links
-                // $transaction->tags()->detach();
-                //
-                // // create tags (if any)
-                // if (!empty(trim($params['tags']))) {
-                //     $tagNames = array_map('trim', explode(',', $params['tags']));
-                //     foreach ($tagNames as $name) {
-                //
-                //         // first try to find an existing tag, if none exist, create a
-                //         // new one
-                //         if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
-                //             $tag = $currentUser->tags()->create([
-                //                 'name' => $name,
-                //             ]);
-                //         }
-                //
-                //         $transaction->tags()->attach($tag);
-                //     }
-                // }
 
                 // redirect
                 return $response->withRedirect('/transactions');
@@ -302,15 +235,12 @@ class TransactionsController extends BaseController
         return $this->create($request, $response, $args);
     }
 
+    /**
+     * delete transaction form action
+     */
     public function delete($request, $response, $args)
     {
         $container = $this->getContainer();
-
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
-
         $params = $request->getParams();
 
         $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);

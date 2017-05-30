@@ -5,7 +5,22 @@ TODO
 !? angular
 
 * docblocks
+
+!!!
+* reset password, forgot password, ! mail not working
+
+Quickies
+* monthly widgets - Total -> Balance
+* don't we need $transactionsQuery in dashboard.phtml?
+* tags in left menu etc
+
+Tags
+* tabs crud, test.
+* big replacement of categories
+* needs a fund
+* add budget to tags
 * make getBalance, budgets methods a trait
+* category/tag with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
 
 widgets
 * modularize widgets
@@ -16,42 +31,31 @@ widgets
 * set budget on tags
 
 
-* tabs crud, test.
-* is trains correct balance?
-* split transactions up
 
-* category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
-* Transaction model ::setTagsByTagsString
+* feature: view transactions for categories (check trains is adding up), categories filter
+* feature: split transactions up
+* feature: click on table headers to orderBy
+* feature: budget stats - order by percentage
+* feature: fund types - saving, etc
+* feature: edit profile, dashboard settings, lang etc
+* feature: projected savings?
+* feature: create your own currencies - alter table currencies add column user_id int;
 
 
-* budget stats - order by percentage
-* monthly widgets - Total -> Balance
-* Tip: how to assign budgets (identify things that can be budgeted - e.g. if you shop a lot for clothes but wanna put a cap on things, or take aways vs home cooking )
-* click on table headers to orderBy
-
-* don't we need $transactionsQuery in dashboard.phtml?
-* Money owed to me
-* how to attach tags to funds? (e.g. we need to show currency formatting), should be cross fund (e.g. credit card, savings accounts etc)
-* Make /reports controller - move /tags to there
-* fund types - saving, etc
-* reset password, forgot password, ! mail not working
 * welcome page - one page template, https://startbootstrap.com/template-overviews/creative/
 * eloquent events again? .. remove key from cache when amount changes, tidy up empty groups
 * dashboard widget: Budgeted items - budgeted items order of remaining and overspent
 
-* edit profile - connect with gravatar
 
-* how does +/- % look on mobile?
-* right and left padding not same on mobile
-* graph on homepage - look at other sites, projected savings?
+
+* mobile display: how does +/- % look on mobile? right and left padding not same on mobile
+
 * transtool not checking valid lang array (e.g. translatetool update ar)
 * scheduled backups of mysql, sync script
 * can auth use aura for sessions?
 * switch to aura session for flash messages
 * test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models - deletes, tidy ups ..
 * favicon
-* rename funds as accounts
-* create your own currencies - alter table currencies add column user_id int;
 * security! all good?
 * performance! all good? cache homepage,
 
