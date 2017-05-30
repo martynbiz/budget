@@ -1,0 +1,32 @@
+<?php
+$currencyFormat = $this->current_fund->currency->format;
+?>
+<div class="small-12 medium-12 columns widget widget__tag-stats">
+    <h3><?= $this->translate('tag_stats_header') ?></h3>
+    <table class="unstriped">
+        <thead>
+            <tr>
+                <th><span class="show-for-sr"><?= $this->translate('tag_header') ?></span></th>
+                <th><?= $this->translate('remaining_header') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->widget_data['tags'] as $data): ?>
+                <tr>
+                    <td><?= $data['name'] ?></td>
+                    <td><?= sprintf($currencyFormat, $data['remaning_budget']) ?></td>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th><?= $this->translate('total_budgets_header') ?></th>
+                <td><?= sprintf($currencyFormat, $this->widget_data['total_budgets']) ?></td>
+            </tr>
+            <tr>
+                <th><?= $this->translate('total_remaining_budgets_header') ?></th>
+                <td><?= sprintf($currencyFormat, $this->widget_data['total_remaining_budgets']) ?></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

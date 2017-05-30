@@ -26,70 +26,15 @@ $this->layout('layouts/main', [
     </div>
 
     <div class="row">
-        <div class="small-12 medium-6 columns widget widget__monthly-stats">
-            <h3><?= $this->translate('monthly_stats_header') ?></h3>
-            <table class="unstriped">
-                <thead>
-                    <tr>
-                        <th><span class="show-for-sr"><?= $this->translate('month_header') ?></span></th>
-                        <th><?= $this->translate('earnings_header') ?></th>
-                        <th><?= $this->translate('expenses_header') ?></th>
-                        <th><?= $this->translate('balance_header') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($this->monthly_stats_data as $month => $data):
-                        $earningsAmount = $data['earnings']['amount'];
-                        $expensesAmount = $data['expenses']['amount'];
-                        $balance = $data['balance']['amount']; ?>
-                    <tr>
-                        <?php if ($earningsAmount || $expensesAmount): ?>
-                            <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></a></td>
-                        <?php else: ?>
-                            <td><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></td>
-                        <?php endif; ?>
-                        <td class="earnings">
-                            <span class="amount"><?= sprintf($currencyFormat, $earningsAmount) ?></span>
-                        </td>
-                        <td class="expenses">
-                            <span class="amount"><?= sprintf($currencyFormat, $expensesAmount) ?></span>
-                        </td>
-                        <td class="balance">
-                            <span class="amount"><?= sprintf($currencyFormat, $balance) ?></span>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+        <div class="small-12 medium-7 columns">
+            <?php foreach ($this->widgets as $widget): ?>
+                <?= $this->insert( $widget->getTemplateFile(), [
+                    'widget_data' => $widget->getData(),
+                ] ) ?>
+            <?php endforeach ?>
         </div>
-        <div class="small-12 medium-6 columns widget widget__budget-stats">
-            <h3><?= $this->translate('budget_stats_header') ?></h3>
-            <table class="unstriped">
-                <thead>
-                    <tr>
-                        <th><span class="show-for-sr"><?= $this->translate('category_header') ?></span></th>
-                        <th><?= $this->translate('remaining_header') ?></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($this->budget_stats_data['categories'] as $data): ?>
-                        <tr>
-                            <td><?= $data['name'] ?></td>
-                            <td><?= sprintf($currencyFormat, $data['remaning_budget']) ?></td>
-                        </tr>
-                    <?php endforeach ?>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th><?= $this->translate('total_budgets_header') ?></th>
-                        <td><?= sprintf($currencyFormat, $this->budget_stats_data['total_budgets']) ?></td>
-                    </tr>
-                    <tr>
-                        <th><?= $this->translate('total_remaining_budgets_header') ?></th>
-                        <td><?= sprintf($currencyFormat, $this->budget_stats_data['total_remaining_budgets']) ?></td>
-                    </tr>
-                </tfoot>
-            </table>
+        <div class="small-12 medium-5 columns widget widget__categories">
+            <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
         </div>
     </div>
 <?php $this->replace() ?>
@@ -100,4 +45,25 @@ $this->layout('layouts/main', [
         display: none;
     }
     </style>
+<?php $this->append() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+
+    // init the chart
+    $.getJSON("/data/expenses", function(data) {
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: data["title"],
+            plotOptions: data['plotOptions'],
+            tooltip: data["tooltip"],
+            series: data["series"],
+            drilldown: data["drilldown"]
+        });
+    });
+
+    </script>
 <?php $this->append() ?>

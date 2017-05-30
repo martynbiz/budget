@@ -41,7 +41,7 @@ $currencyFormat = $this->current_fund->currency->format;
     </div>
 
     <div class="row">
-        <div class="small-12 medium-8 columns">
+        <div class="small-12 medium-12 columns">
             <table>
                 <thead>
                     <tr>
@@ -79,29 +79,5 @@ $currencyFormat = $this->current_fund->currency->format;
 
             <?= $this->insert('partials/pagination') ?>
         </div>
-        <div class="small-12 medium-4 columns widget widget__categories">
-            <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
-        </div>
     </div>
 <?php $this->replace() ?>
-
-<?php $this->section('scripts') ?>
-    <script>
-
-    // init the chart
-    $.getJSON("/data/expenses", function(data) {
-
-        Highcharts.chart('container', {
-            chart: {
-                type: 'pie'
-            },
-            title: data["title"],
-            plotOptions: data['plotOptions'],
-            tooltip: data["tooltip"],
-            series: data["series"],
-            drilldown: data["drilldown"]
-        });
-    });
-
-    </script>
-<?php $this->append() ?>

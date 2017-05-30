@@ -1,0 +1,39 @@
+<?php
+$currencyFormat = $this->current_fund->currency->format;
+?>
+<div class="small-12 medium-12 columns widget widget__monthly-stats">
+    <h3><?= $this->translate('monthly_stats_header') ?></h3>
+    <table class="unstriped">
+        <thead>
+            <tr>
+                <th><span class="show-for-sr"><?= $this->translate('month_header') ?></span></th>
+                <th><?= $this->translate('earnings_header') ?></th>
+                <th><?= $this->translate('expenses_header') ?></th>
+                <th><?= $this->translate('balance_header') ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->widget_data as $month => $data):
+                $earningsAmount = $data['earnings']['amount'];
+                $expensesAmount = $data['expenses']['amount'];
+                $balance = $data['balance']['amount']; ?>
+            <tr>
+                <?php if ($earningsAmount || $expensesAmount): ?>
+                    <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></a></td>
+                <?php else: ?>
+                    <td><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></td>
+                <?php endif; ?>
+                <td class="earnings">
+                    <span class="amount"><?= sprintf($currencyFormat, $earningsAmount) ?></span>
+                </td>
+                <td class="expenses">
+                    <span class="amount"><?= sprintf($currencyFormat, $expensesAmount) ?></span>
+                </td>
+                <td class="balance">
+                    <span class="amount"><?= sprintf($currencyFormat, $balance) ?></span>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>

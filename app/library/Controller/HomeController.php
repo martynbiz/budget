@@ -6,6 +6,15 @@ use App\Utils;
 class HomeController extends BaseController
 {
     /**
+     * @var array of WidgetInterface
+     */
+    protected $widgets = [
+        'monthly_stats' => '\\App\\Widget\\MonthlyStats',
+        'category_stats' => '\\App\\Widget\\CategoryStats',
+        'tag_stats' => '\\App\\Widget\\TagStats',
+    ];
+
+    /**
      * Homepage
      */
     public function index($request, $response, $args)
@@ -34,95 +43,14 @@ class HomeController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        list($startDate, $endDate) = Utils::getStartEndDateByMonth($month);
-
-
-        // monthly stats widget
-
-        $monthlyStatsData = [];
-
-        $fromMonth = date('Y-m-01', strtotime('-3 Months'));
-        $transactions = $this->currentFund->transactions()
-            ->where('purchased_at', '>=', $fromMonth)
-            ->orderBy('purchased_at', 'desc')
-            ->get();
-
-        // get averate
-        $totalEarnings = 0;
-        $totalExpenses = 0;
-        foreach ($transactions as $transaction) {
-
-            $month = date('Y-m', strtotime($transaction->purchased_at));
-            if (!isset($monthlyStatsData[$month])) {
-                $monthlyStatsData[$month] = [
-                    'earnings' => [
-                        'amount' => 0,
-                    ],
-                    'expenses' => [
-                        'amount' => 0,
-                    ],
-                    'balance' => [
-                        'amount' => 0,
-                    ],
-                ];
-
-                $data = &$monthlyStatsData[$month];
-            }
-
-            if ($transaction->amount > 0) { // is earning
-                $data['earnings']['amount']+= $transaction->amount;
-                $totalEarnings+= $transaction->amount;
-            } else {
-                $data['expenses']['amount']+= abs($transaction->amount);
-                $totalExpenses+= abs($transaction->amount);
-            }
-
-            $data['balance']['amount']+= $transaction->amount;
-        }
-
-
-        // category stats widget
-
-        // first get the categories
-        $categories = $currentUser->categories()
-            ->with('transactions')
-            ->orderBy('group_id')
-            ->get();
-
-        // build array with remaining budget
-        $budgetStatsData = [
-            'categories' => [],
-            'total_budgets' => 0,
-            'total_remaining_budgets' => 0,
-
-        ];
-        foreach ($categories as $category) {
-
-            $transactionsAmount = $category->getTransactionsAmount([
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-            ]);
-
-            if ($category->budget > 0) {
-                $remainingBudget = $category->budget - abs($transactionsAmount);
-
-                array_push($budgetStatsData['categories'], [
-                    'name' => $category->name,
-                    'remaning_budget' => $remainingBudget,
-                ]);
-
-                $budgetStatsData['total_budgets']+= $category->budget;
-                $budgetStatsData['total_remaining_budgets']+= $remainingBudget;
-            }
-        }
-
-        usort($budgetStatsData['categories'], function($a, $b) {
-            return $a['remaning_budget'] - $b['remaning_budget'];
+        // initiate all widgets for this user
+        $widgets = $this->widgets;
+        array_walk($widgets, function(&$widget, $key) use ($container) {
+            $widget = new $widget($container);
         });
 
         return $this->render('home/dashboard', [
-            'monthly_stats_data' => $monthlyStatsData,
-            'budget_stats_data' => $budgetStatsData,
+            'widgets' => $widgets,
         ]);
     }
 

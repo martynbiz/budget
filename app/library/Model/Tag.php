@@ -3,6 +3,8 @@ namespace App\Model;
 
 class Tag extends Base
 {
+    use Traits\HasTransactions;
+
     /**
     * @var array
     */
@@ -12,20 +14,20 @@ class Tag extends Base
         'currency_id',
     );
 
-    /**
-     * @var
-     */
-    protected $transactionsAmount;
+    public function transactions()
+    {
+        return $this->belongsToMany('App\\Model\\Transaction'); //, 'user_id');
+    }
 
     public function user()
     {
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
     }
 
-    public function transactions()
-    {
-        return $this->belongsToMany('App\\Model\\Transaction')->withTimestamps(); //, 'user_id');
-    }
+    // public function transactions()
+    // {
+    //     return $this->belongsToMany('App\\Model\\Transaction')->withTimestamps(); //, 'user_id');
+    // }
 
     // public function budgets()
     // {

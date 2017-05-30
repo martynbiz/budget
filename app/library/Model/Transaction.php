@@ -79,6 +79,7 @@ class Transaction extends Base
             if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
                 $tag = $currentUser->tags()->create([
                     'name' => $name,
+                    'budget' => 0,
                 ]);
             }
 

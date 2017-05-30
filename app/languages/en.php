@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'tag_stats_header' => 'Tag stats',
+  'tag_header' => 'Tag',
   'new_tag_button' => 'New tag',
   'tags_link' => 'Tags',
   'tag_name_not_unique' => 'Tag name not unique',
@@ -9,7 +11,7 @@ return array (
   'monthly_stats_header' => 'Monthly Stats',
   'month_header' => 'Month',
   'earnings_header' => 'Earnings',
-  'budget_stats_header' => 'Budget Stats',
+  'budget_stats_header' => 'Category Stats',
   'total_budgets_header' => 'Total budgets',
   'total_remaining_budgets_header' => 'Total remaning budget',
   'please_select' => 'Please select',

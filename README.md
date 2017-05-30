@@ -20,10 +20,6 @@ Tags
 * category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
 ! as a transaction can exist under multiple tags, doesn't work for categories
 
-widgets
-* modularize widgets
-* new widget: recent trans, tags budget (better name for tags?)
-* order, close on dash. save as user settings. user settings page.
 
 * move pie to dash as widget
 * set budget on tags
@@ -38,6 +34,7 @@ widgets
 * feature: projected savings?
 * feature: create your own currencies - alter table currencies add column user_id int;
 * filter categories/ tags
+* feature: order, close on dash. save as user settings. user settings page.
 
 
 * welcome page - one page template, https://startbootstrap.com/template-overviews/creative/
