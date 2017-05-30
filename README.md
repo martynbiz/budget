@@ -4,8 +4,10 @@ TODO
 
 !? angular
 
-
-!!!!! only one currency per user
+settings
+* users::edit/update/delete
+* feature: edit profile, dashboard settings, lang etc
+* make currency a setting
 
 * docblocks
 
@@ -33,7 +35,6 @@ widgets
 * feature: click on table headers to orderBy
 * feature: budget stats - order by percentage
 * feature: fund types - saving, etc
-* feature: edit profile, dashboard settings, lang etc
 * feature: projected savings?
 * feature: create your own currencies - alter table currencies add column user_id int;
 * filter categories/ tags
