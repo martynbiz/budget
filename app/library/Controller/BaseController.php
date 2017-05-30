@@ -214,21 +214,21 @@ class BaseController
     //
     //     return $category;
     // }
-
-    protected function findOrCreateGroupByName($groupName)
-    {
-        // if category is empty, we'll return
-        if (empty($groupName)) return;
-
-        $currentUser = $this->getCurrentUser();
-
-        if (!$group = $currentUser->groups()->where('name', $groupName)->first()) {
-            $group = $currentUser->groups()->create([
-                'name' => $groupName,
-                'group_id' => 0,
-            ]);
-        }
-
-        return $group;
-    }
+    // 
+    // protected function findOrCreateGroupByName($groupName)
+    // {
+    //     // if category is empty, we'll return
+    //     if (empty($groupName)) return;
+    //
+    //     $currentUser = $this->getCurrentUser();
+    //
+    //     if (!$group = $currentUser->groups()->where('name', $groupName)->first()) {
+    //         $group = $currentUser->groups()->create([
+    //             'name' => $groupName,
+    //             'group_id' => 0,
+    //         ]);
+    //     }
+    //
+    //     return $group;
+    // }
 }

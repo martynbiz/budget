@@ -104,11 +104,21 @@ class CategoriesController extends BaseController
         // if valid, create category
         if ($validator->isValid()) {
 
+            // // get group
+            // if (!empty($params['group'])) {
+            //     $group = $this->findOrCreateGroupByName($params['group']);
+            //     $params['group_id'] = $group->id;
+            // }
+
             // get group
             if (!empty($params['group'])) {
-                $group = $this->findOrCreateGroupByName($params['group']);
-                $params['group_id'] = $group->id;
+
+                $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']], [
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
             }
+            $params['group_id'] = (int)$group->id;
 
             if ($category = $currentUser->categories()->create($params)) {
 
@@ -184,9 +194,19 @@ class CategoriesController extends BaseController
         // if valid, create category
         if ($validator->isValid()) {
 
-            // get category
-            $group = $this->findOrCreateGroupByName($params['group']);
-            $params['group_id'] = $group->id;
+            // // get category
+            // $group = $this->findOrCreateGroupByName($params['group']);
+            // $params['group_id'] = $group->id;
+
+            // get group
+            if (!empty($params['group'])) {
+
+                $group = $currentUser->groups()->firstOrCreate(['name' => $params['group']], [
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
+            }
+            $params['group_id'] = (int)$group->id;
 
             if ($category->update($params)) {
 
