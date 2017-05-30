@@ -55,4 +55,34 @@ class Transaction extends Base
 
         return $purchasedString;
     }
+
+    /**
+     * Will attach a "tag1,tag2,tag3" string of tags to the transactions. If the
+     * tag doesn't exist, it will be created
+     * @param string $tagsString Tag string eg. "tag1,tag2,tag3"
+     */
+    public function setTagsByTagsString($tagsString) {
+
+        $currentUser = $this->user;
+
+        // just clear existing tags as we'll create new pivot links
+        $this->tags()->detach();
+
+        // create tags (if any)
+        $tagsArray = array_map('trim', explode(',', $tagsString));
+        foreach ($tagsArray as $name) {
+
+            if (empty($name)) continue;
+
+            // first try to find an existing tag, if none exist, create a
+            // new one
+            if (!$tag = $currentUser->tags()->where('name', $name)->first()) {
+                $tag = $currentUser->tags()->create([
+                    'name' => $name,
+                ]);
+            }
+
+            $this->tags()->attach($tag);
+        }
+    }
 }

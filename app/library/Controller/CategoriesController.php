@@ -85,9 +85,9 @@ class CategoriesController extends BaseController
 
     public function post($request, $response, $args)
     {
-        $params = $request->getParams();
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
+        $params = $request->getParams();
 
         // validate form data
 

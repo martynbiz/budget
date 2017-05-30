@@ -66,12 +66,12 @@ $currencyFormat = $this->current_fund->currency->format;
                             $group = $category;
                             $transactionsAmount = $group->getTransactionsAmount($transactionsQuery);
                             $budget = $category->getBudgetByMonth($this->current_fund, $this->month_filter);
-                            $remainingBudget = $budget->amount - abs($transactionsAmount); ?>
+                            $remainingBudget = ($budget) ? $budget->amount - abs($transactionsAmount) : 0; ?>
                             <tr>
                                 <td><a href="<?= $this->pathFor('categories_edit', ['category_id' => $category->id]) ?>">- <?= $category->name ?></a></td>
                                 <td><?= sprintf($currencyFormat, $transactionsAmount) ?></td>
-                                <td><?= sprintf($currencyFormat, $budget->amount) ?></td>
-                                <td class="<?= ($budget->amount) ? (($remainingBudget > 0) ? 'in-budget' : (($remainingBudget < 0) ? 'over-budget' : '')) : '' ?>"><?= ($budget->amount) ?  sprintf($currencyFormat, $remainingBudget) : '&nbsp;' ?></td>
+                                <td><?= sprintf($currencyFormat, @$budget->amount) ?></td>
+                                <td class="<?= ($remainingBudget > 0) ? 'in-budget' : (($remainingBudget < 0) ? 'over-budget' : '') ?>"><?= ($budget) ?  sprintf($currencyFormat, $remainingBudget) : '&nbsp;' ?></td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach ?>

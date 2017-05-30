@@ -141,6 +141,7 @@ class CategoriesControllerTest extends BaseTestCase
         return array_merge([
             'name' => 'Restaurant',
             'group' => 'Food',
+            'budget' => '10',
         ], $values);
     }
 

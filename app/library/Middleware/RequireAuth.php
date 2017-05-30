@@ -18,7 +18,7 @@ class RequireAuth extends Base
         $currentUser =  $this->container->get('model.user')->where('id', $attributes['id'])->first();
 
         if (!$currentUser) {
-            $loginUrl = $this->container->get('router')->pathFor('login');
+            $loginUrl = $this->container->get('router')->pathFor('session_login');
             return $response->withRedirect($loginUrl, 302);
         }
 

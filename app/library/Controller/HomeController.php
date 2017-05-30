@@ -57,6 +57,9 @@ class HomeController extends BaseController
                     'expenses' => [
                         'amount' => 0,
                     ],
+                    'balance' => [
+                        'amount' => 0,
+                    ],
                 ];
 
                 $data = &$monthlyStatsData[$month];
@@ -114,19 +117,6 @@ class HomeController extends BaseController
             'monthly_stats_data' => $monthlyStatsData,
             'budget_stats_data' => $budgetStatsData,
         ]);
-    }
-
-    /**
-     *
-     */
-    public function switchLanguage($request, $response, $args)
-    {
-        $params = $request->getParams();
-
-        // set language cookie
-        setcookie('language', $params['language']);
-
-        return $response->withRedirect('/');
     }
 
     /**

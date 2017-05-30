@@ -42,15 +42,15 @@ class Category extends Base
     {
         $baseQuery = $this->transactions();
 
-        if ($query['start_date']) {
+        if (isset($query['start_date'])) {
             $baseQuery->where('purchased_at', '>=', $query['start_date']);
         }
 
-        if ($query['end_date']) {
+        if (isset($query['end_date'])) {
             $baseQuery->where('purchased_at', '<=', $query['end_date']);
         }
 
-        if ($query['fund']) {
+        if (isset($query['fund'])) {
             $baseQuery->where('fund_id', $query['fund']->id);
         }
 

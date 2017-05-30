@@ -10,20 +10,26 @@ $setFilters = new \App\Middleware\SetFilters($container);
 // we add setFilters coz it's required by dashboard - which we serve under / now
 $app->get('/', '\App\Controller\HomeController:index')->setName('home')->add($setFilters);
 
-$app->post('/switch-language', '\App\Controller\HomeController:switchLanguage');
-
 // session routes
-$app->get('/login', '\App\Controller\SessionController:login')->setName('login');
-$app->post('/login', '\App\Controller\SessionController:post')->setName('login_post');
-$app->get('/logout', '\App\Controller\SessionController:logout')->setName('logout');
-$app->delete('/logout', '\App\Controller\SessionController:delete')->setName('logout_post');
+$app->group('/session', function() use ($app) {
+    $app->get('/login', '\App\Controller\SessionController:login')->setName('session_login');
+    $app->post('/login', '\App\Controller\SessionController:post')->setName('session_login_post');
+});
 
-// user routes
-$app->get('/register', '\App\Controller\UsersController:register')->setName('register');
-$app->post('/register', '\App\Controller\UsersController:post')->setName('register_post');
+// users routes
+$app->group('/users', function() use ($app) {
+    $app->get('/register', '\App\Controller\UsersController:register')->setName('users_register');
+    $app->post('/register', '\App\Controller\UsersController:post')->setName('users_register_post');
+    $app->post('/switch-language', '\App\Controller\HomeController:switchLanguage')->setName('users_switch_language');
+});
 
 $app->group('', function() use ($app) {
-    // $app->get('/dashboard', '\App\Controller\HomeController:dashboard')->setName('dashboard');
+
+    // session routes
+    $app->group('/session', function() use ($app) {
+        $app->get('/logout', '\App\Controller\SessionController:logout')->setName('session_logout');
+        $app->delete('/logout', '\App\Controller\SessionController:delete')->setName('session_logout_delete');
+    });
 
     $app->group('/transactions', function() use ($app) {
         $app->get('', '\App\Controller\TransactionsController:index')->setName('transactions');

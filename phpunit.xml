@@ -13,4 +13,7 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+    <php>
+        <server name="REQUEST_URI" value="/transactions" />
+    </php>
 </phpunit>

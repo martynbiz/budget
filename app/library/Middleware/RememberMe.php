@@ -17,16 +17,13 @@ class RememberMe extends Base
     public function __invoke($request, $response, $next)
     {
         $container = $this->container;
-        $request = $container->get('request');
-        $response = $container->get('response');
 
         // if they are already on the login page, don't try to redirect them again
-        if ($_SERVER['REQUEST_URI'] != $container->get('router')->pathFor('login')) {
+        $loginUrl = $container->get('router')->pathFor('session_login');
+        if ($_SERVER['REQUEST_URI'] != $loginUrl) {
 
-            // if user is not logged in, attempt to log them in by "remember me"
-            // cookie (if exists)
+            // if user is not logged in, attempt to log them in by "remember me" cookie (if exists)
             if (!$container->get('auth')->isAuthenticated() && $request->getCookieParam('auth_token')) {
-                $loginUrl = $container->get('router')->pathFor('login');
                 return $response->withRedirect($loginUrl);
             }
         }

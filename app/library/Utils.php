@@ -16,7 +16,7 @@ class Utils
      * @param User $model This will be used to query the db
      * @return Validator
      */
-    public function getStartEndDateByMonth($month)
+    public static function getStartEndDateByMonth($month)
     {
         $startDate = date('Y-m-01', strtotime($month . '-01'));
         $endDate = date('Y-m-t', strtotime($startDate));

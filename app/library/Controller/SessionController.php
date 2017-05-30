@@ -153,11 +153,11 @@ class SessionController extends BaseController
 
     public function logout($request, $response, $args)
     {
-        // if authenticated, return to the homepage
-        $container = $this->getContainer();
-        if (!$container->get('auth')->isAuthenticated()) {
-            return $response->withRedirect('/');
-        }
+        // // if authenticated, return to the homepage
+        // $container = $this->getContainer();
+        // if (!$container->get('auth')->isAuthenticated()) {
+        //     return $response->withRedirect('/');
+        // }
 
         return $this->render('session/logout');
     }

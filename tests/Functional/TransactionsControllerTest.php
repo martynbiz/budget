@@ -146,6 +146,7 @@ class TransactionsControllerTest extends BaseTestCase
             'amount' => '12.50',
             'purchased_at' => '2017-05-01 00:00:05',
             'category' => 'Groceries',
+            'tags' => '',
         ], $values);
     }
 

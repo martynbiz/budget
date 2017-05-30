@@ -12,7 +12,7 @@
 <?php $this->section('content') ?>
     <div class="row">
     	<div class="small-12 columns">
-            <form id="register_form" method="post" action="<?= $this->pathFor('register_post') ?>">
+            <form id="register_form" method="post" action="<?= $this->pathFor('users_register_post') ?>">
                 <label><?= $this->translate('first_name') ?>
                     <input type="text" class="form-control" name="first_name" placeholder="<?= $this->translate('first_name') ?>" value="<?= @$this->params['first_name'] ?>">
                 </label>

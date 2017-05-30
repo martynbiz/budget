@@ -2,7 +2,12 @@
 
 TODO
 
-!? agular
+!? angular
+
+* docblocks
+
+* RequireFund middleware instead of
+* make getBalance, budgets methods a trait
 
 widgets
 * modularize widgets
@@ -45,7 +50,7 @@ widgets
 * scheduled backups of mysql, sync script
 * can auth use aura for sessions?
 * switch to aura session for flash messages
-* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models - deletes, tidy ups .. 
+* test exceptions, pie chart data, deletes and child dependencies, auth token, category/group is not saved when empty string, models - deletes, tidy ups ..
 * favicon
 * rename funds as accounts
 * create your own currencies - alter table currencies add column user_id int;

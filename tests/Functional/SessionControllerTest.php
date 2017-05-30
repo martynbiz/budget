@@ -5,7 +5,7 @@ class SessionControllerTest extends BaseTestCase
 {
     public function testGetLoginShowsFormWhenNotAuthenticated()
     {
-        $response = $this->runApp('GET', '/login');
+        $response = $this->runApp('GET', '/session/login');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -16,7 +16,7 @@ class SessionControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/login');
+        $response = $this->runApp('GET', '/session/login');
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -26,7 +26,7 @@ class SessionControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('POST', '/login', [
+        $response = $this->runApp('POST', '/session/login', [
             'email' => 'martyn@example.com',
             'password' => 'password1',
         ]);
@@ -37,7 +37,7 @@ class SessionControllerTest extends BaseTestCase
 
     public function testPostLoginWithInvalidCredentials()
     {
-        $response = $this->runApp('POST', '/login', [
+        $response = $this->runApp('POST', '/session/login', [
             'email' => 'martyn@example.com',
             'password' => 'password1',
         ]);
@@ -52,7 +52,7 @@ class SessionControllerTest extends BaseTestCase
     {
         $this->login( $this->user );
 
-        $response = $this->runApp('GET', '/logout');
+        $response = $this->runApp('GET', '/session/logout');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -61,7 +61,7 @@ class SessionControllerTest extends BaseTestCase
 
     public function testGetLogoutRedirectsWhenAuthenticated()
     {
-        $response = $this->runApp('GET', '/logout');
+        $response = $this->runApp('GET', '/session/logout');
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -69,12 +69,14 @@ class SessionControllerTest extends BaseTestCase
 
     public function testPostLogout()
     {
+        $this->login( $this->user );
+
         // mock authenticate to return true
         $this->app->getContainer()['auth']
             ->expects( $this->once() )
             ->method('clearAttributes');
 
-        $response = $this->runApp('POST', '/logout', [
+        $response = $this->runApp('POST', '/session/logout', [
             '_METHOD' => 'DELETE',
         ]);
 

@@ -57,20 +57,20 @@
                             </a>
                         </li>
                         <li style="border-top: 1px solid #222;">
-                            <a href="<?= $this->pathFor('logout') ?>" class="<?= ($this->selected_menu == 'logout') ? 'is-active' : '' ?>" onclick="$('form#logout_form').submit(); return false;">
+                            <a href="<?= $this->pathFor('session_logout') ?>" class="<?= ($this->selected_menu == 'logout') ? 'is-active' : '' ?>" onclick="$('form#logout_form').submit(); return false;">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                                 <?= $this->translate('logout_link') ?>
                             </a>
                         </li>
                     <?php else: ?>
                         <li style="border-top: 1px solid #222;">
-                            <a href="<?= $this->pathFor('login') ?>" class="<?= ($this->selected_menu == 'login') ? 'is-active' : '' ?>">
+                            <a href="<?= $this->pathFor('session_login') ?>" class="<?= ($this->selected_menu == 'login') ? 'is-active' : '' ?>">
                                 <i class="fa fa-sign-in" aria-hidden="true"></i>
                                 <?= $this->translate('login_link') ?>
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('register') ?>" class="<?= ($this->selected_menu == 'register') ? 'is-active' : '' ?>">
+                            <a href="<?= $this->pathFor('users_register') ?>" class="<?= ($this->selected_menu == 'register') ? 'is-active' : '' ?>">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <?= $this->translate('register_link') ?>
                             </a>
@@ -141,7 +141,7 @@
                         </div>
                         <div class="top-bar-right">
                             <?php if ($this->currentUser): ?>
-                                <form id="logout_form" method="post" action="<?= $this->pathFor('logout_post') ?>">
+                                <form id="logout_form" method="post" action="<?= $this->pathFor('session_logout_delete') ?>">
                                     <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
                                     <input type="hidden" name="_METHOD" value="DELETE">
                                 </form>
@@ -153,7 +153,7 @@
                                             <?= $this->currentUser->first_name ?> <?= $this->currentUser->last_name ?></a>
                                         <ul class="menu vertical slicknav">
                                             <li>
-                                                <a href="<?= $this->pathFor('logout') ?>" onclick="$('form#logout_form').submit(); return false;">
+                                                <a href="<?= $this->pathFor('session_logout') ?>" onclick="$('form#logout_form').submit(); return false;">
                                                     <?= $this->translate('logout_link') ?>
                                                 </a>
                                             </li>
@@ -162,8 +162,8 @@
                                 </ul>
                             <?php else: ?>
                                 <ul class="menu slicknav">
-                                    <li><a href="<?= $this->pathFor('register') ?>"><?= $this->translate('register_link') ?></a></li>
-                                    <li><a href="<?= $this->pathFor('login') ?>"><?= $this->translate('login_link') ?></a></li>
+                                    <li><a href="<?= $this->pathFor('users_register') ?>"><?= $this->translate('register_link') ?></a></li>
+                                    <li><a href="<?= $this->pathFor('session_login') ?>"><?= $this->translate('login_link') ?></a></li>
                                 </ul>
                             <?php endif; ?>
                         </div>

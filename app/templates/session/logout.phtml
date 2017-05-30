@@ -12,7 +12,7 @@
 <?php $this->section('content') ?>
     <div class="row">
     	<div class="small-12 medium-12 columns">
-            <form id="logout_form" class="well text-center" method="post" action="<?= $this->pathFor('logout_post') ?>">
+            <form id="logout_form" class="well text-center" method="post" action="<?= $this->pathFor('session_logout_delete') ?>">
                 <?= $this->translate('logout_intro') ?>
 
                 <input type="hidden" name="_METHOD" value="DELETE">

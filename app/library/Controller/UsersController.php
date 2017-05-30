@@ -136,4 +136,14 @@ class UsersController extends BaseController
         $container->get('flash')->addMessage('errors', $errors);
         return $this->index($request, $response, $args);
     }
+
+    /**
+     *
+     */
+    public function switchLanguage($request, $response, $args)
+    {
+        $container = $this->getContainer();
+        setcookie('language', $request->getParam('language'));
+        return $response->withRedirect( $container->get('router')->pathFor('users_switch_language') );
+    }
 }

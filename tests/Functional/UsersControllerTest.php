@@ -5,7 +5,7 @@ class UsersControllerTest extends BaseTestCase
 {
     public function testGetRegister()
     {
-        $response = $this->runApp('GET', '/register');
+        $response = $this->runApp('GET', '/users/register');
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
@@ -14,7 +14,7 @@ class UsersControllerTest extends BaseTestCase
 
     public function testPostRegisterWithValidData()
     {
-        $response = $this->runApp('POST', '/register', static::getUserValues());
+        $response = $this->runApp('POST', '/users/register', static::getUserValues());
 
         // assertions
         $this->assertEquals(302, $response->getStatusCode());
@@ -35,7 +35,7 @@ class UsersControllerTest extends BaseTestCase
         ];
         if (!$agreement) unset($userValues['agreement']);
 
-        $response = $this->runApp('POST', '/register', $userValues);
+        $response = $this->runApp('POST', '/users/register', $userValues);
 
         // assertions
         $this->assertEquals(200, $response->getStatusCode());
