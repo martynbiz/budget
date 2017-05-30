@@ -123,10 +123,24 @@ class TransactionsController extends BaseController
         if ($validator->isValid()) {
 
             // get category
-            $category = $this->findOrCreateCategoryByName($params['category']);
+            // $category = $this->findOrCreateCategoryByName($params['category']);
+
+            // get category
+            if (!empty($params['category'])) {
+
+                // // TODO move this to $transaction->findOrCreateCategoryByName
+                // $category = $this->findOrCreateCategoryByName($params['category']);
+                // $params['category_id'] = $category->id;
+
+                $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
+                    // 'name' => $categoryName,
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
+            }
             $params['category_id'] = (int)$category->id;
 
-            // TODO get current fund
+            // get current fund
             $params['fund_id'] = $this->currentFund->id;
 
             if ($transaction = $currentUser->transactions()->create($params)) {
@@ -170,17 +184,17 @@ class TransactionsController extends BaseController
     {
         $container = $this->getContainer();
 
-        // TODO move this to middleware
-        if (!$this->currentFund) {
-            $container->get('flash')->addMessage('errors', ['Please create a fund']);
-            return $response->withRedirect('/funds');
-        }
+        // // TODO move this to middleware
+        // if (!$this->currentFund) {
+        //     $container->get('flash')->addMessage('errors', ['Please create a fund']);
+        //     return $response->withRedirect('/funds');
+        // }
 
         $currentUser = $this->getCurrentUser();
 
         $transaction = $this->getCurrentUser()->transactions()
             ->with('category')
-            ->with('fund') // TODO is this required?
+            // ->with('fund') // TODO is this required?
             ->with('tags')
             ->findOrFail((int)$args['transaction_id']);
 
@@ -232,10 +246,20 @@ class TransactionsController extends BaseController
             // get category
             if (!empty($params['category'])) {
 
-                // TODO move this to $transaction->findOrCreateCategoryByName
-                $category = $this->findOrCreateCategoryByName($params['category']);
+                // // TODO move this to $transaction->findOrCreateCategoryByName
+                // $category = $this->findOrCreateCategoryByName($params['category']);
+                // $params['category_id'] = $category->id;
+
+                $category = $currentUser->categories()->firstOrCreate(['name' => $params['category']], [
+                    // 'name' => $params['category'],
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
+
                 $params['category_id'] = $category->id;
             }
+
+            $params['category_id'] = @$category->id;
 
             $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
 

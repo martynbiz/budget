@@ -28,7 +28,7 @@ class SetFilters extends Base
             $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
             ($fund = $container->get('model.fund')->find($fundId)) ||
                 ($fund = $container->get('model.fund')->first());
-            if (!$fund) return $response->withRedirect('/funds');
+            if (!$fund) return $response->withRedirect( $container->get('router')->pathFor('funds') );
 
             // set session var - from confirmed $fund
             $container->get('session')->set(SESSION_FILTER_FUND, $fund->id);

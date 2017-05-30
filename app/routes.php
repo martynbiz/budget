@@ -23,21 +23,12 @@ $app->group('/users', function() use ($app) {
     $app->post('/switch-language', '\App\Controller\HomeController:switchLanguage')->setName('users_switch_language');
 });
 
-$app->group('', function() use ($app) {
+$app->group('', function() use ($app) { // attach middleware: requireAuth, setFilters
 
     // session routes
     $app->group('/session', function() use ($app) {
         $app->get('/logout', '\App\Controller\SessionController:logout')->setName('session_logout');
         $app->delete('/logout', '\App\Controller\SessionController:delete')->setName('session_logout_delete');
-    });
-
-    $app->group('/transactions', function() use ($app) {
-        $app->get('', '\App\Controller\TransactionsController:index')->setName('transactions');
-        $app->get('/create', '\App\Controller\TransactionsController:create')->setName('transactions_create');
-        $app->post('', '\App\Controller\TransactionsController:post')->setName('transactions_post');
-        $app->get('/{transaction_id}/edit', '\App\Controller\TransactionsController:edit')->setName('transactions_edit');
-        $app->put('/{transaction_id}', '\App\Controller\TransactionsController:update')->setName('transactions_update');
-        $app->delete('/{transaction_id}', '\App\Controller\TransactionsController:delete')->setName('transactions_delete');
     });
 
     // funds routes
@@ -50,6 +41,15 @@ $app->group('', function() use ($app) {
         $app->delete('/{fund_id}', '\App\Controller\FundsController:delete')->setName('funds_delete');
 
         $app->post('/switch', '\App\Controller\FundsController:switch')->setName('funds_switch');
+    });
+
+    $app->group('/transactions', function() use ($app) {
+        $app->get('', '\App\Controller\TransactionsController:index')->setName('transactions');
+        $app->get('/create', '\App\Controller\TransactionsController:create')->setName('transactions_create');
+        $app->post('', '\App\Controller\TransactionsController:post')->setName('transactions_post');
+        $app->get('/{transaction_id}/edit', '\App\Controller\TransactionsController:edit')->setName('transactions_edit');
+        $app->put('/{transaction_id}', '\App\Controller\TransactionsController:update')->setName('transactions_update');
+        $app->delete('/{transaction_id}', '\App\Controller\TransactionsController:delete')->setName('transactions_delete');
     });
 
     // categories routes

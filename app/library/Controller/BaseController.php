@@ -191,23 +191,29 @@ class BaseController
     //     return $this->redirect($returnTo);
     // }
 
-    protected function findOrCreateCategoryByName($categoryName)
-    {
-        // if category is empty, we'll return
-        if (empty($categoryName)) return;
-
-        $currentUser = $this->getCurrentUser();
-
-        if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
-            $category = $currentUser->categories()->create([
-                'name' => $categoryName,
-                'budget' => 0,
-                'group_id' => 0,
-            ]);
-        }
-
-        return $category;
-    }
+    // protected function findOrCreateCategoryByName($categoryName)
+    // {
+    //     // if category is empty, we'll return
+    //     if (empty($categoryName)) return;
+    //
+    //     $currentUser = $this->getCurrentUser();
+    //
+    //     // if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
+    //     //     $category = $currentUser->categories()->create([
+    //     //         'name' => $categoryName,
+    //     //         'budget' => 0,
+    //     //         'group_id' => 0,
+    //     //     ]);
+    //     // }
+    //
+    //     $category = $currentUser->categories()->firstOrCreate(['name' => $categoryName], [
+    //         // 'name' => $categoryName,
+    //         'budget' => 0,
+    //         'group_id' => 0,
+    //     ]);
+    //
+    //     return $category;
+    // }
 
     protected function findOrCreateGroupByName($groupName)
     {

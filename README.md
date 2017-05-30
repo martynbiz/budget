@@ -5,8 +5,6 @@ TODO
 !? angular
 
 * docblocks
-
-* RequireFund middleware instead of
 * make getBalance, budgets methods a trait
 
 widgets
