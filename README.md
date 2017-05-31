@@ -18,7 +18,6 @@ settings
 ! as a transaction can exist under multiple tags, doesn't work for categories
 
 
-* feature: view transactions for categories (check trains is adding up), categories filter
 * feature: split transactions up
 * feature: click on table headers to orderBy
 * feature: budget stats - order by percentage

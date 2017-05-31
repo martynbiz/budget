@@ -32,18 +32,23 @@ class TransactionsController extends BaseController
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
         $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
 
+        $baseQuery = $this->currentFund->transactions()
+            ->whereBetween('created_at', $startEndDates);
+
+        if ($categoryFilter = @$params['filter__category']) {
+            $category = $currentUser->categories()->where('name', $categoryFilter)->first();
+            $baseQuery->where('category_id', @$category->id);
+        }
+
         // get total transactions for calculating pagination
-        $totalTransactions = $this->currentFund->transactions()
-            ->whereBetween('created_at', $startEndDates)
-            ->count();
+        $totalTransactions = (clone $baseQuery)->count();
         $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions / $limit) : 1;
 
         // get paginated transactions for dispaying in the table
-        $transactions = $this->currentFund->transactions()
+        $transactions = (clone $baseQuery)
             ->with('fund')
             ->with('category')
             ->with('tags')
-            ->whereBetween('created_at', $startEndDates)
             ->skip($start)
             ->take($limit)
             ->orderBy('purchased_at', 'desc')
@@ -51,8 +56,7 @@ class TransactionsController extends BaseController
             ->get();
 
         // get total amounts
-        $totalAmount = $this->currentFund->transactions()
-            ->whereBetween('created_at', $startEndDates)
+        $totalAmount = (clone $baseQuery)
             ->pluck('amount')
             ->sum();
 
