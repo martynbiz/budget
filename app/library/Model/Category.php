@@ -58,24 +58,4 @@ class Category extends Base
 
         return $this->transactionsAmount; //, 'user_id');
     }
-
-    // public function budgets()
-    // {
-    //     return $this->hasMany('App\\Model\\Budget'); //, 'user_id');
-    // }
-    //
-    // /**
-    //  * Get the budget object. If no $month is specified, get the latest one
-    //  */
-    // public function getBudgetByMonth($fund, $month=null)
-    // {
-    //     $baseQuery = $this->budgets()->where('fund_id', $fund->id);
-    //
-    //     if (!is_null($month)) {
-    //         list($startDate, $endDate) = Utils::getStartEndDateByMonth($month);
-    //         $baseQuery->where('created_at', '<=', $endDate . ' 23:59:59');
-    //     }
-    //
-    //     return $baseQuery->orderBy('created_at', 'desc')->first();
-    // }
 }

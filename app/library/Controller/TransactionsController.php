@@ -16,28 +16,29 @@ class TransactionsController extends BaseController
     {
         $container = $this->getContainer();
         $params = $request->getQueryParams();
+        $currentUser = $this->getCurrentUser();
 
         // set param defaults
         $params = array_merge([
             'page' => 1,
+            'sort' => 'purchased_at',
+            'dir' => -1,
         ], $params);
 
         $page = (int)$params['page'];
         $limit = 20;
         $start = ($page-1) * $limit;
 
-        $currentUser = $this->getCurrentUser();
-
         // // get start and end date from the month filter
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
         $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
 
         $baseQuery = $this->currentFund->transactions()
-            ->whereBetween('created_at', $startEndDates);
+            ->whereBetween('purchased_at', $startEndDates);
 
         if ($categoryFilter = @$params['filter__category']) {
-            $category = $currentUser->categories()->where('name', $categoryFilter)->first();
-            $baseQuery->where('category_id', @$category->id);
+            // $category = $currentUser->categories()->where('name', $categoryFilter)->first();
+            $baseQuery->where('category_id', $categoryFilter); //@$category->id);
         }
 
         // get total transactions for calculating pagination
@@ -45,20 +46,41 @@ class TransactionsController extends BaseController
         $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions / $limit) : 1;
 
         // get paginated transactions for dispaying in the table
-        $transactions = (clone $baseQuery)
+        $transactionsQuery = (clone $baseQuery)
             ->with('fund')
             ->with('category')
             ->with('tags')
             ->skip($start)
-            ->take($limit)
-            ->orderBy('purchased_at', 'desc')
-            ->orderBy('id', 'desc')
-            ->get();
+            ->take($limit);
+
+        // we need to seperate sort as categories requires a little more work
+        $dir = ($params['dir'] > 0) ? 'asc' : 'desc';
+        if ($params['sort'] == 'category') {
+
+            // order by joined categories table's name column
+            $transactionsQuery->orderByCategoryName($dir);
+                // ->leftJoin('categories', 'categories.id', '=', 'transactions.category_id')
+                // ->orderBy('categories.name', $dir)
+                // ->orderBy('transactions.id', $dir);
+        } else {
+
+            // order by "sort" param
+            $transactionsQuery
+                ->orderBy($params['sort'], $dir)
+                ->orderBy('id', 'desc'); // just so we can order within days
+        }
+
+        $transactions = $transactionsQuery->get();
 
         // get total amounts
         $totalAmount = (clone $baseQuery)
             ->pluck('amount')
             ->sum();
+
+        // filters
+        $this->includeFundFilter();
+        $this->includeMonthFilter();
+        $this->includeCategoriesFilter();
 
         return $this->render('transactions/index', [
             'transactions' => $transactions,
@@ -69,6 +91,8 @@ class TransactionsController extends BaseController
             // pagination
             'total_pages' => $totalPages,
             'page' => $page,
+
+            'selected_column' => $params['sort'],
         ]);
     }
 

@@ -10,8 +10,8 @@ class HomeController extends BaseController
      */
     protected $widgets = [
         'monthly_stats' => '\\App\\Widget\\MonthlyStats',
-        'category_stats' => '\\App\\Widget\\CategoryStats',
         'tag_stats' => '\\App\\Widget\\TagStats',
+        'category_stats' => '\\App\\Widget\\CategoryStats',
     ];
 
     /**
@@ -48,6 +48,11 @@ class HomeController extends BaseController
         array_walk($widgets, function(&$widget, $key) use ($container) {
             $widget = new $widget($container);
         });
+
+        // filters
+        $this->includeFundFilter();
+        // $this->includeMonthFilter();
+        // $this->includeCategoriesFilter();
 
         return $this->render('home/dashboard', [
             'widgets' => $widgets,

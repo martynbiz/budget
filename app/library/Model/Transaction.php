@@ -39,6 +39,13 @@ class Transaction extends Base
         return $this->belongsToMany('App\\Model\\Tag')->withTimestamps(); //, 'user_id');
     }
 
+    public function scopeOrderByCategoryName($query, $dir)
+    {
+        return $query->leftJoin('categories', 'categories.id', '=', 'transactions.category_id')
+        ->orderBy('categories.name', $dir)
+        ->orderBy('transactions.id', $dir);
+    }
+
     public function getPurchasedStringAttribute()
     {
         if (strtotime($this->purchased_at) >= strtotime("tomorrow")) {

@@ -21,6 +21,13 @@ class BaseController
      */
     protected $currentFund;
 
+    /**
+     * Data so that we can append it from any function before render
+     * @var array
+     */
+    protected $data = [];
+
+
     //
     public function __construct(Container $container)
     {
@@ -53,6 +60,9 @@ class BaseController
         $response = $container->get('response');
         $currentUser = $this->getCurrentUser();
 
+        // take data as it's is til now
+        $data = array_merge($this->data, $data);
+
         if ($currentUser = $this->getCurrentUser()) {
 
             $data['currentUser'] = $currentUser;
@@ -79,9 +89,9 @@ class BaseController
         $data['csrf_name'] = $container->get('session')->get('csrf_name');
         $data['csrf_value'] = $container->get('session')->get('csrf_value');
 
-        // get start and end date from the month filter
-        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        $data['month_filter'] = $monthFilter;
+        // // get start and end date from the month filter
+        // $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        // $data['month_filter'] = $monthFilter;
 
         // get the first ever transaction will allow us to set the first month
         // default is this month
@@ -131,104 +141,49 @@ class BaseController
         return $this->currentUser;
     }
 
-    // /**
-    //  * Redirect.
-    //  *
-    //  * Note: This method is not part of the PSR-7 standard.
-    //  *
-    //  * This method prepares the response object to return an HTTP Redirect
-    //  * response to the client.
-    //  *
-    //  * @param  string|UriInterface $url    The redirect destination.
-    //  * @param  int                 $status The redirect HTTP status code.
-    //  * @return self
-    //  */
-    // protected function redirect($url, $status = 302)
-    // {
-    //     $container = $this->getContainer();
-    //     $response = $container->get('response');
-    //     return $response->withRedirect($url, $status);
-    // }
+    /**
+     * Include filter in template, attach required arrays/selected to data
+     */
+    protected function includeCategoriesFilter()
+    {
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+        $params = $container->get('request')->getQueryParams();
 
-    // /**
-    //  * Pass on the control to another action. Of the same class (for now)
-    //  *
-    //  * @param  string $actionName The redirect destination.
-    //  * @param array $data
-    //  * @return Controller
-    //  * @internal param string $status The redirect HTTP status code.
-    //  */
-    // public function forward($actionName, $data=array())
-    // {
-    //     return call_user_func_array(array($this, $actionName), $data);
-    // }
+        $categories = $currentUser->categories()->orderBy('name')->get();
 
-    // /**
-    //  * Will ensure that returnTo url is valid before doing redirect. Otherwise mean
-    //  * people could use out login then redirect to a phishing site
-    //  * @param string $returnTo The returnTo url that we want to check against our white list
-    //  */
-    // protected function returnTo($returnTo)
-    // {
-    //     $container = $this->getContainer();
-    //     $settings = $container->get('settings');
-    //
-    //     // check returnTo if it's a full domain  (e.g. http://...)
-    //     $host = parse_url($returnTo, PHP_URL_HOST);
-    //     if(strpos($returnTo, '/') !== 0) {
-    //         $found = false;
-    //         $validReturnToArray = (is_array($settings['valid_return_to'])) ? $settings['valid_return_to'] : array($settings['valid_return_to']);
-    //         foreach($validReturnToArray as $validReturnTo) {
-    //             if ($host and preg_match($validReturnTo, $host)) {
-    //                 $found = true;
-    //             }
-    //         }
-    //         if (! $found) {
-    //             throw new InvalidReturnToUrl( $this->get('i18n')->translate('invalid_return_to') );
-    //         }
-    //     }
-    //
-    //     return $this->redirect($returnTo);
-    // }
+        $this->data = array_merge($this->data, [
+            'filter_categories' => $categories,
+            'filtered_category' => @$params['filter__category'],
+            'show_category_filter' => true,
+        ]);
+    }
 
-    // protected function findOrCreateCategoryByName($categoryName)
-    // {
-    //     // if category is empty, we'll return
-    //     if (empty($categoryName)) return;
-    //
-    //     $currentUser = $this->getCurrentUser();
-    //
-    //     // if (!$category = $currentUser->categories()->where('name', $categoryName)->first()) {
-    //     //     $category = $currentUser->categories()->create([
-    //     //         'name' => $categoryName,
-    //     //         'budget' => 0,
-    //     //         'group_id' => 0,
-    //     //     ]);
-    //     // }
-    //
-    //     $category = $currentUser->categories()->firstOrCreate(['name' => $categoryName], [
-    //         // 'name' => $categoryName,
-    //         'budget' => 0,
-    //         'group_id' => 0,
-    //     ]);
-    //
-    //     return $category;
-    // }
-    // 
-    // protected function findOrCreateGroupByName($groupName)
-    // {
-    //     // if category is empty, we'll return
-    //     if (empty($groupName)) return;
-    //
-    //     $currentUser = $this->getCurrentUser();
-    //
-    //     if (!$group = $currentUser->groups()->where('name', $groupName)->first()) {
-    //         $group = $currentUser->groups()->create([
-    //             'name' => $groupName,
-    //             'group_id' => 0,
-    //         ]);
-    //     }
-    //
-    //     return $group;
-    // }
+    /**
+     * Include filter in template, attach required arrays/selected to data
+     */
+    protected function includeMonthFilter()
+    {
+        $container = $this->getContainer();
+
+        // get start and end date from the month filter
+        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $data['month_filter'] = $monthFilter;
+
+        $this->data = array_merge($this->data, [
+            'filtered_month' => $monthFilter,
+            'show_month_filter' => true,
+        ]);
+    }
+
+    /**
+     * Include filter in template, attach required arrays/selected to data
+     */
+    protected function includeFundFilter()
+    {
+        $this->data = array_merge($this->data, [
+            'filtered_fund' => $this->currentFund->id,
+            'show_fund_filter' => true,
+        ]);
+    }
 }

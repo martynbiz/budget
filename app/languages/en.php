@@ -1,6 +1,10 @@
 <?php
 
 return array (
+  'filter_button' => 'Filter',
+  'categories_label' => 'Categories',
+  'any_category' => 'Any category',
+  'view_transaction_button' => 'View transactions',
   'language_label' => 'Language',
   'language_missing' => 'Language is missing',
   'tag_stats_header' => 'Tag stats',
@@ -37,7 +41,6 @@ return array (
   'category_label' => 'Category',
   'purchased_at_label' => 'Purchased date',
   'fund_label' => 'Fund',
-  'switch_fund_button' => 'Switch fund',
   'new_transaction_button' => 'New transaction',
   'description_header' => 'Description',
   'date_header' => 'Date',
@@ -82,7 +85,6 @@ return array (
   'category_missing' => 'Category missing',
   'purchased_at_missing' => 'Missing purchased date',
   'invalid_username_password' => 'Invalid username',
-  'invalid_return_to' => 'Invalid return to',
   'first_name' => 'First name',
   'last_name' => 'Last name',
   'email' => 'Email',

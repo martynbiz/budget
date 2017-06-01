@@ -8,6 +8,7 @@ settings
 * users::edit/update/delete
 * feature: edit profile, dashboard settings, lang etc
 * drop support for multiple currencies per user (instead, user can set their currency in settings)
+* feature: order, close on dash. save as user settings. user settings page.
 
 * docblocks
 
@@ -15,17 +16,14 @@ settings
 * reset password, forgot password, ! mail not working
 
 * category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
-! as a transaction can exist under multiple tags, doesn't work for categories
+! as a transaction can exist under multiple tags, doesn't work for categories .. optgroups for categories filter 
 
 
 * feature: split transactions up
-* feature: click on table headers to orderBy
 * feature: budget stats - order by percentage
 * feature: fund types - saving, etc
 * feature: projected savings?
 * feature: create your own currencies - alter table currencies add column user_id int;
-* filter categories/ tags
-* feature: order, close on dash. save as user settings. user settings page.
 
 
 * welcome page - one page template, https://startbootstrap.com/template-overviews/creative/

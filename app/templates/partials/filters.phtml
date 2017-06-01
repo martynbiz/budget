@@ -1,21 +1,37 @@
-<div class="small-12 medium-3 columns">
-    <form id="switch_fund_form" method="get" action="">
-        <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
-        <select name="filter__fund_id">
-            <?php foreach($this->all_funds as $fund): ?>
-                <option value="<?= $fund->id ?>" <?= ($this->current_fund->id == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
-            <?php endforeach ?>
-        </select>
-        <submit type="submit" class="button show-for-sr"><?= $this->translate('switch_fund_button') ?></submit>
-    </form>
-</div>
-<div class="small-12 medium-3 columns">
-    <form id="switch_month_form" method="get" action="">
-        <label class="show-for-sr"><?= $this->translate('month_label') ?></label>
-        <select name="filter__month">
-            <?php $month = date('Y-m'); while($month >= $this->first_month): ?>
-                <option value="<?= $month ?>" <?= ($month == $this->month_filter) ? 'selected="selected"' : '' ?>> <?= date("M Y", strtotime($month . '-01')) ?></option>
-            <?php $month = date('Y-m', strtotime('-1 month', strtotime($month))); endwhile; ?>
-        </select>
-    </form>
-</div>
+<form id="filters_form" method="get" action="" style="display: inline;">
+    <?php if ($this->show_fund_filter): ?>
+        <div class="small-12 medium-3 columns">
+            <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
+            <select name="filter__fund_id">
+                <?php foreach($this->all_funds as $fund): ?>
+                    <option value="<?= $fund->id ?>" <?= ($this->filtered_fund == $fund->id) ? 'selected' : '' ?>><?= $fund->name ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    <?php endif ?>
+
+    <?php if ($this->show_month_filter): ?>
+        <div class="small-12 medium-3 columns">
+            <label class="show-for-sr"><?= $this->translate('month_label') ?></label>
+            <select name="filter__month">
+                <?php $month = date('Y-m'); while($month >= $this->first_month): ?>
+                    <option value="<?= $month ?>" <?= ($month == $this->filtered_month) ? 'selected="selected"' : '' ?>> <?= date("M Y", strtotime($month . '-01')) ?></option>
+                <?php $month = date('Y-m', strtotime('-1 month', strtotime($month))); endwhile; ?>
+            </select>
+        </div>
+    <?php endif ?>
+
+    <?php if ($this->show_category_filter): ?>
+        <div class="small-12 medium-3 columns">
+            <label class="show-for-sr"><?= $this->translate('categories_label') ?></label>
+            <select name="filter__category">
+                <option value=""><?= $this->translate('any_category') ?></option>
+                <?php foreach ($this->filter_categories as $category): ?>
+                    <option value="<?= $category->id ?>" <?= ($category->id == $this->filtered_category) ? 'selected="selected"' : '' ?>><?= $category->name ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    <?php endif ?>
+
+    <submit type="submit" class="show-for-sr"><?= $this->translate('filter_button') ?></submit>
+</form>

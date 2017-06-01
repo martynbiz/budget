@@ -53,6 +53,11 @@ class CategoriesController extends BaseController
         // now, slice the array based on pagination
         $categoriesAndGroups = array_slice($categoriesAndGroups, $start, $limit);
 
+        // filters
+        $this->includeFundFilter();
+        $this->includeMonthFilter();
+        // $this->includeCategoriesFilter();
+
         return $this->render('categories/index', [
             'categories' => $categoriesAndGroups,
 

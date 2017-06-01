@@ -17,7 +17,7 @@ $this->layout('layouts/main', [
     <div class="rows">
         <?= $this->insert('partials/filters') ?>
 
-        <div class="small-12 offset-medium-3 medium-3 columns">
+        <div class="small-12 medium-3 columns">
             <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <?= $this->translate('new_transaction_button') ?>
@@ -30,10 +30,18 @@ $this->layout('layouts/main', [
             <table>
                 <thead>
                     <tr>
-                        <th><?= $this->translate('description_header') ?></th>
-                        <th width="15%"><?= $this->translate('amount_header') ?></th>
-                        <th width="15%" class="hide-for-small-only"><?= $this->translate('category_header') ?></th>
-                        <th width="15%"><?= $this->translate('date_header') ?></th>
+                        <th>
+                            <?= $this->generateSortLink($this->translate('description_header'), 'description', $this->selected_column) ?>
+                        </th>
+                        <th width="15%">
+                            <?= $this->generateSortLink($this->translate('amount_header'), 'amount', $this->selected_column) ?>
+                        </th>
+                        <th width="15%" class="hide-for-small-only">
+                            <?= $this->generateSortLink($this->translate('category_header'), 'category', $this->selected_column) ?>
+                        </th>
+                        <th width="15%">
+                            <?= $this->generateSortLink($this->translate('date_header'), 'purchased_at', $this->selected_column) ?>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
