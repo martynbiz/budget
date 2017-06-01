@@ -38,9 +38,8 @@ class TagStats extends Base
         foreach ($tags as $tag) {
 
             $transactionsAmount = $tag->getTransactionsAmount([
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                // 'fund' => ..?
+                // 'start_date' => $startDate,
+                // 'end_date' => $endDate,
             ]);
 
             if ($tag->budget > 0) {
