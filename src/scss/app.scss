@@ -98,33 +98,34 @@ keep the resulting css file small(ish)
     tbody tr {
 
         color: lighten($dark-gray, 15%);
-        .amount {
-            font-size: 100%;
-            font-weight: bold;
-        }
+        // .amount {
+        //     font-size: 100%;
+        //     font-weight: bold;
+        // }
     }
     tbody tr:first-child {
         color: $dark-gray;
+        font-weight: bold;
 
-        td:first-child {
-            font-weight: bold;
-        }
-        .amount {
-            font-size: 100%;
-            font-weight: bold;
-        }
+        // td:first-child {
+        //     font-weight: bold;
+        // }
+        // .amount {
+        //     font-size: 100%;
+        //     font-weight: bold;
+        // }
     }
-    .diff {
-        font-size: 100%;
-    }
-    .earnings .diff.up,
-    .expenses .diff.down {
-        color: green; //#0c6; // green
-    }
-    .earnings .diff.down,
-    .expenses .diff.up {
-        color: red; //#c66;
-    }
+    // .diff {
+    //     font-size: 100%;
+    // }
+    // .earnings .diff.up,
+    // .expenses .diff.down {
+    //     color: green; //#0c6; // green
+    // }
+    // .earnings .diff.down,
+    // .expenses .diff.up {
+    //     color: red; //#c66;
+    // }
 }
 
 
@@ -498,4 +499,18 @@ div.tagsinput span.tag {
     display: inline-block;
     background: #eee;
     font-weight: bold;
+}
+
+.balance-in {
+    color: #3a3;
+    font-weight: bold;
+}
+
+.balance-out {
+    color: #a33;
+    font-weight: bold;
+}
+
+.balance-even {
+
 }

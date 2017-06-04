@@ -34,9 +34,9 @@ $container['renderer'] = function ($c) {
 
     $engine->registerFunction('translate', new \App\View\Helper\Translate($c) );
     $engine->registerFunction('pathFor', new \App\View\Helper\PathFor($c) );
-    // $engine->registerFunction('generateSortQuery', new \App\View\Helper\GenerateSortQuery($c) );
     $engine->registerFunction('generateQueryString', new \App\View\Helper\GenerateQueryString($c) );
     $engine->registerFunction('generateSortLink', new \App\View\Helper\GenerateSortLink($c) );
+    $engine->registerFunction('balanceClass', new \App\View\Helper\BalanceClass($c) );
 
     return $engine;
 };

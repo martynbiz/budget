@@ -2679,28 +2679,10 @@ table.hover:not(.unstriped) tr:nth-of-type(even):hover {
 
 .widget__monthly-stats tbody tr {
   color: #b0b0b0; }
-  .widget__monthly-stats tbody tr .amount {
-    font-size: 100%;
-    font-weight: bold; }
 
 .widget__monthly-stats tbody tr:first-child {
-  color: #8a8a8a; }
-  .widget__monthly-stats tbody tr:first-child td:first-child {
-    font-weight: bold; }
-  .widget__monthly-stats tbody tr:first-child .amount {
-    font-size: 100%;
-    font-weight: bold; }
-
-.widget__monthly-stats .diff {
-  font-size: 100%; }
-
-.widget__monthly-stats .earnings .diff.up,
-.widget__monthly-stats .expenses .diff.down {
-  color: green; }
-
-.widget__monthly-stats .earnings .diff.down,
-.widget__monthly-stats .expenses .diff.up {
-  color: red; }
+  color: #8a8a8a;
+  font-weight: bold; }
 
 body {
   background: #2f323a;
@@ -2963,4 +2945,12 @@ div.tagsinput span.tag {
 .tag {
   display: inline-block;
   background: #eee;
+  font-weight: bold; }
+
+.balance-in {
+  color: #3a3;
+  font-weight: bold; }
+
+.balance-out {
+  color: #a33;
   font-weight: bold; }

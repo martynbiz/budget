@@ -23,15 +23,9 @@ $currencyFormat = $this->current_fund->currency->format;
                 <?php else: ?>
                     <td><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></td>
                 <?php endif; ?>
-                <td class="earnings">
-                    <span class="amount"><?= sprintf($currencyFormat, $earningsAmount) ?></span>
-                </td>
-                <td class="expenses">
-                    <span class="amount"><?= sprintf($currencyFormat, $expensesAmount) ?></span>
-                </td>
-                <td class="balance">
-                    <span class="amount"><?= sprintf($currencyFormat, $balance) ?></span>
-                </td>
+                <td><?= sprintf($currencyFormat, $earningsAmount) ?></td>
+                <td><?= sprintf($currencyFormat, $expensesAmount) ?></td>
+                <td class="<?= $this->balanceClass($balance) ?>"><?= sprintf($currencyFormat, $balance) ?></td>
             </tr>
             <?php endforeach; ?>
         </tbody>

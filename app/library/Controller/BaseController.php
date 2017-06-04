@@ -89,9 +89,9 @@ class BaseController
         $data['csrf_name'] = $container->get('session')->get('csrf_name');
         $data['csrf_value'] = $container->get('session')->get('csrf_value');
 
-        // // get start and end date from the month filter
-        // $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        // $data['month_filter'] = $monthFilter;
+        // get start and end date from the month filter
+        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $data['month_filter'] = $monthFilter;
 
         // get the first ever transaction will allow us to set the first month
         // default is this month
@@ -166,9 +166,7 @@ class BaseController
     {
         $container = $this->getContainer();
 
-        // get start and end date from the month filter
         $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        $data['month_filter'] = $monthFilter;
 
         $this->data = array_merge($this->data, [
             'filtered_month' => $monthFilter,

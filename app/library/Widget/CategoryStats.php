@@ -16,7 +16,7 @@ class CategoryStats extends Base
 
         // category stats widget
 
-        $month = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $month = date('Y-m'); //$container->get('session')->get(SESSION_FILTER_MONTH);
         list($startDate, $endDate) = Utils::getStartEndDateByMonth($month);
 
         $userId = $container->get('auth')->getAttributes()['id'];

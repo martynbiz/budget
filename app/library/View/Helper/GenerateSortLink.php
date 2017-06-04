@@ -1,18 +1,8 @@
 <?php
 namespace App\View\Helper;
 
-class GenerateSortLink
+class GenerateSortLink extends BaseHelper
 {
-    /**
-     * Slim\Container
-     */
-    protected $container;
-
-    public function __construct($container)
-    {
-        $this->container = $container;
-    }
-
     /**
      * @param string $text This is the text to show in the link
      * @param string $column The column in the db
