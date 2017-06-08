@@ -94,7 +94,8 @@ keep the resulting css file small(ish)
     }
 }
 
-.widget__monthly-stats {
+.widget__monthly-stats,
+.widget__yearly-stats {
     tbody tr {
 
         color: lighten($dark-gray, 15%);

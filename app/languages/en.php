@@ -1,6 +1,8 @@
 <?php
 
 return array (
+  'yearly_stats_header' => 'Yearly stats',
+  'year_header' => 'Year',
   'filter_button' => 'Filter',
   'categories_label' => 'Categories',
   'any_category' => 'Any category',

@@ -1,12 +1,12 @@
 <?php
 namespace App\Widget;
 
-class MonthlyStats extends Base
+class YearlyStats extends Base
 {
     /**
      * @var string
      */
-    protected $templateFile = 'widgets/monthly_stats';
+    protected $templateFile = 'widgets/yearly_stats';
 
     public function __construct($container)
     {
@@ -15,21 +15,20 @@ class MonthlyStats extends Base
         $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
         $currentFund = $container->get('model.fund')->find($fundId);
 
-        // $fromMonth = date('Y-m-01', strtotime('-3 Months'));
+        // get all transactions
         $transactions = $currentFund->transactions()
-            // ->where('purchased_at', '>=', $fromMonth)
             ->orderBy('purchased_at', 'desc')
             ->get();
 
         // get averate
         $totalEarnings = 0;
         $totalExpenses = 0;
-        $monthlyStatsData = [];
+        $yearlyStatsData = [];
         foreach ($transactions as $transaction) {
 
-            $month = date('Y-m', strtotime($transaction->purchased_at));
-            if (!isset($monthlyStatsData[$month])) {
-                $monthlyStatsData[$month] = [
+            $year = date('Y', strtotime($transaction->purchased_at));
+            if (!isset($yearlyStatsData[$year])) {
+                $yearlyStatsData[$year] = [
                     'earnings' => [
                         'amount' => 0,
                     ],
@@ -41,7 +40,7 @@ class MonthlyStats extends Base
                     ],
                 ];
 
-                $data = &$monthlyStatsData[$month];
+                $data = &$yearlyStatsData[$year];
             }
 
             if ($transaction->amount > 0) { // is earning
@@ -55,6 +54,6 @@ class MonthlyStats extends Base
             $data['balance']['amount']+= $transaction->amount;
         }
 
-        $this->data = $monthlyStatsData;
+        $this->data = $yearlyStatsData;
     }
 }

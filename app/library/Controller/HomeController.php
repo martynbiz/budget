@@ -10,6 +10,7 @@ class HomeController extends BaseController
      */
     protected $widgets = [
         'monthly_stats' => '\\App\\Widget\\MonthlyStats',
+        'yearly_stats' => '\\App\\Widget\\YearlyStats',
         'tag_stats' => '\\App\\Widget\\TagStats',
         'category_stats' => '\\App\\Widget\\CategoryStats',
     ];
