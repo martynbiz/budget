@@ -1,5 +1,26 @@
 <?php
 $currencyFormat = $this->current_fund->currency->format;
+
+// calculate the average
+$averageEarningsMonths = 0;
+$averageEarningsTotal = 0;
+$averageExpensesMonths = 0;
+$averageExpensesTotal = 0;
+$averageBalanceMonths = 0;
+$averageBalanceTotal = 0;
+foreach ($this->widget_data as $month => $data) {
+
+    // we won't bother with the current month
+    if ($month !== date('Y-m')) {
+        $averageEarningsMonths++;
+        $averageEarningsTotal+= $data['earnings']['amount'];
+        $averageExpensesMonths++;
+        $averageExpensesTotal+= $data['expenses']['amount'];
+        $averageBalanceMonths++;
+        $averageBalanceTotal+= $data['balance']['amount'];
+    }
+}
+
 ?>
 <div class="small-12 medium-12 columns widget widget__monthly-stats">
     <h3><?= $this->translate('monthly_stats_header') ?></h3>
@@ -27,5 +48,21 @@ $currencyFormat = $this->current_fund->currency->format;
             </tr>
             <?php endforeach; ?>
         </tbody>
+        <?php if ($averageBalanceMonths > 0): ?>
+            <tfoot>
+                <tr>
+                    <th><?= $this->translate('average_header') ?></th>
+                    <td><?= sprintf($currencyFormat, ($averageEarningsTotal/$averageEarningsMonths)) ?></td>
+                    <td><?= sprintf($currencyFormat, ($averageExpensesTotal/$averageExpensesMonths)) ?></td>
+                    <td><?= sprintf($currencyFormat, ($averageBalanceTotal/$averageBalanceMonths)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $this->translate('year_projection_header') ?></th>
+                    <td><?= sprintf($currencyFormat, ($averageEarningsTotal/$averageEarningsMonths) * 12) ?>*</td>
+                    <td><?= sprintf($currencyFormat, ($averageExpensesTotal/$averageExpensesMonths) * 12) ?>*</td>
+                    <td><?= sprintf($currencyFormat, ($averageBalanceTotal/$averageBalanceMonths) * 12) ?>*</td>
+                </tr>
+            </tfoot>
+        <?php endif; ?>
     </table>
 </div>

@@ -1,6 +1,9 @@
 <?php
 
 return array (
+  'average_header' => 'Average',
+  'recent_transactions' => 'Recent Transactions',
+  'year_projection_header' => '12-month projection',
   'yearly_stats_header' => 'Yearly stats',
   'year_header' => 'Year',
   'filter_button' => 'Filter',
