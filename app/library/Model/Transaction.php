@@ -42,8 +42,8 @@ class Transaction extends Base
     public function scopeOrderByCategoryName($query, $dir)
     {
         return $query->leftJoin('categories', 'categories.id', '=', 'transactions.category_id')
-        ->orderBy('categories.name', $dir)
-        ->orderBy('transactions.id', $dir);
+            ->orderBy('categories.name', $dir)
+            ->orderBy('transactions.id', $dir);
     }
 
     public function getPurchasedStringAttribute()

@@ -38,7 +38,13 @@ class TransactionsController extends BaseController
 
         if ($categoryFilter = @$params['filter__category']) {
             // $category = $currentUser->categories()->where('name', $categoryFilter)->first();
-            $baseQuery->where('category_id', $categoryFilter); //@$category->id);
+            $baseQuery->where('category_id', (int)$categoryFilter); //@$category->id);
+        }
+
+        if ($tagFilter = @$params['filter__tag']) {
+            // $category = $currentUser->categories()->where('name', $categoryFilter)->first();
+            $baseQuery->leftJoin('tag_transaction', 'tag_transaction.transaction_id', '=', 'transactions.id') // Join with `permission_role`
+                ->where('tag_transaction.tag_id', (int)$tagFilter);
         }
 
         // get total transactions for calculating pagination
@@ -59,15 +65,13 @@ class TransactionsController extends BaseController
 
             // order by joined categories table's name column
             $transactionsQuery->orderByCategoryName($dir);
-                // ->leftJoin('categories', 'categories.id', '=', 'transactions.category_id')
-                // ->orderBy('categories.name', $dir)
-                // ->orderBy('transactions.id', $dir);
+
         } else {
 
             // order by "sort" param
             $transactionsQuery
-                ->orderBy($params['sort'], $dir)
-                ->orderBy('id', 'desc'); // just so we can order within days
+                ->orderBy('transactions.' . $params['sort'], $dir)
+                ->orderBy('transactions.id', 'desc'); // just so we can order within days
         }
 
         $transactions = $transactionsQuery->get();

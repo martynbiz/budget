@@ -4,7 +4,8 @@ TODO
 
 !? angular
 
-create phinx.yml file in provision.sh 
+create phinx.yml file in provision.sh
+bug: view transactions of category/tag, can't then switch months
 
 settings
 * users::edit/update/delete

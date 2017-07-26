@@ -9,6 +9,15 @@
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
+    <div class="rows">
+        <div class="small-12 offset-medium-9 medium-3 columns">
+            <a href="<?= $this->pathFor('transactions') ?>?filter__tag=<?= $this->tag->id ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('view_transaction_button') ?>
+            </a>
+        </div>
+    </div>
+
     <div class="row">
         <div class="small-12 columns">
             <form id="tag_form" method="post" action="<?= $this->pathFor('tags_update', ['tag_id' => $this->tag->id]) ?>">

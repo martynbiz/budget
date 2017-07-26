@@ -12,8 +12,8 @@ class HomeController extends BaseController
         'recent_transactions' => '\\App\\Widget\\RecentTransactions',
         'monthly_stats' => '\\App\\Widget\\MonthlyStats',
         'yearly_stats' => '\\App\\Widget\\YearlyStats',
-        'tag_stats' => '\\App\\Widget\\TagStats',
-        'category_stats' => '\\App\\Widget\\CategoryStats',
+        // 'tag_stats' => '\\App\\Widget\\TagStats',
+        // 'category_stats' => '\\App\\Widget\\CategoryStats',
     ];
 
     /**
