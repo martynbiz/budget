@@ -4,6 +4,8 @@ TODO
 
 !? angular
 
+create phinx.yml file in provision.sh 
+
 settings
 * users::edit/update/delete
 * feature: edit profile, dashboard settings, lang etc
@@ -16,7 +18,7 @@ settings
 * reset password, forgot password, ! mail not working
 
 * category with parent_id? groups is confusing. see how well tags goes .. endless drilldown pie?
-! as a transaction can exist under multiple tags, doesn't work for categories .. optgroups for categories filter 
+! as a transaction can exist under multiple tags, doesn't work for categories .. optgroups for categories filter
 
 
 * feature: split transactions up

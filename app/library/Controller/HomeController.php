@@ -9,6 +9,7 @@ class HomeController extends BaseController
      * @var array of WidgetInterface
      */
     protected $widgets = [
+        'recent_transactions' => '\\App\\Widget\\RecentTransactions',
         'monthly_stats' => '\\App\\Widget\\MonthlyStats',
         'yearly_stats' => '\\App\\Widget\\YearlyStats',
         'tag_stats' => '\\App\\Widget\\TagStats',
