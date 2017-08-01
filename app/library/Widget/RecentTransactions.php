@@ -19,6 +19,7 @@ class RecentTransactions extends Base
 
         $transactions = $currentUser->transactions()
             ->orderBy('purchased_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->limit(5)
             ->get();
 

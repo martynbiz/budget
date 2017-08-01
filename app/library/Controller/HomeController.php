@@ -10,7 +10,8 @@ class HomeController extends BaseController
      */
     protected $widgets = [
         'recent_transactions' => '\\App\\Widget\\RecentTransactions',
-        'monthly_stats' => '\\App\\Widget\\MonthlyStats',
+        'current_month_stats' => '\\App\\Widget\\CurrentMonthStats',
+        'previous_month_stats' => '\\App\\Widget\\PreviousMonthStats',
         'yearly_stats' => '\\App\\Widget\\YearlyStats',
         // 'tag_stats' => '\\App\\Widget\\TagStats',
         // 'category_stats' => '\\App\\Widget\\CategoryStats',

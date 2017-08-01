@@ -1,12 +1,12 @@
 <?php
 namespace App\Widget;
 
-class MonthlyStats extends Base
+class CurrentMonthStats extends Base
 {
     /**
      * @var string
      */
-    protected $templateFile = 'widgets/monthly_stats';
+    protected $templateFile = 'widgets/current_month_stats';
 
     public function __construct($container)
     {
@@ -15,9 +15,12 @@ class MonthlyStats extends Base
         $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
         $currentFund = $container->get('model.fund')->find($fundId);
 
-        // $fromMonth = date('Y-m-01', strtotime('-3 Months'));
+        $startDate = date('Y-m-01');
+        $endDate = date('Y-m-t');
+
         $transactions = $currentFund->transactions()
-            // ->where('purchased_at', '>=', $fromMonth)
+            ->where('purchased_at', '>=', $startDate)
+            ->where('purchased_at', '<=', $endDate)
             ->orderBy('purchased_at', 'desc')
             ->get();
 
