@@ -2,12 +2,10 @@
 
 TODO
 
-view transactions from cat/tag edit page 
+click on view transactions (from tag), then click on trans - wrong id
 small pagination when no filters
-remove queries from session, add to links/forms etc
-show all transactions if query missing (remove from session)
-remove budget amount?
-Widget: set target, how long to get there?
+remove budget amount? - remove from db
+Widget: set target, how long to get there? add fund amount to nationwide from 1st may
 category/group month stats so can see all months per groups at glance, averages
 durations - rather than tagging ALL as e.g. "London201707"
 Transfer to/from fund (good for credit cards, loans etc)

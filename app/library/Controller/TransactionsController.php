@@ -32,21 +32,6 @@ class TransactionsController extends BaseController
 
         $baseQuery = $this->currentFund->transactions()->whereQuery($query);
 
-        // // set month if given
-        // if ($monthFilter = @$query['month']) {
-        //     $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
-        //     $baseQuery = $baseQuery->whereBetween('purchased_at', $startEndDates);
-        // }
-        //
-        // if ($categoryFilter = @$query['category']) {
-        //     $baseQuery->where('category_id', (int)$categoryFilter);
-        // }
-        //
-        // if ($tagFilter = @$query['tag']) {
-        //     $baseQuery->leftJoin('tag_transaction', 'tag_transaction.transaction_id', '=', 'transactions.id') // Join with `permission_role`
-        //         ->where('tag_transaction.tag_id', (int)$tagFilter);
-        // }
-
         // get total transactions for calculating pagination
         $totalTransactions = (clone $baseQuery)->count();
         $totalPages = ($totalTransactions > 0) ? ceil($totalTransactions / $limit) : 1;
