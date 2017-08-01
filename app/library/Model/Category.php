@@ -36,26 +36,10 @@ class Category extends Base
 
     public function getTransactionsAmount($query=[])
     {
-        $baseQuery = $this->transactions();
+        $transactionsAmount = $this->transactions()->whereQuery($query)
+            ->pluck('amount')
+            ->sum();
 
-        if (isset($query['start_date'])) {
-            $baseQuery->where('purchased_at', '>=', $query['start_date']);
-        }
-
-        if (isset($query['end_date'])) {
-            $baseQuery->where('purchased_at', '<=', $query['end_date']);
-        }
-
-        if (isset($query['fund'])) {
-            $baseQuery->where('fund_id', $query['fund']->id);
-        }
-
-        if (is_null($this->transactionsAmount)) {
-            $this->transactionsAmount = $baseQuery
-                ->pluck('amount')
-                ->sum();
-        }
-
-        return $this->transactionsAmount; //, 'user_id');
+        return $transactionsAmount;
     }
 }

@@ -1,6 +1,10 @@
 <?php
 
 return array (
+  'all_months' => 'All months',
+  'all_categories' => 'All categories',
+  'tag_label' => 'Tag',
+  'all_tags' => 'All tags',
   'previous_month_stats_header' => 'Previous month stats',
   '3_year_projection_header' => '3-year projection',
   'previous_months_not_found' => 'Previous months not found',
@@ -12,7 +16,6 @@ return array (
   'year_header' => 'Year',
   'filter_button' => 'Filter',
   'categories_label' => 'Categories',
-  'any_category' => 'Any category',
   'view_transaction_button' => 'View transactions',
   'language_label' => 'Language',
   'language_missing' => 'Language is missing',
@@ -30,7 +33,6 @@ return array (
   'total_remaining_budgets_header' => 'Total remaning budget',
   'please_select' => 'Please select',
   'budget_label' => 'Budget',
-  'budget_header' => 'Budget',
   'remaining_header' => 'Remaining',
   'category_header' => 'Category',
   'groups_link' => 'Groups',
@@ -48,7 +50,6 @@ return array (
   'amount_label' => 'Amount',
   'category_label' => 'Category',
   'purchased_at_label' => 'Purchased date',
-  'fund_label' => 'Fund',
   'new_transaction_button' => 'New transaction',
   'description_header' => 'Description',
   'date_header' => 'Date',

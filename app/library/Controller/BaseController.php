@@ -89,18 +89,9 @@ class BaseController
         $data['csrf_name'] = $container->get('session')->get('csrf_name');
         $data['csrf_value'] = $container->get('session')->get('csrf_value');
 
-        // get start and end date from the month filter
-        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        $data['month_filter'] = $monthFilter;
-
-        // get the first ever transaction will allow us to set the first month
-        // default is this month
-        $firstTransaction = $container->get('model.transaction')
-            ->orderBy('purchased_at')
-            ->first();
-        $data['first_month'] = ($firstTransaction) ?
-            date("Y-m", strtotime($firstTransaction->purchased_at)) :
-            date("Y-m");
+        // // get start and end date from the month filter
+        // $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        // $data['month_filter'] = $monthFilter;
 
         // generate the html
         $html = $container->get('renderer')->render($file, $data);
@@ -148,14 +139,30 @@ class BaseController
     {
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
-        $params = $container->get('request')->getQueryParams();
+        $request = $container->get('request');
 
         $categories = $currentUser->categories()->orderBy('name')->get();
 
         $this->data = array_merge($this->data, [
-            'filter_categories' => $categories,
-            'filtered_category' => @$params['filter__category'],
-            'show_category_filter' => true,
+            'select_category_options' => $categories,
+            'selected_category' => $request->getQueryParam('category'),
+        ]);
+    }
+
+    /**
+     * Include filter in template, attach required arrays/selected to data
+     */
+    protected function includeTagsFilter()
+    {
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+        $request = $container->get('request');
+
+        $tags = $currentUser->tags()->orderBy('name')->get();
+
+        $this->data = array_merge($this->data, [
+            'select_tag_options' => $tags,
+            'selected_tag' => $request->getQueryParam('tag'),
         ]);
     }
 
@@ -165,12 +172,26 @@ class BaseController
     protected function includeMonthFilter()
     {
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+        $request = $container->get('request');
 
-        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
+        $firstTransaction = $currentUser->transactions()
+            ->orderBy('purchased_at')
+            ->first();
+        $firstMonth = ($firstTransaction) ?
+            date("Y-m", strtotime($firstTransaction->purchased_at)) :
+            date("Y-m");
+
+        $months = [];
+        $month = date('Y-m');
+        while($month >= $firstMonth) {
+            $months[$month] = date("M Y", strtotime($month . '-01'));
+            $month = date('Y-m', strtotime('-1 month', strtotime($month)));
+        }
 
         $this->data = array_merge($this->data, [
-            'filtered_month' => $monthFilter,
-            'show_month_filter' => true,
+            'select_month_options' => $months,
+            'selected_month' => $request->getQueryParam('month'),
         ]);
     }
 
@@ -179,9 +200,15 @@ class BaseController
      */
     protected function includeFundFilter()
     {
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+        $request = $container->get('request');
+
+        $funds = $currentUser->funds()->orderBy('name')->get();
+
         $this->data = array_merge($this->data, [
-            'filtered_fund' => $this->currentFund->id,
-            'show_fund_filter' => true,
+            'select_fund_options' => $funds,
+            'selected_fund' => $this->currentFund->id,
         ]);
     }
 }

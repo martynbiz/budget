@@ -1,6 +1,8 @@
 <?php
 namespace App\Model;
 
+use App\Utils;
+
 class Transaction extends Base
 {
     // const SESSION_FILTER_START_DATE = 'transactions-filter__start-date';
@@ -92,5 +94,36 @@ class Transaction extends Base
 
             $this->tags()->attach($tag);
         }
+    }
+
+    public function scopeWhereQuery($baseQuery, $query=[])
+    {
+        if (!empty(@$query['month'])) {
+            $startEndDates = Utils::getStartEndDateByMonth($query['month']);
+            $baseQuery->whereBetween('purchased_at', $startEndDates);
+        }
+
+        if (!empty(@$query['start_date'])) {
+            $baseQuery->where('purchased_at', '>=', $query['start_date']);
+        }
+
+        if (!empty(@$query['end_date'])) {
+            $baseQuery->where('purchased_at', '<=', $query['end_date']);
+        }
+
+        if (!empty(@$query['fund'])) {
+            $baseQuery->where('fund_id', $query['fund']);
+        }
+
+        if (!empty(@$query['category'])) {
+            $baseQuery->where('category_id', $query['category']);
+        }
+
+        if (!empty(@$query['tag'])) {
+            $baseQuery->leftJoin('tag_transaction', 'tag_transaction.transaction_id', '=', 'transactions.id') // Join with `permission_role`
+                ->where('tag_transaction.tag_id', (int)$query['tag']);
+        }
+
+        return $baseQuery;
     }
 }

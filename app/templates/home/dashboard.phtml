@@ -51,7 +51,7 @@ $this->layout('layouts/main', [
     <script>
 
     // init the chart
-    $.getJSON("/data/expenses?month=<?= date('Y-m') ?>", function(data) {
+    $.getJSON("/data/expenses?<?= @http_build_query($this->query) ?>", function(data) {
 
         Highcharts.chart('container', {
             chart: {

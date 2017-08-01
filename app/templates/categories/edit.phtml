@@ -11,7 +11,7 @@
 <?php $this->section('content') ?>
     <div class="rows">
         <div class="small-12 offset-medium-9 medium-3 columns">
-            <a href="<?= $this->pathFor('transactions') ?>?filter__category=<?= $this->category->id ?>" class="button expanded">
+            <a href="<?= $this->pathFor('transactions') ?>?month=&category=<?= $this->category->id ?>" class="button expanded">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <?= $this->translate('view_transaction_button') ?>
             </a>

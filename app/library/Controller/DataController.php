@@ -71,15 +71,16 @@ class DataController extends BaseController
 
         $groups = $currentUser->groups()->get();
 
-        $monthFilter = $request->getQueryParam('month', date('Y-m')); //$container->get('session')->get(SESSION_FILTER_MONTH);
-        $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
-        $endDate = date('Y-m-t', strtotime($startDate));
+        // $monthFilter = $request->getQueryParam('month', date('Y-m')); //$container->get('session')->get(SESSION_FILTER_MONTH);
+        // $startDate = date('Y-m-01', strtotime($monthFilter . '-01'));
+        // $endDate = date('Y-m-t', strtotime($startDate));
         $transactions = $currentFund->transactions()
             ->with(array('category' => function($query) {
                 $query->with('group');
             })) // lazy load categories/groups
-            ->where('purchased_at', '>=', $startDate)
-            ->where('purchased_at', '<=', $endDate)
+            // ->where('purchased_at', '>=', $startDate)
+            // ->where('purchased_at', '<=', $endDate)
+            ->whereQuery( $request->getQueryParams() )
             ->where('amount', '<', 0) // is expense
             ->get();
 

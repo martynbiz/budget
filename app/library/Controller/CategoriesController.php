@@ -21,6 +21,10 @@ class CategoriesController extends BaseController
         $limit = 20;
         $start = ($page-1) * $limit;
 
+        // set param defaults
+        $query = $request->getQueryParams();
+        if (!isset($query['month'])) $query['month'] = date('Y-m');
+
         // categories is actually a combined list of categories and groups
         // so we need to build that combined array here and use it to paginate
         $categoriesAndGroups = [];
@@ -62,6 +66,8 @@ class CategoriesController extends BaseController
             'categories' => $categoriesAndGroups,
 
             'current_fund' => $this->currentFund,
+
+            'query' => $query,
 
             // pagination
             'total_pages' => $totalPages,

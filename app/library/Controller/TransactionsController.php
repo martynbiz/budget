@@ -15,37 +15,37 @@ class TransactionsController extends BaseController
     public function index($request, $response, $args)
     {
         $container = $this->getContainer();
-        $params = $request->getQueryParams();
         $currentUser = $this->getCurrentUser();
 
         // set param defaults
-        $params = array_merge([
+        $query = array_merge([
             'page' => 1,
             'sort' => 'purchased_at',
             'dir' => -1,
-        ], $params);
+        ], $request->getQueryParams());
 
-        $page = (int)$params['page'];
+        if (!isset($query['month'])) $query['month'] = date('Y-m');
+
+        $page = (int)$query['page'];
         $limit = 20;
         $start = ($page-1) * $limit;
 
-        // // get start and end date from the month filter
-        $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
+        $baseQuery = $this->currentFund->transactions()->whereQuery($query);
 
-        $baseQuery = $this->currentFund->transactions()
-            ->whereBetween('purchased_at', $startEndDates);
-
-        if ($categoryFilter = @$params['filter__category']) {
-            // $category = $currentUser->categories()->where('name', $categoryFilter)->first();
-            $baseQuery->where('category_id', (int)$categoryFilter); //@$category->id);
-        }
-
-        if ($tagFilter = @$params['filter__tag']) {
-            // $category = $currentUser->categories()->where('name', $categoryFilter)->first();
-            $baseQuery->leftJoin('tag_transaction', 'tag_transaction.transaction_id', '=', 'transactions.id') // Join with `permission_role`
-                ->where('tag_transaction.tag_id', (int)$tagFilter);
-        }
+        // // set month if given
+        // if ($monthFilter = @$query['month']) {
+        //     $startEndDates = Utils::getStartEndDateByMonth($monthFilter);
+        //     $baseQuery = $baseQuery->whereBetween('purchased_at', $startEndDates);
+        // }
+        //
+        // if ($categoryFilter = @$query['category']) {
+        //     $baseQuery->where('category_id', (int)$categoryFilter);
+        // }
+        //
+        // if ($tagFilter = @$query['tag']) {
+        //     $baseQuery->leftJoin('tag_transaction', 'tag_transaction.transaction_id', '=', 'transactions.id') // Join with `permission_role`
+        //         ->where('tag_transaction.tag_id', (int)$tagFilter);
+        // }
 
         // get total transactions for calculating pagination
         $totalTransactions = (clone $baseQuery)->count();
@@ -60,8 +60,8 @@ class TransactionsController extends BaseController
             ->take($limit);
 
         // we need to seperate sort as categories requires a little more work
-        $dir = ($params['dir'] > 0) ? 'asc' : 'desc';
-        if ($params['sort'] == 'category') {
+        $dir = ($query['dir'] > 0) ? 'asc' : 'desc';
+        if ($query['sort'] == 'category') {
 
             // order by joined categories table's name column
             $transactionsQuery->orderByCategoryName($dir);
@@ -70,7 +70,7 @@ class TransactionsController extends BaseController
 
             // order by "sort" param
             $transactionsQuery
-                ->orderBy('transactions.' . $params['sort'], $dir)
+                ->orderBy('transactions.' . $query['sort'], $dir)
                 ->orderBy('transactions.id', 'desc'); // just so we can order within days
         }
 
@@ -82,21 +82,21 @@ class TransactionsController extends BaseController
             ->sum();
 
         // filters
-        $this->includeFundFilter();
         $this->includeMonthFilter();
         $this->includeCategoriesFilter();
+        $this->includeTagsFilter();
 
         return $this->render('transactions/index', [
             'transactions' => $transactions,
             'total_amount' => $totalAmount,
 
-            'params' => $params,
+            'query' => $query,
 
             // pagination
             'total_pages' => $totalPages,
             'page' => $page,
 
-            'selected_column' => $params['sort'],
+            'selected_column' => $query['sort'],
         ]);
     }
 

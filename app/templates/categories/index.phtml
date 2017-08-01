@@ -1,13 +1,4 @@
 <?php
-$startDate = date('Y-m-01', strtotime($this->month_filter . '-01'));
-$endDate = date('Y-m-t', strtotime($startDate));
-
-$transactionsQuery = [
-    'start_date' => $startDate,
-    'end_date' => $endDate,
-    'fund' => $this->current_fund,
-];
-
 $currencyFormat = $this->current_fund->currency->format;
 ?>
 
@@ -26,7 +17,7 @@ $currencyFormat = $this->current_fund->currency->format;
     <div class="rows">
         <?= $this->insert('partials/filters') ?>
 
-        <div class="small-12 medium-3 columns">
+        <div class="small-12 medium-offset-3 medium-3 columns">
             <a href="<?= $this->pathFor('categories_create') ?>" class="button expanded">
                 <i class="fa fa-plus" aria-hidden="true"></i>
                 <?= $this->translate('new_category_button') ?>
@@ -47,30 +38,24 @@ $currencyFormat = $this->current_fund->currency->format;
                     <tr>
                         <th><span class="show-for-sr"><?= $this->translate('name_header') ?></span></th>
                         <th width="15%"><?= $this->translate('total_header') ?></th>
-                        <th width="15%"><?= $this->translate('budget_header') ?></th>
-                        <th width="15%"><?= $this->translate('remaining_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($this->categories as $category): ?>
                         <?php if (get_class($category) === 'App\Model\Group'):
                             $group = $category;
-                            $transactionsAmount = $group->getTransactionsAmount($transactionsQuery); ?>
+                            $transactionsAmount = $group->getTransactionsAmount($this->query); ?>
                             <tr class="text-left">
                                 <th><a href="<?= $this->pathFor('groups_edit', ['group_id' => $group->id]) ?>"><?= $group->name ?></a></th>
                                 <th><?= sprintf($currencyFormat, $transactionsAmount) ?></th>
-                                <th>&nbsp;</th>
-                                <th>&nbsp;</th>
                             </tr>
                         <?php else:
                             $group = $category;
-                            $transactionsAmount = $category->getTransactionsAmount($transactionsQuery);
+                            $transactionsAmount = $category->getTransactionsAmount($this->query);
                             $remainingBudget = ($category->budget > 0) ? $category->budget - abs($transactionsAmount) : 0; ?>
                             <tr>
                                 <td><a href="<?= $this->pathFor('categories_edit', ['category_id' => $category->id]) ?>">- <?= $category->name ?></a></td>
                                 <td><?= sprintf($currencyFormat, $transactionsAmount) ?></td>
-                                <td><?= sprintf($currencyFormat, $category->budget) ?></td>
-                                <td class="<?= ($remainingBudget > 0) ? 'in-budget' : (($remainingBudget < 0) ? 'over-budget' : '') ?>"><?= ($category->budget > 0) ?  sprintf($currencyFormat, $remainingBudget) : '&nbsp;' ?></td>
                             </tr>
                         <?php endif; ?>
                     <?php endforeach ?>
@@ -89,7 +74,7 @@ $currencyFormat = $this->current_fund->currency->format;
     <script>
 
     // init the chart
-    $.getJSON("/data/expenses?month=<?= $this->month_filter ?>", function(data) {
+    $.getJSON("/data/expenses?<?= http_build_query($this->query) ?>", function(data) {
 
         Highcharts.chart('container', {
             chart: {
