@@ -1,9 +1,13 @@
 <?php
 
 return array (
+  'previous_month_stats_header' => 'Previous month stats',
+  '3_year_projection_header' => '3-year projection',
+  'previous_months_not_found' => 'Previous months not found',
+  'current_month_stats_header' => 'Current month stats',
   'average_header' => 'Average',
   'recent_transactions' => 'Recent Transactions',
-  'year_projection_header' => '12-month projection',
+  'year_projection_header' => '1-year projection',
   'yearly_stats_header' => 'Yearly stats',
   'year_header' => 'Year',
   'filter_button' => 'Filter',
@@ -19,7 +23,6 @@ return array (
   'tag_name_not_unique' => 'Tag name not unique',
   'tags_label' => 'Tags',
   'dashboard_header' => 'Dashboard',
-  'monthly_stats_header' => 'Monthly Stats',
   'month_header' => 'Month',
   'earnings_header' => 'Earnings',
   'budget_stats_header' => 'Category Stats',

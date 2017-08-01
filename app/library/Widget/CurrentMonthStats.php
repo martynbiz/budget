@@ -1,7 +1,7 @@
 <?php
 namespace App\Widget;
 
-class CurrentMonthStats extends Base
+class CurrentMonthStats extends AbstractMonthStats
 {
     /**
      * @var string
@@ -24,38 +24,11 @@ class CurrentMonthStats extends Base
             ->orderBy('purchased_at', 'desc')
             ->get();
 
-        // get averate
-        $totalEarnings = 0;
-        $totalExpenses = 0;
-        $monthlyStatsData = [];
-        foreach ($transactions as $transaction) {
+        $monthlyStatsData = $this->buildMonthStatsArray($transactions);
 
-            $month = date('Y-m', strtotime($transaction->purchased_at));
-            if (!isset($monthlyStatsData[$month])) {
-                $monthlyStatsData[$month] = [
-                    'earnings' => [
-                        'amount' => 0,
-                    ],
-                    'expenses' => [
-                        'amount' => 0,
-                    ],
-                    'balance' => [
-                        'amount' => 0,
-                    ],
-                ];
-
-                $data = &$monthlyStatsData[$month];
-            }
-
-            if ($transaction->amount > 0) { // is earning
-                $data['earnings']['amount']+= $transaction->amount;
-                $totalEarnings+= $transaction->amount;
-            } else {
-                $data['expenses']['amount']+= abs($transaction->amount);
-                $totalExpenses+= abs($transaction->amount);
-            }
-
-            $data['balance']['amount']+= $transaction->amount;
+        // if months are empty from transactions, create an empty one for thsi month
+        if (count($monthlyStatsData) === 0) {
+            $monthlyStatsData[ date('Y-m') ] = $this->getEmptyMonthStat();
         }
 
         $this->data = $monthlyStatsData;
