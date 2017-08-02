@@ -2,11 +2,14 @@
 $currentPage = $this->page;
 $totalPages = $this->total_pages;
 
+// this is the limit of numbers on either side of current page
+$leftRight = 3;
+
 $pageStart = 1;
-if (($currentPage - 3) > 1) $pageStart = $currentPage - 3;
+if (($currentPage - $leftRight) > $pageStart) $pageStart = $currentPage - $leftRight;
 
 $pageEnd = $this->total_pages;
-if (($currentPage + 3) < $this->total_pages) $pageEnd = $currentPage + 3;
+if (($currentPage + $leftRight) < $pageEnd) $pageEnd = $currentPage + $leftRight;
 ?>
 <?php if ($totalPages > 1): ?>
     <ul class="pagination" role="navigation" aria-label="Pagination">
