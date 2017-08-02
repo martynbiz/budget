@@ -59,6 +59,7 @@ class TransactionsController extends BaseController
                 ->orderBy('transactions.id', 'desc'); // just so we can order within days
         }
 
+        // this get(...) argument is required when joing tags, we could maybe override get so this always gets included?
         $transactions = $transactionsQuery->get(['transactions.id as id', 'transactions.*']);
 
         // get total amounts

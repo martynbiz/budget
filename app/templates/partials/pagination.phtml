@@ -1,21 +1,35 @@
-<?php if ($this->total_pages > 1): ?>
+<?php
+$currentPage = $this->page;
+$totalPages = $this->total_pages;
+
+$pageStart = 1;
+if (($currentPage - 3) > 1) $pageStart = $currentPage - 3;
+
+$pageEnd = $this->total_pages;
+if (($currentPage + 3) < $this->total_pages) $pageEnd = $currentPage + 3;
+?>
+<?php if ($totalPages > 1): ?>
     <ul class="pagination" role="navigation" aria-label="Pagination">
-        <?php if ($this->page > 1): ?>
-            <li class="pagination-previous"><a href="?<?= $this->generateQueryString(['page'=>($this->page-1)]) ?>" aria-label="Next page"><?= $this->translate('pagination_previous') ?></a></li>
+        <?php if ($currentPage > 1): ?>
+            <li class="pagination-previous"><a href="?<?= $this->generateQueryString(['page'=>($currentPage-1)]) ?>" aria-label="Next page"><?= $this->translate('pagination_previous') ?></a></li>
         <?php else: ?>
             <li class="pagination-previous disabled"><?= $this->translate('pagination_previous') ?></li>
         <?php endif; ?>
 
-        <?php for($p=1; $p <= $this->total_pages; $p++): ?>
-            <?php if ($this->page == $p): ?>
-                <li class="current"><?= sprintf($this->translate('pagination_youre_on_page'), $this->page) ?></li>
-            <?php else: ?>
-                <li><a href="?<?= $this->generateQueryString(['page'=>$p]) ?>" aria-label="Page <?= $p ?>"><?= $p ?></a></li>
-            <?php endif ?>
-        <?php endfor ?>
+        <?php if ($pageStart > 1): ?><li class="ellipsis" aria-hidden="true"></li><?php endif; ?>
 
-        <?php if ($this->page < $this->total_pages): ?>
-            <li class="pagination-next"><a href="?<?= $this->generateQueryString(['page'=>(++$this->page)]) ?>" aria-label="Next page"><?= $this->translate('pagination_next') ?></a></li>
+        <?php $page = $pageStart; while($page <= $pageEnd): ?>
+            <?php if ($currentPage == $page): ?>
+                <li class="current"><?= sprintf($this->translate('pagination_youre_on_page'), $currentPage) ?></li>
+            <?php else: ?>
+                <li><a href="?<?= $this->generateQueryString(['page' => $page]) ?>" aria-label="Page <?= $page ?>"><?= $page ?></a></li>
+            <?php endif ?>
+        <?php $page++; endwhile ?>
+
+        <?php if ($pageEnd < $totalPages): ?><li class="ellipsis" aria-hidden="true"></li><?php endif; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="pagination-next"><a href="?<?= $this->generateQueryString(['page'=>(++$currentPage)]) ?>" aria-label="Next page"><?= $this->translate('pagination_next') ?></a></li>
         <?php else: ?>
             <li class="pagination-next disabled"><?= $this->translate('pagination_next') ?></li>
         <?php endif; ?>
