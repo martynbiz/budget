@@ -59,7 +59,7 @@ class TransactionsController extends BaseController
                 ->orderBy('transactions.id', 'desc'); // just so we can order within days
         }
 
-        $transactions = $transactionsQuery->get();
+        $transactions = $transactionsQuery->get(['transactions.id as id', 'transactions.*']);
 
         // get total amounts
         $totalAmount = (clone $baseQuery)

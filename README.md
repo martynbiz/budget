@@ -2,7 +2,6 @@
 
 TODO
 
-click on view transactions (from tag), then click on trans - wrong id
 small pagination when no filters
 remove budget amount? - remove from db
 Widget: set target, how long to get there? add fund amount to nationwide from 1st may
