@@ -1,0 +1,29 @@
+<?php
+$currencyFormat = $this->current_fund->currency->format;
+
+// to output months
+$firstGroup = current($this->widget_data);
+?>
+<div class="small-12 medium-12 columns widget widget__budget-stats responsive-overflow">
+    <h3><?= $this->translate('group_month_stats_header') ?></h3>
+    <table class="unstriped">
+        <thead>
+            <tr>
+                <th><span class="show-for-sr"><?= $this->translate('category_header') ?></span></th>
+                <?php foreach(array_keys($firstGroup) as $month): ?>
+                    <th><?= date('M', strtotime($month . '-01 00:00:00')) ?></th>
+                <?php endforeach ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach($this->widget_data as $groupName => $group): ?>
+                <tr>
+                    <td><?= $groupName ?></td>
+                    <?php foreach($group as $month => $amount): ?>
+                        <td class="<?= $this->balanceClass($amount) ?>"><?= sprintf($currencyFormat, $amount) ?></td>
+                    <?php endforeach ?>
+                </tr>
+            <?php endforeach ?>
+        </tbody>
+    </table>
+</div>

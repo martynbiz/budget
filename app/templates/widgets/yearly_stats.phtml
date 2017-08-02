@@ -19,7 +19,7 @@ $currencyFormat = $this->current_fund->currency->format;
                 $balance = $data['balance']['amount']; ?>
             <tr>
                 <?php if ($earningsAmount || $expensesAmount): ?>
-                    <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $year ?>"><?= $year ?></a></td>
+                    <td><a href="<?= $this->pathFor('transactions') ?>?month="><?= $year ?></a></td>
                 <?php endif; ?>
                 <td><?= sprintf($currencyFormat, $earningsAmount) ?></td>
                 <td><?= sprintf($currencyFormat, $expensesAmount) ?></td>

@@ -2,10 +2,8 @@
 
 TODO
 
-small pagination when no filters
 remove budget amount? - remove from db
 Widget: set target, how long to get there? add fund amount to nationwide from 1st may
-category/group month stats so can see all months per groups at glance, averages
 durations - rather than tagging ALL as e.g. "London201707"
 Transfer to/from fund (good for credit cards, loans etc)
 

@@ -42,7 +42,7 @@ foreach ($this->widget_data as $month => $data) {
                     $balance = $data['balance']['amount']; ?>
                 <tr>
                     <?php if ($earningsAmount || $expensesAmount): ?>
-                        <td><a href="<?= $this->pathFor('transactions') ?>?filter__month=<?= $month ?>"><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></a></td>
+                        <td><a href="<?= $this->pathFor('transactions') ?>?month=<?= $month ?>"><?= date('M', strtotime($month . '-01')) ?> <span class="hide-for-small-only"><?= date('Y', strtotime($month . '-01')) ?></span></a></td>
                     <?php endif; ?>
                     <td><?= sprintf($currencyFormat, $earningsAmount) ?></td>
                     <td><?= sprintf($currencyFormat, $expensesAmount) ?></td>
