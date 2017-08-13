@@ -2,7 +2,17 @@
 
 TODO
 
-remove budget amount? - remove from db
+categories_id=0 .. drill down might not add up to parent category total
+- create new column categories.category_id
+- index groups is now categories.category_id=0
+- add/edit has a parent field
+- add trans can add to either
+
+benefits
+- filter trans of parent
+- less tables/forms, simpler
+- transactions can be assigned to a general category eg. "leisure" or "stuff"
+
 Widget: set target, how long to get there? add fund amount to nationwide from 1st may
 durations - rather than tagging ALL as e.g. "London201707"
 Transfer to/from fund (good for credit cards, loans etc)

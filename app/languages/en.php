@@ -1,6 +1,7 @@
 <?php
 
 return array (
+  'create_new_tag' => 'Add tag',
   'group_month_stats_header' => 'Group month stats',
   'all_months' => 'All months',
   'all_categories' => 'All categories',

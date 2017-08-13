@@ -65,20 +65,13 @@ class Transaction extends Base
         return $purchasedString;
     }
 
-    /**
-     * Will attach a "tag1,tag2,tag3" string of tags to the transactions. If the
-     * tag doesn't exist, it will be created
-     * @param string $tagsString Tag string eg. "tag1,tag2,tag3"
-     */
-    public function setTagsByTagsString($tagsString) {
+    public function attachTagsByArray($tagsArray) {
 
         $currentUser = $this->user;
 
         // just clear existing tags as we'll create new pivot links
         $this->tags()->detach();
 
-        // create tags (if any)
-        $tagsArray = array_map('trim', explode(',', $tagsString));
         foreach ($tagsArray as $name) {
 
             if (empty($name)) continue;
@@ -94,6 +87,16 @@ class Transaction extends Base
 
             $this->tags()->attach($tag);
         }
+    }
+
+    /**
+     * Will attach a "tag1,tag2,tag3" string of tags to the transactions. If the
+     * tag doesn't exist, it will be created
+     * @param string $tagsString Tag string eg. "tag1,tag2,tag3"
+     */
+    public function attachTagsByStringList($tagsString) {
+        $tagsArray = array_map('trim', explode(',', $tagsString));
+        $this->attachTagsByArray($tagsArray);
     }
 
     public function scopeWhereQuery($baseQuery, $query=[])

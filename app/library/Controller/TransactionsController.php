@@ -92,16 +92,37 @@ class TransactionsController extends BaseController
     public function create($request, $response, $args)
     {
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
         // if errors found from post, this will contain data
         $params = array_merge([
             'purchased_at' => date('Y-m-d'),
             'budget' => 0,
         ], $request->getParams());
-        $currentUser = $this->getCurrentUser();
+
+        // this needs to be applied seperately encase param tags is NULL (array_merge
+        // will return NULL too)
+        $tags = $currentUser->tags()->pluck('name')->toArray();
+        if (is_array(@$request->getParams()['tags'])) {
+            $tags = array_unique(array_merge($tags, $request->getParams()['tags']));
+        }
+
+        // $__start = microtime(true);
+        $tagNames = $currentUser->tags()->pluck('name');
+        // $__time_elapsed_secs = microtime(true) - $__start;
+        // var_dump($__time_elapsed_secs); exit;
+
+        // $__start = microtime(true);
+        // $tagNames = [];
+        // foreach($tags as $tag) {
+        //     array_push($tagNames, $tag->name);
+        // }
+        // $__time_elapsed_secs = microtime(true) - $__start;
+        // var_dump($__time_elapsed_secs); exit;
 
         return $this->render('transactions/create', [
             'params' => $params,
+            'tags' => $tags,
         ]);
     }
 
@@ -110,7 +131,15 @@ class TransactionsController extends BaseController
      */
     public function post($request, $response, $args)
     {
-        $params = array_map('trim', $request->getParams());
+        $params = array_map(function($value) {
+            switch (gettype($value)) {
+                case 'string':
+                    return trim($value);
+                    break;
+                default:
+                    return $value;
+            }
+        }, $request->getParams());
         $container = $this->getContainer();
 
         $currentUser = $this->getCurrentUser();
@@ -153,7 +182,7 @@ class TransactionsController extends BaseController
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
-                $transaction->setTagsByTagsString($params['tags']);
+                $transaction->attachTagsByArray($params['tags']);
 
                 // redirect
                 return $response->withRedirect( $container->get('router')->pathFor('transactions') );
@@ -183,12 +212,29 @@ class TransactionsController extends BaseController
 
         $params = array_merge($transaction->toArray(), $request->getParams(), [
             'category' => $transaction->category->name,
-            'tags' => implode(',', $transaction->tags()->pluck('name')->toArray())
+            'tags' => $transaction->tags->pluck('name')->toArray(),
         ]);
+
+        // this needs to be applied seperately encase param tags is NULL (array_merge
+        // will return NULL too)
+        if (is_array(@$request->getParams()['tags'])) {
+            $params['tags'] = array_merge($params['tags'], $request->getParams()['tags']);
+        }
+
+        // TODO do pluck in template, i didn't realise you could do it to the >tags propery
+        // try a speed test on both tags->pluck() and tags()->pluck()
+
+        // this needs to be applied seperately encase param tags is NULL (array_merge
+        // will return NULL too)
+        $tags = $currentUser->tags()->pluck('name')->toArray();
+        if (is_array(@$request->getParams()['tags'])) {
+            $tags = array_unique(array_merge($tags, $request->getParams()['tags']));
+        }
 
         return $this->render('transactions/edit', [
             'params' => $params,
             'transaction' => $transaction,
+            'tags' => $tags,
         ]);
     }
 
@@ -239,7 +285,7 @@ class TransactionsController extends BaseController
 
             if ($transaction->update($params)) {
 
-                $transaction->setTagsByTagsString($params['tags']);
+                $transaction->attachTagsByArray($params['tags']);
 
                 // redirect
                 return $response->withRedirect( $container->get('router')->pathFor('transactions') );
@@ -253,7 +299,7 @@ class TransactionsController extends BaseController
         }
 
         $container->get('flash')->addMessage('errors', $errors);
-        return $this->create($request, $response, $args);
+        return $this->edit($request, $response, $args);
     }
 
     /**

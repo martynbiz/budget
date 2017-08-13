@@ -47,11 +47,45 @@
             dateFormat: "yyyy-mm-dd"
         });
 
-        // init tags
-        $("input[name='tags']").tagsInput({
-            width:'auto',
-            height:'auto',
-            autocomplete_url: '/data/tags'
+        // // init tags
+        // $("input[name='tags']").tagsInput({
+        //     width:'auto',
+        //     height:'auto',
+        //     autocomplete_url: '/data/tags'
+        // });
+
+        // TODO move to app.js, remove from create/edit
+        $("#new_tag_button").on("click", function(e) {
+            var $newTag = $("input[name='new_tag']");
+            var found = false;
+
+            // if empty return
+            if ($newTag.val() === "") {
+                console.log("meow!");
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+
+            // check if tag exists already. if so, check it.
+            $("input[name='tags[]']").each(function(index, el) {
+                if ($(el).val() === $newTag.val()) {
+                    $(el).prop('checked', true);
+                    found = true;
+                    $newTag.val("");
+                }
+            });
+
+            // create new tag and check it
+            if (!found) {
+                $("fieldset#tags").append('<input type="checkbox" name="tags[]" value="' + $newTag.val() + '" id="tag_' + (new Date()).getTime() + '" checked>' +
+                '<label for="tag_' + (new Date()).getTime() + '">' + $newTag.val() + '</label>');
+                $newTag.val("");
+            }
+
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
         });
 
         // init the autocomplete
@@ -62,4 +96,32 @@
         });
     });
     </script>
+<?php $this->append() ?>
+
+<?php $this->section('head') ?>
+    <style>
+
+    #tags input[type='checkbox'] {
+        position: absolute;
+        left: -9999px;
+    }
+    #tags label {
+        display: inline-block;
+        padding: 5px 10px;
+        background: #767676;
+        margin-bottom: 0.5rem;
+        border-radius: 5px;
+        color: #fff;
+    }
+    #tags label:hover {
+        background: #5e5e5e;
+    }
+    #tags input[type='checkbox']:checked + label {
+        background: #1779ba;
+    }
+    #tags input[type='checkbox']:checked + label:hover {
+        background: #126195;
+    }
+
+    </style>
 <?php $this->append() ?>

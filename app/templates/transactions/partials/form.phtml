@@ -14,8 +14,21 @@
     <input type="text" name="purchased_at" placeholder="<?= $this->translate('purchased_at_label') ?>" value="<?= @$this->params['purchased_at'] ?>">
 </label>
 
-<label style="margin-bottom: 1rem;"><?= $this->translate('tags_label') ?>
-    <input type="text" name="tags" placeholder="<?= $this->translate('tags_label') ?>" value="<?= @$this->params['tags'] ?>">
-</label>
+<fieldset id="tags">
+    <legend><?= $this->translate('tags_label') ?></legend>
+    <?php foreach ($this->tags as $tagName): ?>
+        <input type="checkbox" name="tags[]" value="<?= $tagName ?>" id="tag__<?= md5($tagName) ?>" <?php if (in_array($tagName, @$this->params['tags'])): ?> checked<?php endif ?>>
+        <label for="tag__<?= md5($tagName) ?>"><?= $tagName ?></label>
+    <?php endforeach ?>
+</fieldset>
+
+<div class="row collapse">
+    <div class="small-10 columns">
+        <input type="text" name="new_tag">
+    </div>
+    <div class="small-2 columns">
+        <button class="button postfix" id="new_tag_button"><?= $this->translate('create_new_tag') ?></button>
+    </div>
+</div>
 
 <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
