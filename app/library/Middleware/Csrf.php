@@ -16,30 +16,30 @@ class Csrf extends Base
      */
     public function __invoke($request, $response, $next)
     {
-        // $container = $this->container;
-        //
-        // // ensure csrf name is written
-        // if (!$csrfName = $container->get('session')->get('csrf_name')) {
-        //     $container->get('session')->set('csrf_name', md5(rand()));
-        // }
-        // $csrfName = $container->get('session')->get('csrf_name');
-        //
-        // // ensure csrf value is written
-        // if (!$csrfValue = $container->get('session')->get('csrf_value')) {
-        //     $container->get('session')->set('csrf_value', md5(rand()));
-        // }
-        // $csrfValue = $container->get('session')->get('csrf_value');
-        //
-        // // check csrf token for non-GET requests
-        // if ($request->getMethod() != 'GET') {
-        //     if ($csrfValue != $request->getParam($csrfName)) {
-        //         throw new InvalidCsrfToken;
-        //     } else {
-        //         // update the name/value
-        //         $container->get('session')->set('csrf_name', md5(rand()));
-        //         $container->get('session')->set('csrf_value', md5(rand()));
-        //     }
-        // }
+        $container = $this->container;
+
+        // ensure csrf name is written
+        if (!$csrfName = $container->get('session')->get('csrf_name')) {
+            $container->get('session')->set('csrf_name', md5(rand()));
+        }
+        $csrfName = $container->get('session')->get('csrf_name');
+
+        // ensure csrf value is written
+        if (!$csrfValue = $container->get('session')->get('csrf_value')) {
+            $container->get('session')->set('csrf_value', md5(rand()));
+        }
+        $csrfValue = $container->get('session')->get('csrf_value');
+
+        // check csrf token for non-GET requests
+        if ($request->getMethod() != 'GET') {
+            if ($csrfValue != $request->getParam($csrfName)) {
+                throw new InvalidCsrfToken;
+            } else {
+                // update the name/value
+                $container->get('session')->set('csrf_name', md5(rand()));
+                $container->get('session')->set('csrf_value', md5(rand()));
+            }
+        }
 
         $response = $next($request, $response);
 
