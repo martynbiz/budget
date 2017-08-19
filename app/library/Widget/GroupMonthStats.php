@@ -37,14 +37,14 @@ class GroupMonthStats extends Base
         ];
         foreach ($categories as $category) {
 
-            $transactionsAmount = $category->getTransactionsAmount([
-                'start_date' => $startDate,
-                'end_date' => $endDate,
-                // 'fund' => ..?
-            ]);
+            // $transactionsAmount = $category->getTransactionsAmount([
+            //     'start_date' => $startDate,
+            //     'end_date' => $endDate,
+            //     'fund_id' => $container->get('session')->get(SESSION_FILTER_FUND)
+            // ]);
 
             $groupName = $category->group->name;
-            if (empty($groupName)) $groupName = 'Misc';
+            if (empty($groupName)) $groupName = 'Uncategorized';
 
             // ensure that group is set
             if (!isset($data[$groupName])) {
@@ -57,11 +57,12 @@ class GroupMonthStats extends Base
                 $data[$groupName][$month]+= $category->getTransactionsAmount([
                     'start_date' => $startDate,
                     'end_date' => $endDate,
+                    'fund' => $container->get('session')->get(SESSION_FILTER_FUND)
                 ]);
             }
         }
 
-        // sort by group name 
+        // sort by group name
         ksort($data);
 
         $this->data = $data;

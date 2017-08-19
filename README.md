@@ -37,7 +37,6 @@ settings
 
 
 * feature: split transactions up
-* feature: budget stats - order by percentage
 * feature: fund types - saving, etc
 * feature: projected savings?
 * feature: create your own currencies - alter table currencies add column user_id int;

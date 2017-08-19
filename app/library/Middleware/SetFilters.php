@@ -20,7 +20,7 @@ class SetFilters extends Base
         if ($container->get('auth')->isAuthenticated()) {
 
             // fund filter
-            if ($fundId = $request->getQueryParam('filter__fund_id')) {
+            if ($fundId = $request->getQueryParam('fund')) {
                 $container->get('session')->set(SESSION_FILTER_FUND, $fundId);
             }
 

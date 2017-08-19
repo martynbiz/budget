@@ -1,4 +1,16 @@
 <form id="filters_form" method="get" action="" style="display: inline;">
+    <?php if ($this->select_fund_options): ?>
+        <div class="small-12 medium-3 columns">
+            <label class="show-for-sr"><?= $this->translate('fund_label') ?></label>
+            <select name="fund">
+                <option value=""><?= $this->translate('all_funds') ?></option>
+                <?php foreach ($this->select_fund_options as $fund): ?>
+                    <option value="<?= $fund->id ?>" <?= ($fund->id == $this->selected_fund) ? 'selected="selected"' : '' ?>> <?= $fund->name ?></option>
+                <?php endforeach ?>
+            </select>
+        </div>
+    <?php endif ?>
+
     <?php if ($this->select_month_options): ?>
         <div class="small-12 medium-3 columns">
             <label class="show-for-sr"><?= $this->translate('month_label') ?></label>

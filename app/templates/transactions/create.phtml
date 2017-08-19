@@ -37,12 +37,12 @@
             dateFormat: "yy-mm-dd"
         });
 
-        // // init the autocomplete
-        // $.getJSON("/data/categories", function(data) {
-        //     $("input[name='category']").autocomplete({
-        //         source: data
-        //     });
-        // });
+        // init the autocomplete
+        $.getJSON("/data/categories", function(data) {
+            $("input[name='category']").autocomplete({
+                source: data
+            });
+        });
 
         // TODO move to app.js, remove from create/edit
         $("#new_tag_button").on("click", function(e) {

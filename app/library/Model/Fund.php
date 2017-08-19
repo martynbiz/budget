@@ -35,6 +35,6 @@ class Fund extends Base
                 ->sum();
         }
 
-        return $this->transactionsAmount;
+        return $this->amount + $this->transactionsAmount;
     }
 }
