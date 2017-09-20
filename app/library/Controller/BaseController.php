@@ -53,7 +53,7 @@ class BaseController
      * @param array $args Additional variables to pass to the view
      * @param Response?
      */
-    public function render($file, $data=array())
+    protected function render($file, $data=array())
     {
         $container = $this->getContainer();
         $request = $container->get('request');
@@ -89,15 +89,27 @@ class BaseController
         $data['csrf_name'] = $container->get('session')->get('csrf_name');
         $data['csrf_value'] = $container->get('session')->get('csrf_value');
 
-        // // get start and end date from the month filter
-        // $monthFilter = $container->get('session')->get(SESSION_FILTER_MONTH);
-        // $data['month_filter'] = $monthFilter;
+        // depending on the requested format, we'll return data that way
+        $format = $request->getParam('format');
 
-        // generate the html
-        $html = $container->get('renderer')->render($file, $data);
-        $response->getBody()->write($html);
+        if ($format == 'json') {
 
-        return $response;
+            // put the json in the response object
+            // this may not be sufficient for the Eloquent models as we may require
+            // to add data from belongsTo or hasMany relationships. In that case,
+            // define another
+            $response = $this->renderJSON($data);
+
+            // set the header that will overrule same origin
+            // TODO put this into config
+            return $response->withHeader('Access-Control-Allow-Origin', '*');
+
+        } else {
+
+            // generate the html
+            return $this->renderHTML($file, $data);
+
+        }
     }
 
     /**
@@ -106,7 +118,25 @@ class BaseController
      * @param array $args Additional variables to pass to the view
      * @param Response?
      */
-    public function renderJSON($data=array())
+    protected function renderHTML($file, $data=array())
+    {
+        $container = $this->getContainer();
+
+        // put the json in the response object
+        $response = $container->get('response');
+        $html = $container->get('renderer')->render($file, $data);
+        $response->getBody()->write($html);
+
+        return $response;
+    }
+
+    /**
+     * Render the json and attach to the response
+     * @param string $file Name of the template/ view to render
+     * @param array $args Additional variables to pass to the view
+     * @param Response?
+     */
+    protected function renderJSON($data=array())
     {
         $container = $this->getContainer();
 

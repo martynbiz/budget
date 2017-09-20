@@ -17,7 +17,7 @@
 <fieldset id="tags">
     <legend><?= $this->translate('tags_label') ?></legend>
     <?php foreach ($this->tags as $tagName): ?>
-        <input type="checkbox" name="tags[]" value="<?= $tagName ?>" id="tag__<?= md5($tagName) ?>" <?php if (in_array($tagName, @$this->params['tags'])): ?> checked<?php endif ?>>
+        <input type="checkbox" name="tags[]" value="<?= $tagName ?>" id="tag__<?= md5($tagName) ?>" <?php if (is_array(@$this->params['tags']) && in_array($tagName, $this->params['tags'])): ?> checked<?php endif ?>>
         <label for="tag__<?= md5($tagName) ?>"><?= $tagName ?></label>
     <?php endforeach ?>
 </fieldset>

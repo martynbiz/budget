@@ -16,7 +16,7 @@ class TagsController extends BaseController
         ], $request->getQueryParams());
 
         $page = (int)$options['page'];
-        $limit = 20;
+        $limit = (int)$request->getQueryParam('limit', 20);
         $start = ($page-1) * $limit;
 
         // get paginated rows
@@ -177,5 +177,18 @@ class TagsController extends BaseController
 
         $container->get('flash')->addMessage('errors', $errors);
         return $this->edit($request, $response, $args);
+    }
+
+    /**
+     * Render the json and attach to the response
+     * @param string $file Name of the template/ view to render
+     * @param array $args Additional variables to pass to the view
+     * @param Response?
+     */
+    protected function renderJSON($data=array())
+    {
+        $data = $data['tags'];
+
+        return parent::renderJSON($data);
     }
 }

@@ -67,6 +67,8 @@ class Transaction extends Base
 
     public function attachTagsByArray($tagsArray) {
 
+        if (!is_array($tagsArray)) return;
+
         $currentUser = $this->user;
 
         // just clear existing tags as we'll create new pivot links

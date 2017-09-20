@@ -11,7 +11,7 @@
         <select name="currency_id">
             <option value=""><?= $this->translate('please_select') ?></option>
             <?php foreach ($this->currencies as $currency): ?>
-                <option value="<?= $currency->id ?>" <?= ($currency->id == $this->params['currency_id']) ? 'selected="selected"' : '' ?>><?= $currency->name ?></option>
+                <option value="<?= $currency->id ?>" <?= ($currency->id == @$this->params['currency_id']) ? 'selected="selected"' : '' ?>><?= $currency->name ?></option>
             <?php endforeach ?>
         </select>
         <p>OR</p>

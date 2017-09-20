@@ -27,7 +27,7 @@ class TransactionsController extends BaseController
         if (!isset($query['month'])) $query['month'] = date('Y-m');
 
         $page = (int)$query['page'];
-        $limit = 20;
+        $limit = (int)$request->getQueryParam('limit', 20);
         $start = ($page-1) * $limit;
 
         $baseQuery = $this->currentFund->transactions()->whereQuery($query);
@@ -323,5 +323,18 @@ class TransactionsController extends BaseController
 
         $container->get('flash')->addMessage('errors', $errors);
         return $this->edit($request, $response, $args);
+    }
+
+    /**
+     * Render the json and attach to the response
+     * @param string $file Name of the template/ view to render
+     * @param array $args Additional variables to pass to the view
+     * @param Response?
+     */
+    protected function renderJSON($data=array())
+    {
+        $data = $data['transactions'];
+
+        return parent::renderJSON($data);
     }
 }
