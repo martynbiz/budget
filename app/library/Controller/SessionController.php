@@ -113,7 +113,6 @@ class SessionController extends BaseController
         // GET and POST
         $params = $request->getParams();
         $container = $this->getContainer();
-        $settings = $container->get('settings');
 
         // authentice with the email (might even be username, which is fine) and pw
         if ($container->get('auth')->authenticate($params['email'], $params['password'])) {
@@ -167,7 +166,6 @@ class SessionController extends BaseController
         // combine GET and POST params
         $params = $request->getParams();
         $container = $this->getContainer();
-        $settings = $container->get('settings');
 
         // also, delete any auth_token we have for the user and cookie
         if ($currentUser = $this->getCurrentUser()) {

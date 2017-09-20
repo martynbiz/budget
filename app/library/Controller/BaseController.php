@@ -98,11 +98,7 @@ class BaseController
             // this may not be sufficient for the Eloquent models as we may require
             // to add data from belongsTo or hasMany relationships. In that case,
             // define another
-            $response = $this->renderJSON($data);
-
-            // set the header that will overrule same origin
-            // TODO put this into config
-            return $response->withHeader('Access-Control-Allow-Origin', '*');
+            return $this->renderJSON($data);
 
         } else {
 
@@ -144,7 +140,10 @@ class BaseController
         $response = $container->get('response');
         $response->getBody()->write(json_encode($data));
 
-        return $response;
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'authorization'); // TODO put this into config
     }
 
     /**

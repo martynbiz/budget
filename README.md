@@ -2,6 +2,16 @@
 
 TODO
 
+test - json responses
+
+api:
+
+* store token in db.api_access_tokens on authentication
+* code requireApiToken to validate access token
+
+!!! Error response - e.g. "Invalid token"
+https://www.slimframework.com/docs/handlers/error.html
+
 categories_id=0 .. drill down might not add up to parent category total
 - create new column categories.category_id
 - index groups is now categories.category_id=0

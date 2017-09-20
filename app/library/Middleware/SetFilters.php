@@ -32,16 +32,6 @@ class SetFilters extends Base
 
             // set session var - from confirmed $fund
             $container->get('session')->set(SESSION_FILTER_FUND, $fund->id);
-
-
-            // // month filter
-            // if ($month = $request->getQueryParam('filter__month')) {
-            //     $container->get('session')->set(SESSION_FILTER_MONTH, $month);
-            // }
-            //
-            // // set session var - or set a default for month
-            // $container->get('session')->get(SESSION_FILTER_MONTH) ||
-            //     $container->get('session')->set(SESSION_FILTER_MONTH, date('Y-m'));
         }
 
         $response = $next($request, $response);
