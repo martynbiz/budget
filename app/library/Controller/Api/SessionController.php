@@ -14,48 +14,60 @@ class SessionController extends ApiController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        // // authentice with the email (might even be username, which is fine) and pw
-        // if ($container->get('auth')->authenticate($params['email'], $params['password'])) {
+        // authentice with the email (might even be username, which is fine) and pw
+        if ($container->get('auth')->authenticate($params['email'], $params['password'])) {
 
-            // // as authentication has passed, get the user by email OR username
-            // $user = $container->get('model.user')
-            //     ->where('email', $params['email'])
-            //     ->orWhere('username', $params['email'])
-            //     ->first();
+            // as authentication has passed, get the user by email OR username
+            $user = $container->get('model.user')
+                ->where('email', $params['email'])
+                ->orWhere('username', $params['email'])
+                ->first();
 
-            // TODO create token and store in db with $user id
-            $token = 'qwertyuiop1234567890';
+            // set current user here, so we don't have to query again
+            $this->currentUser = $user;
 
-            // redirect
+            // if no token exists, create one
+            if (!$token = $user->api_token) {
+
+                $hash = md5(date() . rand(1,1000000));
+                $expires = date('Y-m-d H:i:s', strtotime('+1 day', time()));
+
+                $token = $user->api_token()->create([
+                    'value' => $hash,
+                    'expires_at' => $expires,
+                ]);
+            }
+
+            // return token
             return $this->renderJSON([
-                'token' => $token,
+                'token' => $token->value,
             ]);
 
-        // } else {
-        //
-        //     // TODO handle invalid login attempt
-        //
-        // }
+        } else {
+
+            return $this->handleError('Login failed!', 401);
+
+        }
     }
 
     public function delete($request, $response, $args)
     {
-        // combine GET and POST params
-        $params = $request->getParams();
-        $container = $this->getContainer();
+        // TODO delete token from db, token is passed with request
+        //   don't return an error if token not found, just confirm that a given
+        //   token no longer exists in the db
 
-        // also, delete any auth_token we have for the user and cookie
-        if ($currentUser = $this->getCurrentUser()) {
-            $container->get('auth')->forget($currentUser);
-        } else { // just delete cookie then - if exists
-            $container->get('auth')->deleteAuthTokenCookie();
-        }
+        return $this->renderJSON([]); // empty array
+    }
 
-        // this will effective end the "session" by clearning out the session vars
-        $container->get('auth')->clearAttributes();
-
-        // redirect back to returnTo, or /session (logout page) if not provided
-        return $response->withRedirect('/');
+    /**
+     * Will return JSON as this gives us control over which status code etc, or
+     * additional data to return with the error
+     */
+    protected function handleError($message, $statusCode=400)
+    {
+        return $this->renderJSON([
+            'error' => $message
+        ])->withStatus($statusCode);
     }
 
 }

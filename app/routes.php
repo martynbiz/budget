@@ -124,11 +124,10 @@ $app->post('/api/session', '\App\Controller\Api\SessionController:post')->setNam
 
 $app->group('/api', function() use ($app) { // attach middleware: RequireApiToken
 
-    // // session routes
-    // $app->group('/session', function() use ($app) {
-    //     $app->get('/logout', '\App\Controller\SessionController:logout')->setName('api_session_logout');
-    //     $app->delete('/logout', '\App\Controller\SessionController:delete')->setName('api_session_logout_delete');
-    // });
+    // session routes
+    $app->group('/session', function() use ($app) {
+        $app->map(['DELETE', 'OPTIONS'], '', '\App\Controller\Api\SessionController:delete')->setName('api_session_logout_delete');
+    });
 
     // funds routes
     $app->group('/funds', function() use ($app) {

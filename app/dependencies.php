@@ -204,3 +204,7 @@ $container['model.category'] = function($c) {
 $container['model.tag'] = function($c) {
     return new \App\Model\Tag();
 };
+
+$container['model.api_token'] = function($c) {
+    return new \App\Model\ApiToken();
+};

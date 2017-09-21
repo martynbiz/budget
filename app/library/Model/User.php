@@ -70,6 +70,11 @@ class User extends Base
         return $this->hasOne('App\\Model\\RecoveryToken'); //, 'user_id');
     }
 
+    public function api_token()
+    {
+        return $this->hasOne('App\\Model\\ApiToken'); //, 'user_id');
+    }
+
     public function getSetting($name)
     {
         if (!in_array(self::$validSettings, $settings->name)) {
