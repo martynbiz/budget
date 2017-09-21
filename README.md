@@ -2,7 +2,7 @@
 
 TODO
 
-test - json responses
+test - api requests: how to test when application/json POST?
 
 api:
 
