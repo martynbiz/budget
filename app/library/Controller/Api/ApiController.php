@@ -15,23 +15,53 @@ use App\Model\Transaction;
 
 class ApiController extends BaseController
 {
+    /**
+     * @var string|null
+     */
+    protected $apiToken;
+
     public function __construct(Container $container)
     {
         $this->container = $container;
+
+        // if token is present, we'll set that here so that it is available to
+        // all getCurrentUser method calls in API
+        $this->apiToken = $this->getBearerToken();
     }
 
     /**
      * Get the current user that is linked to the token in the request
+     * @return User|null
      */
     protected function getCurrentUser()
     {
-        // TODO this
-        if (! $this->currentUser) {
-            $container = $this->getContainer();
-            $this->currentUser =  $container->get('model.user')->first();
-        }
+    	$container = $this->getContainer();
 
-        return $this->currentUser;
+        // will check if currentUser is empty, will also check if apiToken is set
+    	if (!$this->currentUser && !empty($this->apiToken)) {
+            $token = $container->get('model.api_token')
+    			->where('value', $this->apiToken)
+    			->first();
+
+    		$this->currentUser = $token->user;
+    	}
+
+    	return $this->currentUser;
+    }
+
+    /**
+     * get access token from header
+     * */
+    function getBearerToken()
+    {
+        $headers = $this->getAuthorizationHeader();
+        // HEADER: Get the access token from the header
+        if (!empty($headers)) {
+            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+                return $matches[1];
+            }
+        }
+        return null;
     }
 
     /**
@@ -55,20 +85,5 @@ class ApiController extends BaseController
             }
         }
         return $headers;
-    }
-
-    /**
-     * get access token from header
-     * */
-    function getBearerToken()
-    {
-        $headers = $this->getAuthorizationHeader();
-        // HEADER: Get the access token from the header
-        if (!empty($headers)) {
-            if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
-                return $matches[1];
-            }
-        }
-        return null;
     }
 }

@@ -60,9 +60,11 @@ class SessionController extends ApiController
 
     public function delete($request, $response, $args)
     {
-        // TODO delete token from db, token is passed with request
-        //   don't return an error if token not found, just confirm that a given
-        //   token no longer exists in the db
+        // remove token from db
+        $user = $this->getCurrentUser();
+        if ($user && $token = $user->api_token) {
+            $token->delete();
+        }
 
         return $this->renderJSON($request->getHeaders())
             ->withHeader('Access-Control-Allow-Methods', 'DELETE'); // empty array
