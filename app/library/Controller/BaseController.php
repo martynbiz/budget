@@ -140,10 +140,7 @@ class BaseController
         $response = $container->get('response');
         $response->getBody()->write(json_encode($data));
 
-        return $response
-            ->withHeader('Content-type', 'application/json')
-            ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'authorization'); // TODO put this into config
+        return $response;
     }
 
     /**

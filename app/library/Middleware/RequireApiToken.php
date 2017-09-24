@@ -16,18 +16,52 @@ class RequireApiToken extends Base
      */
     public function __invoke($request, $response, $next)
     {
-
         // seems options request doesn't send auth header
         if ($request->getMethod() !== 'OPTIONS') {
-            $token = Utils::getBearerToken();
+
+            // check token is in the request
+
+            $tokenValue = Utils::getBearerToken();
+
+            if (!$tokenValue) {
+                return self::prepareErrorResponse(
+                    $response,
+                    'Missing required token from request',
+                    401);
+            }
+
+            // check token is valid (in db, not expired)
+
+            $token = $this->container->get('model.api_token')
+                ->where('value', $tokenValue)
+                ->where('expires_at', '>', date('Y-m-d H:i:s'))
+                ->first();
 
             if (!$token) {
-                return $response->withStatus(401);
+                return self::prepareErrorResponse(
+                    $response,
+                    'Invalid token sent with request',
+                    401);
             }
         }
 
         $response = $next($request, $response);
 
         return $response;
+    }
+
+    protected static function prepareErrorResponse($response, $message='', $statusCode=400)
+    {
+        if (!empty($message)) {
+            $response->getBody()->write(json_encode([
+                'error' => $message,
+            ]));
+        }
+
+        return $response
+            ->withHeader('Content-type', 'application/json')
+            ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Headers', 'authorization')
+            ->withStatus(401);
     }
 }

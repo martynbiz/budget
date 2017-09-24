@@ -13,16 +13,52 @@ class FundsController extends ApiController
         $page = (int)$request->getQueryParam('page', 1);
         $limit = (int)$request->getQueryParam('limit', 20);
         $start = ($page-1) * $limit;
+error_log(json_encode(@$currentUser->email));
+$errorM = '';
+try {
+    // get paginated rows
+    $funds = $currentUser->funds()
+        ->with('currency')
+        ->skip($start)
+        ->take($limit)
+        ->get();
+} catch (Exception $e) {
+    $errorM = $e->getMessage();
+}
 
-        // get paginated rows
-        $funds = $currentUser->funds()
-            ->with('currency')
-            ->skip($start)
-            ->take($limit)
-            ->get();
 
-        return $this->renderJSON($funds);
+error_log($errorM);
+        return $this->renderJSON( $funds->toArray() );
     }
+
+    // public function post($request, $response, $args)
+    // {
+    //     $container = $this->getContainer();
+    //     $currentUser = $this->getCurrentUser();
+    //
+    //     // get the POST json
+    //     $params = json_decode(file_get_contents('php://input'), true);
+    //
+    //     // validate form data
+    //     $validator = new Validator();
+    //     $validator->setData($params);
+    //     $i18n = $container->get('i18n');
+    //
+    //     // $validator->check('name')
+    //     //     ->isNotEmpty( $i18n->translate('name_missing') );
+    //     //
+    //     // $validator->check('amount')
+    //     //     ->isNotEmpty( $i18n->translate('amount_missing') );
+    //     //
+    //     // $validator->check('currency_code')
+    //     //     ->isNotEmpty( $i18n->translate('currency_missing') );
+    //
+    //     if ($validator->isValid() && $fund = $currentUser->funds()->create($params)) {
+    //         return $this->renderJSON( $fund->toArray() );
+    //     } else {
+    //         return $this->handleError( $validator->getErrors() );
+    //     }
+    // }
 
     // public function create($request, $response, $args)
     // {

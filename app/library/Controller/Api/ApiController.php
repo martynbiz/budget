@@ -49,4 +49,20 @@ class ApiController extends BaseController
 
     	return $this->currentUser;
     }
+
+    /**
+     * Will return JSON as this gives us control over which status code etc, or
+     * additional data to return with the error
+     */
+    protected function handleError($errors, $statusCode=400)
+    {
+        // convert error string to array
+        if (!is_array($errors)) {
+            $errors = [$errors];
+        }
+
+        return $this->renderJSON([
+            'errors' => $errors
+        ])->withStatus($statusCode);
+    }
 }

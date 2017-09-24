@@ -29,16 +29,14 @@ class SessionController extends ApiController
                 ->orWhere('username', $email)
                 ->first();
 
-            // set current user here, so we don't have to query again
-            $this->currentUser = $user;
-
-            // return $this->handleError($user->first_name, 401);
+            // // set current user here, so we don't have to query again
+            // $this->currentUser = $user;
 
             // if no token exists, create one
             if (!$token = $user->api_token) {
 
-                $hash = md5(date() . rand(1,1000000));
-                $expires = date('Y-m-d H:i:s', strtotime('+1 day', time()));
+                $hash = md5(date('YmdHis') . rand(1,1000000));
+                $expires = date('Y-m-d H:i:s', strtotime('+1 hour', time()));
 
                 $token = $user->api_token()->create([
                     'value' => $hash,
@@ -61,24 +59,13 @@ class SessionController extends ApiController
     public function delete($request, $response, $args)
     {
         // remove token from db
-        $user = $this->getCurrentUser();
-        if ($user && $token = $user->api_token) {
+        $currentUser = $this->getCurrentUser();
+        if ($currentUser && $token = $currentUser->api_token) {
             $token->delete();
         }
 
         return $this->renderJSON($request->getHeaders())
             ->withHeader('Access-Control-Allow-Methods', 'DELETE'); // empty array
-    }
-
-    /**
-     * Will return JSON as this gives us control over which status code etc, or
-     * additional data to return with the error
-     */
-    protected function handleError($message, $statusCode=400)
-    {
-        return $this->renderJSON([
-            'error' => $message
-        ])->withStatus($statusCode);
     }
 
 }
