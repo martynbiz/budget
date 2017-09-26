@@ -2,7 +2,9 @@
 
 TODO
 
-test - api requests: how to test when application/json POST?
+test
+    * api requests: how to test when application/json POST?
+    * user cannot edit fund that doesn't belong to them (api and app)
 
 api:
 

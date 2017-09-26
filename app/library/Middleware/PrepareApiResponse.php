@@ -27,6 +27,7 @@ class PrepareApiResponse extends Base
         $response = $response
             ->withHeader('Content-type', 'application/json')
             ->withHeader('Access-Control-Allow-Origin', '*')
+            ->withHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS')
             ->withHeader('Access-Control-Allow-Headers', 'authorization, content-type');
 
 

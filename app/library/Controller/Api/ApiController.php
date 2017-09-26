@@ -21,6 +21,9 @@ class ApiController extends BaseController
      */
     protected $apiToken;
 
+    /**
+     * This overrides the BaseController method
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
