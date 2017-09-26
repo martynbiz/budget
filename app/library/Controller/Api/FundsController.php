@@ -99,29 +99,32 @@ class FundsController extends ApiController
         return $this->handleError( $validator->getErrors() );
     }
 
-    // public function delete($request, $response, $args)
-    // {
-    //     $params = $request->getParams();
-    //     $container = $this->getContainer();
-    //
-    //     $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
-    //     $fundId = $fund->id;
-    //
-    //     if ($fund->delete()) {
-    //
-    //         // remove all transactions
-    //         $transactions = $fund->transactions()
-    //             ->where('fund_id', $fundId)
-    //             ->delete();
-    //
-    //         // redirect
-    //         return $response->withRedirect('/funds');
-    //
-    //     } else {
-    //         $errors = $fund->errors();
-    //     }
-    //
-    //     $container->get('flash')->addMessage('errors', $errors);
-    //     return $this->edit($request, $response, $args);
-    // }
+    public function delete($request, $response, $args)
+    {
+        $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
+
+        try {
+            $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
+            $fundId = $fund->id;
+
+            if ($fund->delete()) {
+
+                // remove all transactions
+                $transactions = $fund->transactions()
+                    ->where('fund_id', $fundId)
+                    ->delete();
+
+                return $this->renderJSON( new stdClass() );
+
+            }
+
+            return $this->handleError( $fund->errors() );
+
+        } catch (Exception $e) {
+            $error = $->get->Message();
+        }
+
+        return $this->handleError( $error );
+    }
 }

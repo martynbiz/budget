@@ -146,7 +146,7 @@ class FundsController extends BaseController
         // if valid, create fund
         if ($validator->isValid()) {
 
-            $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
+            $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
 
             if ($fund->update($params)) {
 
@@ -170,7 +170,7 @@ class FundsController extends BaseController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        $fund = $container->get('model.fund')->findOrFail((int)$args['fund_id']);
+        $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
         $fundId = $fund->id;
 
         if ($fund->delete()) {

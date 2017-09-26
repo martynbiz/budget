@@ -175,7 +175,7 @@ class CategoriesController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+        $category = $currentUser->categories()->findOrFail((int)$args['category_id']);
 
         // validate form data
 
@@ -224,7 +224,7 @@ class CategoriesController extends BaseController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        $category = $container->get('model.category')->findOrFail((int)$args['category_id']);
+        $category = $currentUser->categories()->findOrFail((int)$args['category_id']);
         $categoryId = $category->id;
 
         if ($category->delete()) {

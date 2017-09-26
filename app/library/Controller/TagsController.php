@@ -121,7 +121,7 @@ class TagsController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        $tag = $container->get('model.tag')->findOrFail((int)$args['tag_id']);
+        $tag = $currentUser->tags()->findOrFail((int)$args['tag_id']);
 
         // validate form data
 
@@ -163,7 +163,7 @@ class TagsController extends BaseController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        $tag = $container->get('model.tag')->findOrFail((int)$args['tag_id']);
+        $tag = $currentUser->tags()->findOrFail((int)$args['tag_id']);
         $tagId = $tag->id;
 
         if ($tag->delete()) {

@@ -281,7 +281,7 @@ class TransactionsController extends BaseController
             }
             $params['category_id'] = @$category->id;
 
-            $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
+            $transaction = $currentUser->transactions()->findOrFail((int)$args['transaction_id']);
 
             if ($transaction->update($params)) {
 
@@ -310,7 +310,7 @@ class TransactionsController extends BaseController
         $container = $this->getContainer();
         $params = $request->getParams();
 
-        $transaction = $container->get('model.transaction')->findOrFail((int)$args['transaction_id']);
+        $transaction = $currentUser->transactions()->findOrFail((int)$args['transaction_id']);
 
         if ($transaction->delete()) {
 
