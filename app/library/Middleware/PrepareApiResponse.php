@@ -16,17 +16,20 @@ class PrepareApiResponse extends Base
      */
     public function __invoke($request, $response, $next)
     {
+        // if this is an OPTIONS request, then it may not contain the token in the
+        // header. So, we'll just skip the controller stuff and proceed to returning
+        // the response with CORS shit
+        if ($request->getMethod() != 'OPTIONS') {
+            $response = $next($request, $response);
+        }
 
         // attach CORS stuff onto the request EVERYTIME
         $response = $response
             ->withHeader('Content-type', 'application/json')
             ->withHeader('Access-Control-Allow-Origin', '*')
-            ->withHeader('Access-Control-Allow-Headers', 'authorization');
+            ->withHeader('Access-Control-Allow-Headers', 'authorization, content-type');
 
-error_log(json_encode($response->hasHeader('Access-Control-Allow-Origin')));
-error_log(json_encode($response->getHeader('Access-Control-Allow-Origin')));
 
-        $response = $next($request, $response);
 
         return $response;
     }
