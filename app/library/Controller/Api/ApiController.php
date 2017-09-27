@@ -57,7 +57,7 @@ class ApiController extends BaseController
      * Will return JSON as this gives us control over which status code etc, or
      * additional data to return with the error
      */
-    protected function handleError($errors, $statusCode=400)
+    protected function handleError($errors, $statusCode=500)
     {
         // convert error string to array
         if (!is_array($errors)) {

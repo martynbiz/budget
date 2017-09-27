@@ -54,7 +54,7 @@ class RequireApiToken extends Base
     {
         if (!empty($message)) {
             $response->getBody()->write(json_encode([
-                'error' => $message,
+                'errors' => $message,
             ]));
         }
 

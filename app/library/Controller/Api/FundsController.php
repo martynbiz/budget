@@ -103,32 +103,33 @@ class FundsController extends ApiController
     {
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
-error_log(@$currentUser->email);
+
         try {
 
             $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
-error_log(@$fund->id);
             $fundId = $fund->id;
 
             if ($fund->delete()) {
-error_log('deleted');
+
                 // remove all transactions
                 $transactions = $fund->transactions()
                     ->where('fund_id', $fundId)
                     ->delete();
-error_log(json_encode(json_decode("{}")));
-                $response = $this->renderJSON( json_decode("{}") );
+
+                return $this->renderJSON( json_decode("{}") );
 
             } else {
-error_log('fund error :(');
-                $response = $this->handleError( $fund->errors() );
+
+                return $this->handleError( $fund->errors() );
 
             }
 
         } catch (Exception $e) {
-            $response = $this->handleError( $e->getMessage() );
+
+            $message = $e->getMessage();
+
         }
 
-        return $response;
+        return $this->handleError( $message );
     }
 }
