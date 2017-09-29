@@ -49,7 +49,7 @@ class SessionController extends ApiController
     public function delete($request, $response, $args)
     {
         // remove token from db
-        $currentUser = $this->getCurrentUser();
+        $currentUser = $this->getCurrentUser($request);
         if ($currentUser && $token = $currentUser->api_token) {
             $token->delete();
         }

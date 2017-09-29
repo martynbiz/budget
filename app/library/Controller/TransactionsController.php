@@ -309,6 +309,7 @@ class TransactionsController extends BaseController
     {
         $container = $this->getContainer();
         $params = $request->getParams();
+        $currentUser = $this->getCurrentUser();
 
         $transaction = $currentUser->transactions()->findOrFail((int)$args['transaction_id']);
 

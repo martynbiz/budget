@@ -169,6 +169,7 @@ class FundsController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
         $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
         $fundId = $fund->id;

@@ -28,10 +28,7 @@ class FundsController extends ApiController
     {
         $container = $this->getContainer();
         $params = $request->getParams();
-        $currentUser = $this->getCurrentUser();
-
-        // // get the POST json
-        // $params = json_decode(file_get_contents('php://input'), true);
+        $currentUser = $this->getCurrentUser($request);
 
         // validate form data
         $validator = new Validator();
@@ -50,7 +47,7 @@ class FundsController extends ApiController
         if ($validator->isValid() && $fund = $currentUser->funds()->create($params)) {
             return $this->renderJSON( $fund->toArray() );
         } else {
-            return $this->handleError( $validator->getErrors() );
+            return $this->handleError( $validator->getErrors(), HTTP_BAD_REQUEST );
         }
     }
 
@@ -58,10 +55,7 @@ class FundsController extends ApiController
     {
         $container = $this->getContainer();
         $params = $request->getParams();
-        $currentUser = $this->getCurrentUser();
-
-        // // get the POST json
-        // $params = json_decode(file_get_contents('php://input'), true);
+        $currentUser = $this->getCurrentUser($request);
 
         // validate form data
 
@@ -98,13 +92,13 @@ class FundsController extends ApiController
 
         }
 
-        return $this->handleError( $validator->getErrors() );
+        return $this->handleError( $validator->getErrors(), HTTP_BAD_REQUEST );
     }
 
     public function delete($request, $response, $args)
     {
         $container = $this->getContainer();
-        $currentUser = $this->getCurrentUser();
+        $currentUser = $this->getCurrentUser($request);
 
         try {
 

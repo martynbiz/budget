@@ -162,6 +162,7 @@ class TagsController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
         $tag = $currentUser->tags()->findOrFail((int)$args['tag_id']);
         $tagId = $tag->id;

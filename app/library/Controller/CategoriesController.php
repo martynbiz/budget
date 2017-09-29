@@ -223,6 +223,7 @@ class CategoriesController extends BaseController
     {
         $params = $request->getParams();
         $container = $this->getContainer();
+        $currentUser = $this->getCurrentUser();
 
         $category = $currentUser->categories()->findOrFail((int)$args['category_id']);
         $categoryId = $category->id;
