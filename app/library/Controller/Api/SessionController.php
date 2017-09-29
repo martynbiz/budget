@@ -10,27 +10,17 @@ class SessionController extends ApiController
      */
     public function post($request, $response, $args)
     {
-        // GET and POST
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        // get the POST json
-        $json = json_decode(file_get_contents('php://input'), true);
-
-        $email = @$json['email'];
-        $pw = @$json['password'];
-
         // authentice with the email (might even be username, which is fine) and pw
-        if ($container->get('auth')->authenticate($email, $pw)) {
+        if ($container->get('auth')->authenticate(@$params['email'], @$params['password'])) {
 
             // as authentication has passed, get the user by email OR username
             $user = $container->get('model.user')
-                ->where('email', $email)
-                ->orWhere('username', $email)
+                ->where('email', $params['email'])
+                ->orWhere('username', $params['email'])
                 ->first();
-
-            // // set current user here, so we don't have to query again
-            // $this->currentUser = $user;
 
             // if no token exists, create one
             if (!$token = $user->api_token) {
@@ -64,7 +54,7 @@ class SessionController extends ApiController
             $token->delete();
         }
 
-        return $this->renderJSON( new stdClass() ); // empty array
+        return $this->renderJSON( json_decode('{}') ); // empty array
     }
 
 }

@@ -8,7 +8,7 @@ class FundsController extends ApiController
 {
     public function index($request, $response, $args)
     {
-        $currentUser = $this->getCurrentUser();
+        $currentUser = $this->getCurrentUser($request);
 
         $page = (int)$request->getQueryParam('page', 1);
         $limit = (int)$request->getQueryParam('limit', 20);
@@ -27,10 +27,11 @@ class FundsController extends ApiController
     public function post($request, $response, $args)
     {
         $container = $this->getContainer();
+        $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
 
-        // get the POST json
-        $params = json_decode(file_get_contents('php://input'), true);
+        // // get the POST json
+        // $params = json_decode(file_get_contents('php://input'), true);
 
         // validate form data
         $validator = new Validator();
@@ -56,10 +57,11 @@ class FundsController extends ApiController
     public function update($request, $response, $args)
     {
         $container = $this->getContainer();
+        $params = $request->getParams();
         $currentUser = $this->getCurrentUser();
 
-        // get the POST json
-        $params = json_decode(file_get_contents('php://input'), true);
+        // // get the POST json
+        // $params = json_decode(file_get_contents('php://input'), true);
 
         // validate form data
 

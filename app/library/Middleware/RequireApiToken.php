@@ -21,7 +21,7 @@ class RequireApiToken extends Base
 
             // check token is in the request
 
-            $tokenValue = Utils::getBearerToken();
+            $tokenValue = Utils::getTokenFromRequest($request); //ltrim(@current($request->getHeader('Authorization')), 'Bearer ');
 
             if (!$tokenValue) {
                 return self::prepareErrorResponse(

@@ -11,7 +11,7 @@ class Tag extends Base
     protected $fillable = array(
         'name',
         'budget',
-        'currency_id',
+        // 'user_id',
     );
 
     public function transactions()

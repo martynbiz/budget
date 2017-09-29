@@ -145,8 +145,10 @@ class BaseController
 
     /**
      * Get the current sign in user user
+     * @param Request $request Not really needed here, api uses it though
+     * @return User|null
      */
-    protected function getCurrentUser()
+    protected function getCurrentUser($request = null)
     {
         // cache current user as a property
         if (! $this->currentUser) {

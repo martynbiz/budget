@@ -27,24 +27,28 @@ class ApiController extends BaseController
     public function __construct(Container $container)
     {
         $this->container = $container;
+        $request = $container->get('request');
 
         // if token is present, we'll set that here so that it is available to
         // all getCurrentUser method calls in API
-        $this->apiToken = Utils::getBearerToken();
+        $this->apiToken = Utils::getTokenFromRequest($request);
     }
 
     /**
      * Get the current user that is linked to the token in the request
      * @return User|null
      */
-    protected function getCurrentUser()
+    protected function getCurrentUser($request = null)
     {
     	$container = $this->getContainer();
+        // $request = $container->get('request');
+
+        $apiToken = Utils::getTokenFromRequest($request);
 
         // will check if currentUser is empty, will also check if apiToken is set
-    	if (!$this->currentUser && !empty($this->apiToken)) {
+    	if (!$this->currentUser && !empty($apiToken)) {
             $token = $container->get('model.api_token')
-    			->where('value', $this->apiToken)
+    			->where('value', $apiToken)
     			->first();
 
     		$this->currentUser = $token->user;

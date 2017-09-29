@@ -18,6 +18,7 @@ use App\Model\Group;
 use App\Model\CategoryGroup;
 use App\Model\Currency;
 use App\Model\Tag;
+use App\Model\ApiToken;
 
 /**
  * This is an example class that shows how you could set up a method that
@@ -200,6 +201,11 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
             'budget' => 100,
         ]);
 
+        $this->api_token = $this->user->api_token()->create([
+            'value' => '1234567890qwertyuiop',
+            'expires_at' => date('Y-m-d H:i:s', strtotime('+1 hour', time())),
+        ]);
+
         // Configure the stub.
         $container->get('session')
             ->method('get')
@@ -242,6 +248,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         Fund::truncate();
         Currency::truncate();
         Tag::truncate();
+        ApiToken::truncate();
 
         // turn foreign key checks back on
         switch($settings['eloquent']['driver']) {
@@ -262,7 +269,7 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
      * @param array|object|null $requestData the request data
      * @return \Slim\Http\Response
      */
-    public function runApp($requestMethod, $requestUri, $requestData = null)
+    public function runApp($requestMethod, $requestUri, $requestData = null, $headerData = null)
     {
         // Create a mock environment for testing with
         $environment = Environment::mock(
@@ -276,8 +283,15 @@ class BaseTestCase extends \PHPUnit_Framework_TestCase
         $request = Request::createFromEnvironment($environment);
 
         // Add request data, if it exists
-        if (isset($requestData)) {
+        if (!empty($requestData)) {
             $request = $request->withParsedBody($requestData);
+        }
+
+        // Add header data, if it exists
+        if (is_array($headerData)) {
+            foreach ($headerData as $name => $value) {
+                $request = $request->withHeader($name, $value);
+            }
         }
 
         // Set up a response object
