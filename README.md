@@ -2,6 +2,8 @@
 
 TODO
 
+return an error code that signals invalid token (redirect to login)
+
 test
     * api requests: how to test when application/json POST?
     * user cannot edit fund that doesn't belong to them (api and app)

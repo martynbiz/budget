@@ -64,8 +64,7 @@ class SessionController extends ApiController
             $token->delete();
         }
 
-        return $this->renderJSON($request->getHeaders())
-            ->withHeader('Access-Control-Allow-Methods', 'DELETE'); // empty array
+        return $this->renderJSON( new stdClass() ); // empty array
     }
 
 }
