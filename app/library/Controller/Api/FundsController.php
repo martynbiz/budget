@@ -105,6 +105,7 @@ class FundsController extends ApiController
         $currentUser = $this->getCurrentUser();
 
         try {
+
             $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
             $fundId = $fund->id;
 
@@ -115,16 +116,20 @@ class FundsController extends ApiController
                     ->where('fund_id', $fundId)
                     ->delete();
 
-                return $this->renderJSON( new stdClass() );
+                return $this->renderJSON( json_decode("{}") );
+
+            } else {
+
+                return $this->handleError( $fund->errors() );
 
             }
 
-            return $this->handleError( $fund->errors() );
-
         } catch (Exception $e) {
-            $error = $->get->Message();
+
+            $message = $e->getMessage();
+
         }
 
-        return $this->handleError( $error );
+        return $this->handleError( $message );
     }
 }

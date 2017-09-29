@@ -14,9 +14,11 @@ define('USER_SETTING_DASHBOARD_WIDGETS', 'dashboard_widgets');
 
 
 
-// ERROR CODES
 
-define('ERROR_INVALID_TOKEN', 100);
+// ERROR CODES - not sure how to return these yet
+
+define('ERROR_INVALID_TOKEN', 1000);
+define('ERROR_MODEL', 1100);
 
 
 // HTTP STATUS CODES
