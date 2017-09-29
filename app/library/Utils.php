@@ -30,7 +30,7 @@ class Utils
     /**
      * get access token from header
      */
-    public static function getTokenFromRequest(Request $request)
+    public static function getApiTokenFromRequest(Request $request)
     {
         return ltrim( @current($request->getHeader('Authorization')), 'Bearer ' );
     }
