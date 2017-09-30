@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Groups;
 use App\Validator;
 
 class GroupsController extends BaseController

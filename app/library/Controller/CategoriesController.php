@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Categories;
 use App\Validator;
 
 class CategoriesController extends BaseController

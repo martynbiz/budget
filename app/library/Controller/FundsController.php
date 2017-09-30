@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Model\Funds;
 use App\Validator;
 
 class FundsController extends BaseController

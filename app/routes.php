@@ -128,6 +128,14 @@ $app->group('', function() use ($app, $container) { // attach middleware: Prepar
             $app->map(['PUT', 'OPTIONS'], '/{fund_id}/edit', '\App\Controller\Api\FundsController:update')->setName('api_funds_update');
             $app->map(['DELETE', 'OPTIONS'], '/{fund_id}/delete', '\App\Controller\Api\FundsController:delete')->setName('api_funds_delete');
         });
+
+        // transactions routes
+        $app->group('/transactions', function() use ($app) {
+            $app->map(['GET', 'OPTIONS'], '', '\App\Controller\Api\TransactionsController:index')->setName('api_transactions');
+            $app->map(['POST', 'OPTIONS'], '/create', '\App\Controller\Api\TransactionsController:post')->setName('api_transactions_post');
+            $app->map(['PUT', 'OPTIONS'], '/{transaction_id}/edit', '\App\Controller\Api\TransactionsController:update')->setName('api_transactions_update');
+            $app->map(['DELETE', 'OPTIONS'], '/{transaction_id}/delete', '\App\Controller\Api\TransactionsController:delete')->setName('api_transactions_delete');
+        });
     })
     ->add(new Middleware\RequireApiToken($container));
 })

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use App\Model\User;
 use App\Validator;
 
 class UsersController extends BaseController

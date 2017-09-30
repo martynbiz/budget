@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use Slim\Container;
 
-use App\Model\Transaction;
 use App\Validator;
 use App\Utils;
 

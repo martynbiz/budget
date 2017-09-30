@@ -3,7 +3,7 @@ namespace App\Controller\Api;
 
 use App\Validator;
 
-class FundsController extends ApiController
+class TransactionsController extends ApiController
 {
     public function index($request, $response, $args)
     {
@@ -14,13 +14,15 @@ class FundsController extends ApiController
         $start = ($page-1) * $limit;
 
         // get paginated rows
-        $funds = $currentUser->funds()
-            ->with('currency')
+        $transactions = $currentUser->transactions()
+            ->with('fund')
+            ->with('tags')
+            ->with('category')
             ->skip($start)
             ->take($limit)
             ->get();
 
-        return $this->renderJSON( $funds->toArray() );
+        return $this->renderJSON( $transactions->toArray() );
     }
 
     public function post($request, $response, $args)
@@ -34,17 +36,20 @@ class FundsController extends ApiController
         $validator->setData($params);
         $i18n = $container->get('i18n');
 
-        $validator->check('name')
-            ->isNotEmpty( $i18n->translate('name_missing') );
+        // description
+        $validator->check('description')
+            ->isNotEmpty( $i18n->translate('description_missing') );
 
+        // amount
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
-        $validator->check('currency_id')
-            ->isNotEmpty( $i18n->translate('currency_missing') );
+        // purchased at
+        $validator->check('purchased_at')
+            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
-        if ($validator->isValid() && $fund = $currentUser->funds()->create($params)) {
-            return $this->renderJSON( $fund->toArray() );
+        if ($validator->isValid() && $transaction = $currentUser->transactions()->create($params)) {
+            return $this->renderJSON( $transaction->toArray() );
         } else {
             return $this->handleError( $validator->getErrors(), HTTP_BAD_REQUEST );
         }
@@ -64,25 +69,25 @@ class FundsController extends ApiController
         $i18n = $container->get('i18n');
 
         // description
-        $validator->check('name')
-            ->isNotEmpty( $i18n->translate('name_missing') );
+        $validator->check('description')
+            ->isNotEmpty( $i18n->translate('description_missing') );
 
         // amount
         $validator->check('amount')
             ->isNotEmpty( $i18n->translate('amount_missing') );
 
-        // category
-        $validator->check('currency_id')
-            ->isNotEmpty( $i18n->translate('currency_missing') );
+        // purchased at
+        $validator->check('purchased_at')
+            ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
         if ($validator->isValid()) {
 
             try {
 
-                $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
+                $transaction = $currentUser->transactions()->findOrFail((int)$args['transaction_id']);
 
-                if ($fund->update($params)) {
-                    return $this->renderJSON( $fund->toArray() );
+                if ($transaction->update($params)) {
+                    return $this->renderJSON( $transaction->toArray() );
                 }
 
             } catch (Exception $e) {
@@ -101,21 +106,21 @@ class FundsController extends ApiController
 
         try {
 
-            $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
-            $fundId = $fund->id;
+            $transaction = $currentUser->transactions()->findOrFail((int)$args['transaction_id']);
+            $transactionId = $transaction->id;
 
-            if ($fund->delete()) {
+            if ($transaction->delete()) {
 
                 // remove all transactions
-                $transactions = $fund->transactions()
-                    ->where('fund_id', $fundId)
+                $transactions = $transaction->transactions()
+                    ->where('transaction_id', $transactionId)
                     ->delete();
 
                 return $this->renderJSON( json_decode("{}") );
 
             } else {
 
-                return $this->handleError( $fund->errors() );
+                return $this->handleError( $transaction->errors() );
 
             }
 
