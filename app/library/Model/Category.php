@@ -42,4 +42,18 @@ class Category extends Base
 
         return $transactionsAmount;
     }
+
+    public function getByNameOrCreate($name)
+    {
+        if (!$category = $this->where('name', $name)->first()) {
+
+            $category = $currentUser->categories()->create([
+                'name' => $name,
+                'budget' => 0,
+                'group_id' => 0,
+            ]);
+        }
+
+        return $category;
+    }
 }

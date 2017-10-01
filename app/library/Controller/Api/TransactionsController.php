@@ -31,6 +31,20 @@ class TransactionsController extends ApiController
         $params = $request->getParams();
         $currentUser = $this->getCurrentUser($request);
 
+        // find category by name if specified (or create a new one)
+        // in the end, we will ensure that category_id is set ..
+        if (isset($params['category'])) {
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
+            }
+            $params['category_id'] = $category->id;
+        }
+
         // validate form data
         $validator = new Validator();
         $validator->setData($params);
@@ -48,8 +62,27 @@ class TransactionsController extends ApiController
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
 
-        if ($validator->isValid() && $transaction = $currentUser->transactions()->create($params)) {
-            return $this->renderJSON( $transaction->toArray() );
+        // fund
+        $validator->check('fund_id')
+            ->isNotEmpty( $i18n->translate('fund_id_missing') );
+
+        // category
+        $validator->check('category_id')
+            ->isNotEmpty( $i18n->translate('category_id_missing') );
+
+        // if valid, create transaction
+        if ($validator->isValid()) {
+
+            if ($transaction = $currentUser->transactions()->create($params)) {
+
+                $transaction->attachTagsByArray($params['tags']);
+
+                return $this->renderJSON( $transaction->toArray() );
+
+            } else {
+                return $this->handleError( $transaction->errors(), HTTP_BAD_REQUEST );
+            }
+
         } else {
             return $this->handleError( $validator->getErrors(), HTTP_BAD_REQUEST );
         }
@@ -60,6 +93,20 @@ class TransactionsController extends ApiController
         $container = $this->getContainer();
         $params = $request->getParams();
         $currentUser = $this->getCurrentUser($request);
+
+        // find category by name if specified (or create a new one)
+        // in the end, we will ensure that category_id is set ..
+        if (isset($params['category'])) {
+            if (!$category = $currentUser->categories()->where('name', $params['category'])->first()) {
+
+                $category = $currentUser->categories()->create([
+                    'name' => $params['category'],
+                    'budget' => 0,
+                    'group_id' => 0,
+                ]);
+            }
+            $params['category_id'] = $category->id;
+        }
 
         // validate form data
 
@@ -79,6 +126,14 @@ class TransactionsController extends ApiController
         // purchased at
         $validator->check('purchased_at')
             ->isNotEmpty( $i18n->translate('purchased_at_missing') );
+
+        // fund
+        $validator->check('fund_id')
+            ->isNotEmpty( $i18n->translate('fund_id_missing') );
+
+        // category
+        $validator->check('category_id')
+            ->isNotEmpty( $i18n->translate('category_id_missing') );
 
         if ($validator->isValid()) {
 
@@ -110,11 +165,6 @@ class TransactionsController extends ApiController
             $transactionId = $transaction->id;
 
             if ($transaction->delete()) {
-
-                // remove all transactions
-                $transactions = $transaction->transactions()
-                    ->where('transaction_id', $transactionId)
-                    ->delete();
 
                 return $this->renderJSON( json_decode("{}") );
 

@@ -106,19 +106,6 @@ class TransactionsController extends BaseController
             $tags = array_unique(array_merge($tags, $request->getParams()['tags']));
         }
 
-        // $__start = microtime(true);
-        $tagNames = $currentUser->tags()->pluck('name');
-        // $__time_elapsed_secs = microtime(true) - $__start;
-        // var_dump($__time_elapsed_secs); exit;
-
-        // $__start = microtime(true);
-        // $tagNames = [];
-        // foreach($tags as $tag) {
-        //     array_push($tagNames, $tag->name);
-        // }
-        // $__time_elapsed_secs = microtime(true) - $__start;
-        // var_dump($__time_elapsed_secs); exit;
-
         return $this->render('transactions/create', [
             'params' => $params,
             'tags' => $tags,
@@ -174,7 +161,7 @@ class TransactionsController extends BaseController
                     'group_id' => 0,
                 ]);
             }
-            $params['category_id'] = @$category->id;
+            $params['category_id'] = $category->id;
 
             // get current fund
             $params['fund_id'] = $this->currentFund->id;

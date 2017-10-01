@@ -120,16 +120,19 @@ class TransactionsControllerTest extends BaseTestCase
     private static function getTransactionValues($values=array())
     {
         return array_merge([
-            'name' => 'Bank of Scotland',
-            'amount' => '100.10',
-            'purchased_at' => date('Y-m-d H:i:s'),
+            'description' => 'Sandwich',
+            'amount' => '12.50',
+            'purchased_at' => '2017-05-01',
+            'category' => 'Groceries',
+            'fund_id' => '1',
+            'tags' => '',
         ], $values);
     }
 
     public function getInvalidData()
     {
         return [
-            static::getTransactionValues(['name' => '']),
+            static::getTransactionValues(['description' => '']),
             static::getTransactionValues(['amount' => '']),
             static::getTransactionValues(['purchased_at' => '']),
         ];
