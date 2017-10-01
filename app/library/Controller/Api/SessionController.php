@@ -22,16 +22,29 @@ class SessionController extends ApiController
                 ->orWhere('username', $params['email'])
                 ->first();
 
+            // get api token for this email
+            $token = $user->api_token;
+
             // if no token exists, create one
-            if (!$token = $user->api_token) {
+            if (!$token || $token->hasExpired()) {
 
                 $hash = md5(date('YmdHis') . rand(1,1000000));
                 $expires = date('Y-m-d H:i:s', strtotime('+1 hour', time()));
 
-                $token = $user->api_token()->create([
+                $params = [
                     'value' => $hash,
                     'expires_at' => $expires,
-                ]);
+                ];
+
+                if ($token) { // token exists, but has expired
+
+                    $token = $token()->update($params);
+
+                } else { // no token exists, create a new one
+
+                    $token = $user->api_token()->create($params);
+
+                }
             }
 
             // return token

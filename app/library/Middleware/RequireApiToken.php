@@ -34,10 +34,15 @@ class RequireApiToken extends Base
 
             $token = $this->container->get('model.api_token')
                 ->where('value', $tokenValue)
-                ->where('expires_at', '>', date('Y-m-d H:i:s'))
+                // ->where('expires_at', '>', date('Y-m-d H:i:s'))
                 ->first();
 
-            if (!$token) {
+// error_log(date('Y-m-d H:i:s'));
+// error_log($tokenValue);
+// error_log(json_encode($token));
+// error_log(json_encode($token->hasExpired()));
+
+            if (!$token || $token->hasExpired()) {
                 return self::prepareErrorResponse(
                     $response,
                     'Invalid token sent with request',

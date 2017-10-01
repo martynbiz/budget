@@ -17,6 +17,15 @@ class ApiToken extends Base
         return $this->belongsTo('App\\Model\\User'); //, 'user_id');
     }
 
+    /**
+     * Helper function to check the expired_at date to see if it has passed
+     * @return boolean
+     */
+    public function hasExpired()
+    {
+        return $this->expired_at > date('Y-m-d H:i:s');
+    }
+
     // public function transactions()
     // {
     //     return $this->belongsToMany('App\\Model\\Transaction')->withTimestamps(); //, 'user_id');

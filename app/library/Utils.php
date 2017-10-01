@@ -32,7 +32,7 @@ class Utils
      */
     public static function getApiTokenFromRequest(Request $request)
     {
-        return ltrim( @current($request->getHeader('Authorization')), 'Bearer ' );
+        return str_replace('Bearer ', '',  @current($request->getHeader('Authorization')));
     }
 
     // /**
