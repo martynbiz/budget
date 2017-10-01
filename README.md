@@ -2,10 +2,16 @@
 
 TODO
 
+apis
+* users/current
+* tags
+* groups
+* widgets/*
+
 Validator code: move it into model so that we can share it between web app and api
 
 test
-    * user cannot edit funds/etc that doesn't belong to them (api and app)
+* user cannot edit funds/etc that doesn't belong to them (api and app)
 
 api:
 
