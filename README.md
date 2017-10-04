@@ -2,6 +2,8 @@
 
 TODO
 
+only allow a user to access transactions of their funds 
+
 apis
 * users/current
 * tags
@@ -12,6 +14,7 @@ Validator code: move it into model so that we can share it between web app and a
 
 test
 * user cannot edit funds/etc that doesn't belong to them (api and app)
+* api: check user can only access transactions of their own funds
 
 api:
 

@@ -13,8 +13,15 @@ class TransactionsController extends ApiController
         $limit = (int)$request->getQueryParam('limit', 20);
         $start = ($page-1) * $limit;
 
+        // check that this fund belongs to user
+        $fundId = (int)$request->getQueryParam('fund');
+        if (!$fund = $currentUser->funds()->find($fundId)) {
+            return $this->handleError( 'Fund not found', HTTP_BAD_REQUEST );
+        }
+
         // get paginated rows
         $transactions = $currentUser->transactions()
+            ->where('fund_id', $fundId)
             ->with('fund')
             ->with('tags')
             ->with('category')
