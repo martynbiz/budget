@@ -25,16 +25,12 @@
                 <thead>
                     <tr>
                         <th><?= $this->translate('name_header') ?></th>
-                        <th width="15%"><?= $this->translate('currency_header') ?></th>
-                        <th width="15%"><?= $this->translate('balance_header') ?></th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach($this->funds as $fund): ?>
                         <tr>
                             <td><a href="<?= $this->pathFor('funds_edit', ['fund_id' => $fund->id]) ?>"><?= $fund->name ?></a></td>
-                            <td><?= $fund->currency->name ?></td>
-                            <td class="<?= (($fund->getAmount() > 0) ? 'balance-in' : (($fund->getAmount() < 0) ? 'balance-out' : 'balance-even')) ?>"><?= sprintf($fund->currency->format, $fund->getAmount()) ?></td>
                         </tr>
                     <?php endforeach ?>
                 </tbody>

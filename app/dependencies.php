@@ -36,8 +36,7 @@ $container['renderer'] = function ($c) {
     $engine->registerFunction('pathFor', new \App\View\Helper\PathFor($c) );
     $engine->registerFunction('generateQueryString', new \App\View\Helper\GenerateQueryString($c) );
     $engine->registerFunction('generateSortLink', new \App\View\Helper\GenerateSortLink($c) );
-    $engine->registerFunction('balanceClass', new \App\View\Helper\BalanceClass($c) );
-
+    
     return $engine;
 };
 
@@ -181,30 +180,6 @@ $container['model.auth_token'] = function($c) {
     return new \App\Model\AuthToken();
 };
 
-$container['model.recovery_token'] = function($c) {
-    return new \App\Model\RecoveryToken();
-};
-
-$container['model.transaction'] = function($c) {
-    return new \App\Model\Transaction();
-};
-
-$container['model.fund'] = function($c) {
-    return new \App\Model\Fund();
-};
-
-$container['model.currency'] = function($c) {
-    return new \App\Model\Currency();
-};
-
-$container['model.category'] = function($c) {
-    return new \App\Model\Category();
-};
-
-$container['model.tag'] = function($c) {
-    return new \App\Model\Tag();
-};
-
-$container['model.api_token'] = function($c) {
-    return new \App\Model\ApiToken();
+$container['model.book'] = function($c) {
+    return new \App\Model\Book();
 };

@@ -2,24 +2,20 @@
 
 use Phinx\Migration\AbstractMigration;
 
-class CreateTransactionsTable extends AbstractMigration
+class CreateBooksTable extends AbstractMigration
 {
     /**
      * Migrate Up.
      */
     public function up()
     {
-        $table = $this->table( 'transactions', array(
+        $table = $this->table( 'funds', array(
             'engine' => 'InnoDB',
             'collation' => 'utf8_unicode_ci'
         ));
 
-        $table->addColumn('description', 'string', array( 'limit' => 64 ));
-        $table->addColumn('amount', 'decimal', array('precision' => 10, 'scale' => 2));
-        $table->addColumn('purchased_at', 'date');
-        $table->addColumn('category_id', 'integer', array( 'null' => true ));
+        $table->addColumn('name', 'string', array( 'limit' => 64 ));
         $table->addColumn('user_id', 'integer');
-        $table->addColumn('fund_id', 'integer');
 
         // timestamps
         $table->addColumn('created_at', 'datetime');
@@ -27,7 +23,6 @@ class CreateTransactionsTable extends AbstractMigration
         $table->addColumn('deleted_at', 'datetime', array( 'null' => true ));
 
         $table->addIndex('user_id');
-        $table->addIndex('fund_id');
 
         $table->save();
     }
@@ -37,6 +32,6 @@ class CreateTransactionsTable extends AbstractMigration
      */
     public function down()
     {
-        $this->dropTable( 'transactions' );
+        $this->dropTable( 'funds' );
     }
 }

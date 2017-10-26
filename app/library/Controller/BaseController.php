@@ -16,25 +16,11 @@ class BaseController
      */
     protected $currentUser;
 
-    /**
-     * @var Store the current fund
-     */
-    protected $currentFund;
-
-    /**
-     * Data so that we can append it from any function before render
-     * @var array
-     */
-    protected $data = [];
-
 
     //
     public function __construct(Container $container)
     {
         $this->container = $container;
-
-        $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
-        $this->currentFund = $container->get('model.fund')->find($fundId);
     }
 
     /**
@@ -60,18 +46,8 @@ class BaseController
         $response = $container->get('response');
         $currentUser = $this->getCurrentUser();
 
-        // take data as it's is til now
-        $data = array_merge($this->data, $data);
-
         if ($currentUser = $this->getCurrentUser()) {
-
             $data['currentUser'] = $currentUser;
-
-            // funds for the fund switcher
-            $funds = $currentUser->funds()->orderBy('name', 'asc')->get();
-            $data['all_funds'] = $funds;
-
-            $data['current_fund'] = $this->currentFund;
         }
 
         if ($container->has('flash')) {

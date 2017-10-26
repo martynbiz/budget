@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use App\Validator;
 
-class FundsController extends BaseController
+class BooksController extends BaseController
 {
     public function index($request, $response, $args)
     {
@@ -18,19 +18,14 @@ class FundsController extends BaseController
         $start = ($page-1) * $limit;
 
         // get paginated rows
-        $funds = $currentUser->funds()
-            ->with('currency')
-            ->with('transactions')
+        $books = $currentUser->books()
+            ->with('user')
             ->skip($start)
             ->take($limit)
             ->get();
 
-        // TODO needs to be set against date range
-        $totalFunds = $currentUser->funds()->count();
-        $totalPages = ($totalFunds > 0) ? ceil($totalFunds/$limit) : 1;
-
-        return $this->render('funds/index', [
-            'funds' => $funds,
+        return $this->render('books/index', [
+            'books' => $books,
 
             // pagination
             'total_pages' => $totalPages,
@@ -44,11 +39,8 @@ class FundsController extends BaseController
         $params = $request->getParams();
         $container = $this->getContainer();
 
-        $currencies = $container->get('model.currency')->orderBy('name', 'asc')->get();
-
-        return $this->render('funds/create', [
+        return $this->render('books/create', [
             'params' => $params,
-            'currencies' => $currencies,
         ]);
     }
 
@@ -69,28 +61,16 @@ class FundsController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') );
 
-        // amount
-        $validator->check('amount')
-            ->isNotEmpty( $i18n->translate('amount_missing') );
-
-        // category
-        $validator->check('currency_id')
-            ->isNotEmpty( $i18n->translate('category_missing') );
-
-        // if valid, create fund
+        // if valid, create book
         if ($validator->isValid()) {
 
-            if ($fund = $currentUser->funds()->create($params)) {
-
-                // set new fund as current
-                $container->get('session')->set(SESSION_FILTER_FUND, $fund->id);
-                $this->currentFund = $fund;
+            if ($book = $currentUser->books()->create($params)) {
 
                 // redirect
                 return $response->withRedirect('/');
 
             } else {
-                $errors = $fund->errors();
+                $errors = $book->errors();
             }
 
         } else {
@@ -104,16 +84,14 @@ class FundsController extends BaseController
     public function edit($request, $response, $args)
     {
         $container = $this->getContainer();
-        $fund = $this->getCurrentUser()->funds()->findOrFail((int)$args['fund_id']);
+        $book = $this->getCurrentUser()->books()->findOrFail((int)$args['book_id']);
 
         // if errors found from post, this will contain data
-        $params = array_merge($fund->toArray(), $request->getParams());
+        $params = array_merge($book->toArray(), $request->getParams());
 
-        $currencies = $container->get('model.currency')->orderBy('name', 'asc')->get();
-
-        return $this->render('funds/edit', [
+        return $this->render('books/edit', [
             'params' => $params,
-            'fund' => $fund,
+            'book' => $book,
             'currencies' => $currencies,
         ]);
     }
@@ -134,26 +112,18 @@ class FundsController extends BaseController
         $validator->check('name')
             ->isNotEmpty( $i18n->translate('name_missing') );
 
-        // amount
-        $validator->check('amount')
-            ->isNotEmpty( $i18n->translate('amount_missing') );
-
-        // category
-        $validator->check('currency_id')
-            ->isNotEmpty( $i18n->translate('category_missing') );
-
-        // if valid, create fund
+        // if valid, create book
         if ($validator->isValid()) {
 
-            $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
+            $book = $currentUser->books()->findOrFail((int)$args['book_id']);
 
-            if ($fund->update($params)) {
+            if ($book->update($params)) {
 
                 // redirect
-                return $response->withRedirect('/funds');
+                return $response->withRedirect('/books');
 
             } else {
-                $errors = $fund->errors();
+                $errors = $book->errors();
             }
 
         } else {
@@ -170,54 +140,24 @@ class FundsController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        $fund = $currentUser->funds()->findOrFail((int)$args['fund_id']);
-        $fundId = $fund->id;
+        $book = $currentUser->books()->findOrFail((int)$args['book_id']);
+        $bookId = $book->id;
 
-        if ($fund->delete()) {
+        if ($book->delete()) {
 
             // remove all transactions
-            $transactions = $fund->transactions()
-                ->where('fund_id', $fundId)
+            $transactions = $book->transactions()
+                ->where('book_id', $bookId)
                 ->delete();
 
             // redirect
-            return $response->withRedirect('/funds');
+            return $response->withRedirect('/books');
 
         } else {
-            $errors = $fund->errors();
+            $errors = $book->errors();
         }
 
         $container->get('flash')->addMessage('errors', $errors);
         return $this->edit($request, $response, $args);
-    }
-
-    /**
-     * Switch the current fund to another
-     */
-    public function switch($request, $response, $args)
-    {
-        $params = $request->getParams();
-        $container = $this->getContainer();
-        $currentUser = $this->getCurrentUser();
-
-        // change fund in session
-        $newFund = $currentUser->funds()->findOrFail((int)$params['fund_id']);
-        $container->get('session')->set('current_fund_id', $newFund->id);
-
-        // redirect back to transactions
-        return $response->withRedirect('/transactions');
-    }
-
-    /**
-     * Render the json and attach to the response
-     * @param string $file Name of the template/ view to render
-     * @param array $args Additional variables to pass to the view
-     * @param Response?
-     */
-    protected function renderJSON($data=array())
-    {
-        $data = $data['funds'];
-
-        return parent::renderJSON($data);
     }
 }

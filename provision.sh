@@ -24,10 +24,10 @@ sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again p
 sudo apt-get install -y mysql-server
 
 
-# ========================================
-# install redis
-
-sudo apt-get install -y redis-server
+# # ========================================
+# # install redis
+#
+# sudo apt-get install -y redis-server
 
 
 # ========================================
@@ -40,42 +40,37 @@ sudo apt-get install -y php libapache2-mod-php php-mcrypt php-mysql php-curl php
 # setup virtual host
 
 # create apache config
-sudo bash -c 'cat <<EOT >>/etc/apache2/sites-available/budget.conf
+sudo bash -c 'cat <<EOT >>/etc/apache2/sites-available/bookshare.conf
 <VirtualHost *:80>
-    ServerName budget.vagrant
-    DocumentRoot /var/www/budget/public
+    ServerName bookshare.vagrant
+    DocumentRoot /var/www/bookshare/public
 
     SetEnv APPLICATION_ENV "vagrantdev"
 
-    <Directory /var/www/budget/public/>
+    <Directory /var/www/bookshare/public/>
         Options FollowSymLinks
         AllowOverride All
     </Directory>
 
     # Logging
-    ErrorLog /var/log/apache2/budget-error.log
+    ErrorLog /var/log/apache2/bookshare-error.log
     LogLevel notice
-    CustomLog /var/log/apache2/budget-access.log combined
+    CustomLog /var/log/apache2/bookshare-access.log combined
 </VirtualHost>
 EOT
 '
 
-sudo a2ensite budget.conf
+sudo a2ensite bookshare.conf
 sudo service apache2 reload
 
 # create databases
-echo "create database budget_dev" | mysql -u root -p$MYSQL_ROOT_PASSWORD
-echo "create database budget_test" | mysql -u root -p$MYSQL_ROOT_PASSWORD
+echo "create database bookshare_dev" | mysql -u root -p$MYSQL_ROOT_PASSWORD
+echo "create database bookshare_test" | mysql -u root -p$MYSQL_ROOT_PASSWORD
 
 # run migrations
-cd /var/www/budget
+cd /var/www/bookshare
 vendor/bin/phinx migrate --environment vagrantdev
 vendor/bin/phinx migrate --environment vagranttest
 
-vendor/bin/phinx seed:run -s CurrenciesSeeder --environment vagrantdev
-
 # this is only for dev, remove later
 vendor/bin/phinx seed:run -s UsersSeeder --environment vagrantdev
-vendor/bin/phinx seed:run -s GroupsSeeder --environment vagrantdev
-vendor/bin/phinx seed:run -s CategoriesSeeder --environment vagrantdev
-vendor/bin/phinx seed:run -s FundsSeeder --environment vagrantdev

@@ -1,8 +1,4 @@
-<?php
-
-$currencyFormat = $this->current_fund->currency->format;
-
-$this->layout('layouts/main', [
+<?php $this->layout('layouts/main', [
     'title' => 'Budget - Home',
     'selected_menu' => 'dashboard',
 ]); ?>
@@ -14,56 +10,5 @@ $this->layout('layouts/main', [
 <?php $this->replace() ?>
 
 <?php $this->section('content') ?>
-    <div class="rows">
-        <?= $this->insert('partials/filters') ?>
-
-        <div class="small-12 offset-medium-3 medium-3 columns">
-            <a href="<?= $this->pathFor('transactions_create') ?>" class="button expanded">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-                <?= $this->translate('new_transaction_button') ?>
-            </a>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="small-12 medium-7 columns">
-            <?php foreach ($this->widgets as $widget): ?>
-                <?= $this->insert( $widget->getTemplateFile(), [
-                    'widget_data' => $widget->getData(),
-                ] ) ?>
-            <?php endforeach ?>
-        </div>
-        <div class="small-12 medium-5 columns widget widget__categories">
-            <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
-        </div>
-    </div>
-<?php $this->replace() ?>
-
-<?php $this->section('head') ?>
-    <style>
-    select[name='filter__month'] {
-        display: none;
-    }
-    </style>
-<?php $this->append() ?>
-
-<?php $this->section('scripts') ?>
-    <script>
-
-    // init the chart
-    $.getJSON("/data/expenses?<?= @http_build_query($this->query) ?>", function(data) {
-
-        Highcharts.chart('container', {
-            chart: {
-                type: 'pie'
-            },
-            title: data["title"],
-            plotOptions: data['plotOptions'],
-            tooltip: data["tooltip"],
-            series: data["series"],
-            drilldown: data["drilldown"]
-        });
-    });
-
-    </script>
+    
 <?php $this->append() ?>

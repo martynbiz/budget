@@ -6,19 +6,6 @@ use App\Utils;
 class HomeController extends BaseController
 {
     /**
-     * @var array of WidgetInterface
-     */
-    protected $widgets = [
-        'recent_transactions' => '\\App\\Widget\\RecentTransactions',
-        'current_month_stats' => '\\App\\Widget\\CurrentMonthStats',
-        'previous_month_stats' => '\\App\\Widget\\PreviousMonthStats',
-        'yearly_stats' => '\\App\\Widget\\YearlyStats',
-        'group_month_stats' => '\\App\\Widget\\GroupMonthStats',
-        // 'tag_stats' => '\\App\\Widget\\TagStats',
-        // 'category_stats' => '\\App\\Widget\\CategoryStats',
-    ];
-
-    /**
      * Homepage
      */
     public function index($request, $response, $args)
@@ -47,19 +34,8 @@ class HomeController extends BaseController
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
 
-        // initiate all widgets for this user
-        $widgets = $this->widgets;
-        array_walk($widgets, function(&$widget, $key) use ($container) {
-            $widget = new $widget($container);
-        });
-
-        // filters
-        $this->includeFundFilter();
-        // $this->includeMonthFilter();
-        // $this->includeCategoriesFilter();
-
         return $this->render('home/dashboard', [
-            'widgets' => $widgets,
+
         ]);
     }
 
