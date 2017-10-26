@@ -1,0 +1,42 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+    'selected_menu' => 'categories',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li>
+        <span class="show-for-sr">Current: </span> Groups
+    </li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="rows">
+        <div class="small-12 medium-offset-10 medium-2 columns text-right">
+            <a href="<?= $this->pathFor('groups_create') ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('new_group_button') ?>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-12 columns">
+            <table>
+                <thead>
+                    <tr>
+                        <th><?= $this->translate('name_header') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($this->groups as $group): ?>
+                        <tr>
+                            <td><a href="<?= $this->pathFor('groups_edit', ['group_id' => $group->id]) ?>"><?= (($group->parent_id > 0) ? '- ' : '') . $group->name ?></a></td>
+                        </tr>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+
+            <?= $this->insert('partials/pagination') ?>
+        </div>
+    </div>
+<?php $this->replace() ?>

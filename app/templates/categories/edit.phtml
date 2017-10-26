@@ -1,0 +1,62 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+    'selected_menu' => 'categories',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('categories_link') ?></a></li>
+    <li><span class="show-for-sr">Current: </span> <?= $this->category->name ?></li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="rows">
+        <div class="small-12 offset-medium-9 medium-3 columns">
+            <a href="<?= $this->pathFor('transactions') ?>?month=&category=<?= $this->category->id ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('view_transaction_button') ?>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="category_form" method="post" action="<?= $this->pathFor('categories_update', ['category_id' => $this->category->id]) ?>">
+                <?= $this->insert('categories/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('categories') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+            </form>
+
+            <hr>
+
+            <form method="POST" action="<?= $this->pathFor('categories_delete', ['category_id' => $this->category->id]) ?>" onsubmit="return confirm('Are you sure you want to delete?');">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
+                <button class="button alert" type="submit">
+                    <?= $this->translate('delete_button') ?>
+                </button>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+    $(function() {
+
+        // init the autocomplete
+        $.getJSON("/data/groups", function(data) {
+            $("input[name='group']").autocomplete({
+                source: data
+            });
+        });
+    });
+    </script>
+<?php $this->append() ?>

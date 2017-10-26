@@ -1,0 +1,92 @@
+<?php
+$currencyFormat = $this->current_fund->currency->format;
+?>
+
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget - Categories',
+    'selected_menu' => 'categories',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li>
+        <span class="show-for-sr">Current: </span> Categories
+    </li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="rows">
+        <?= $this->insert('partials/filters') ?>
+
+        <div class="small-12 medium-offset-3 medium-3 columns">
+            <a href="<?= $this->pathFor('categories_create') ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('new_category_button') ?>
+            </a>
+        </div>
+        <div class="small-12 medium-3 columns">
+            <a href="<?= $this->pathFor('groups_create') ?>" class="button expanded">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <?= $this->translate('new_group_button') ?>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="small-12 medium-7 columns">
+            <table>
+                <thead>
+                    <tr>
+                        <th><span class="show-for-sr"><?= $this->translate('name_header') ?></span></th>
+                        <th width="15%"><?= $this->translate('total_header') ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach($this->categories as $category): ?>
+                        <?php if (get_class($category) === 'App\Model\Group'):
+                            $group = $category;
+                            $transactionsAmount = $group->getTransactionsAmount($this->query); ?>
+                            <tr class="text-left">
+                                <th><a href="<?= $this->pathFor('groups_edit', ['group_id' => $group->id]) ?>"><?= $group->name ?></a></th>
+                                <th><?= sprintf($currencyFormat, $transactionsAmount) ?></th>
+                            </tr>
+                        <?php else:
+                            $group = $category;
+                            $transactionsAmount = $category->getTransactionsAmount($this->query);
+                            $remainingBudget = ($category->budget > 0) ? $category->budget - abs($transactionsAmount) : 0; ?>
+                            <tr>
+                                <td><a href="<?= $this->pathFor('categories_edit', ['category_id' => $category->id]) ?>">- <?= $category->name ?></a></td>
+                                <td><?= sprintf($currencyFormat, $transactionsAmount) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    <?php endforeach ?>
+                </tbody>
+            </table>
+
+            <?= $this->insert('partials/pagination') ?>
+        </div>
+        <div class="small-12 medium-5 columns widget widget__categories">
+            <div id="container" style="width: 100%; height: 400px; margin: 0 auto"></div>
+        </div>
+    </div>
+<?php $this->replace() ?>
+
+<?php $this->section('scripts') ?>
+    <script>
+
+    // init the chart
+    $.getJSON("/data/expenses?<?= http_build_query($this->query) ?>", function(data) {
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'pie'
+            },
+            title: data["title"],
+            plotOptions: data['plotOptions'],
+            tooltip: data["tooltip"],
+            series: data["series"],
+            drilldown: data["drilldown"]
+        });
+    });
+
+    </script>
+<?php $this->append() ?>

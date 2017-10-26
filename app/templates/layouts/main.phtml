@@ -39,9 +39,27 @@
                             </a>
                         </li>
                         <li>
-                            <a href="<?= $this->pathFor('books') ?>" class="<?= ($this->selected_menu == 'books') ? 'is-active' : '' ?>">
+                            <a href="<?= $this->pathFor('transactions') ?>" class="<?= ($this->selected_menu == 'transactions') ? 'is-active' : '' ?>">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <?= $this->translate('transactions_link') ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= $this->pathFor('categories') ?>" class="<?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>">
+                                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                <?= $this->translate('categories_link') ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= $this->pathFor('tags') ?>" class="<?= ($this->selected_menu == 'tags') ? 'is-active' : '' ?>">
+                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                <?= $this->translate('tags_link') ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="<?= $this->pathFor('funds') ?>" class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>">
                                 <i class="fa fa-external-link" aria-hidden="true"></i>
-                                <?= $this->translate('books_link') ?>
+                                <?= $this->translate('funds_link') ?>
                             </a>
                         </li>
                         <li style="border-top: 1px solid #222;">
@@ -90,9 +108,27 @@
                                             </a>
                                         </li>
                                         <li>
-                                            <a class="<?= ($this->selected_menu == 'books') ? 'is-active' : '' ?>" href="<?= $this->pathFor('books') ?>">
+                                            <a class="<?= ($this->selected_menu == 'transactions') ? 'is-active' : '' ?>" href="<?= $this->pathFor('transactions') ?>">
+                                                <i class="fa fa-list" aria-hidden="true"></i>
+                                                <?= $this->translate('transactions_link') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="<?= ($this->selected_menu == 'categories') ? 'is-active' : '' ?>" href="<?= $this->pathFor('categories') ?>">
+                                                <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                                                <?= $this->translate('categories_link') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="<?= ($this->selected_menu == 'tags') ? 'is-active' : '' ?>" href="<?= $this->pathFor('tags') ?>">
+                                                <i class="fa fa-tags" aria-hidden="true"></i>
+                                                <?= $this->translate('tags_link') ?>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="<?= ($this->selected_menu == 'funds') ? 'is-active' : '' ?>" href="<?= $this->pathFor('funds') ?>">
                                                 <i class="fa fa-external-link" aria-hidden="true"></i>
-                                                <?= $this->translate('books_link') ?>
+                                                <?= $this->translate('funds_link') ?>
                                             </a>
                                         </li>
                                     <?php endif ?>

@@ -1,0 +1,29 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+    'selected_menu' => 'categories',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('groups_link') ?></a></li>
+    <li><span class="show-for-sr">Current: </span> Create</li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="group_form" method="post" action="<?= $this->pathFor('groups_post') ?>">
+                <?= $this->insert('groups/partials/form') ?>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('categories') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+
+                <?php if(isset($this->params['returnTo'])): ?>
+                    <input type="hidden" name="returnTo" value="<?= $this->params['returnTo'] ?>">
+                <?php endif ?>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>

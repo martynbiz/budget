@@ -1,0 +1,39 @@
+<?php $this->layout('layouts/main', [
+    'title' => 'Budget',
+    'selected_menu' => 'categories',
+]); ?>
+
+<?php $this->section('breadcrumbs') ?>
+    <li><a href="<?= $this->pathFor('categories') ?>"><?= $this->translate('groups_link') ?></a></li>
+    <li><span class="show-for-sr">Current: </span> <?= $this->group->name ?></li>
+<?php $this->replace() ?>
+
+<?php $this->section('content') ?>
+    <div class="row">
+        <div class="small-12 columns">
+            <form id="group_form" method="post" action="<?= $this->pathFor('groups_update', ['group_id' => $this->group->id]) ?>">
+                <?= $this->insert('groups/partials/form') ?>
+
+                <input type="hidden" name="_METHOD" value="PUT"/>
+
+                <button class="button primary" type="submit">
+                    <?= $this->translate('save_button') ?>
+                </button>
+
+                <a href="<?= $this->pathFor('categories') ?>" class="button secondary"><?= $this->translate('cancel_button') ?></a>
+            </form>
+
+            <hr>
+
+            <form method="POST" action="<?= $this->pathFor('groups_delete', ['group_id' => $this->group->id]) ?>" onsubmit="return confirm('Are you sure you want to submit?');">
+                <input type="hidden" name="_METHOD" value="DELETE"/>
+
+                <input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">
+
+                <button class="button alert" type="submit">
+                    <?= $this->translate('delete_button') ?>
+                </button>
+            </form>
+        </div>
+    </div>
+<?php $this->replace() ?>

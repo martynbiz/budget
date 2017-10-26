@@ -1,0 +1,9 @@
+<label><?= $this->translate('name_label') ?>
+    <input type="text" name="name" placeholder="<?= $this->translate('name_label') ?>" value="<?= @$this->params['name'] ?>">
+</label>
+
+<label><?= $this->translate('budget_label') ?>
+    <input type="text" name="budget" placeholder="<?= $this->translate('budget_label') ?>" value="<?= (int)@$this->params['budget'] ?>">
+</label>
+
+<input type="hidden" name="<?= $this->csrf_name ?>" value="<?= $this->csrf_value ?>">

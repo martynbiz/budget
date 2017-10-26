@@ -8,7 +8,7 @@ return [
         ],
 
         'eloquent' => [
-            'database'  => 'bookshare_dev',
+            'database'  => 'budget_dev',
             'username'  => 'root',
             'password'  => 'vagrant1',
         ],
