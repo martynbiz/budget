@@ -2,7 +2,8 @@
 
 TODO
 
-only allow a user to access transactions of their funds 
+default fund when none selected - do we have duplicate transactions for martyn2???
+only allow a user to access transactions of their funds
 
 apis
 * users/current

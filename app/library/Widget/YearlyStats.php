@@ -12,6 +12,7 @@ class YearlyStats extends Base
     {
         parent::__construct($container);
 
+        // fund has already been confirmed by setFilter mw
         $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
         $currentFund = $container->get('model.fund')->find($fundId);
 

@@ -19,6 +19,8 @@ class SetFilters extends Base
 
         if ($container->get('auth')->isAuthenticated()) {
 
+            $currentUser = $this->getCurrentUser();
+
             // fund filter
             if ($fundId = $request->getQueryParam('fund')) {
                 $container->get('session')->set(SESSION_FILTER_FUND, $fundId);
@@ -26,8 +28,8 @@ class SetFilters extends Base
 
             // fund must exist so we attempt to fetch it from the db
             $fundId = $container->get('session')->get(SESSION_FILTER_FUND);
-            ($fund = $container->get('model.fund')->find($fundId)) ||
-                ($fund = $container->get('model.fund')->first());
+            ($fund = $currentUser->funds()->find($fundId)) ||
+                ($fund = $currentUser->funds()->first());
             if (!$fund) return $response->withRedirect( $container->get('router')->pathFor('funds') );
 
             // set session var - from confirmed $fund
