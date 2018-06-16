@@ -1,6 +1,11 @@
 <?php
 
 return array (
+  'split_transaction_button' => 'Split transaction',
+  'fund_label' => 'Fund',
+  'fund_id_missing' => 'Fund ID missing',
+  'category_id_missing' => 'Category ID missing',
+  'currency_missing' => 'Currency missing',
   'create_new_tag' => 'Add tag',
   'group_month_stats_header' => 'Group month stats',
   'all_months' => 'All months',

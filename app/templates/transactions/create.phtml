@@ -14,6 +14,8 @@
             <form id="transaction_form" method="post" action="<?= $this->pathFor('transactions_post') ?>">
                 <?= $this->insert('transactions/partials/form') ?>
 
+                <input type="hidden" name="split_transaction_id" value="<?= $this->params['split_transaction_id'] ?>">
+
                 <button class="button primary" type="submit">
                     <?= $this->translate('save_button') ?>
                 </button>

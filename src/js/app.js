@@ -10,7 +10,7 @@
 
     $(".callout.alert").not(".callout-important").delay(3000).slideUp(300);
 
-    // filter selects 
+    // filter selects
     $("form#filters_form select").on("change", function() {
         $('form#filters_form').submit();
     });

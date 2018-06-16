@@ -25,6 +25,12 @@
 
             <hr>
 
+            <a href="<?= $this->pathFor('transactions_create') ?>?split_transaction_id=<?= $this->transaction->id ?>" class="button">
+                <?= $this->translate('split_transaction_button') ?>
+            </a>
+
+            <hr>
+
             <form method="POST" action="<?= $this->pathFor('transactions_delete', ['transaction_id' => $this->transaction->id]) ?>" onsubmit="return confirm('Are you sure you want to submit?');">
                 <input type="hidden" name="_METHOD" value="DELETE"/>
 

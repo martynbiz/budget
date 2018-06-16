@@ -92,12 +92,30 @@ class TransactionsController extends BaseController
     {
         $container = $this->getContainer();
         $currentUser = $this->getCurrentUser();
+        $container = $this->getContainer();
 
-        // if errors found from post, this will contain data
+        $params = [];
+
+        // if split_transaction_id is present in the query params, we'll populate
+        // the params with values from that transaction
+        if ($splitTransactionId = $request->getQueryParam('split_transaction_id')) {
+
+            $splitTransaction = $container->get('model.transaction')
+                ->with('tags')
+                ->findOrFail($splitTransactionId);
+
+            // add form field values
+            $params['description'] = $splitTransaction->description;
+            $params['category'] = $splitTransaction->category->name;
+            $params['purchased_at'] = $splitTransaction->purchased_at;
+            $params['split_transaction_id'] = $splitTransaction->id;
+            $params['tags'] = $splitTransaction->tags()->pluck('name')->toArray();
+        }
+
+        // insert defaults
         $params = array_merge([
             'purchased_at' => date('Y-m-d'),
-            'budget' => 0,
-        ], $request->getParams());
+        ], $params, $request->getParams());
 
         // this needs to be applied seperately encase param tags is NULL (array_merge
         // will return NULL too)
@@ -168,7 +186,20 @@ class TransactionsController extends BaseController
 
             if ($transaction = $currentUser->transactions()->create($params)) {
 
+                // attach the tags for this transaction
                 $transaction->attachTagsByArray($params['tags']);
+
+                // if this is a split transaction request, we'll deduct the amount
+                // of this new one from the original
+                if ($splitTransactionId = $request->getParam('split_transaction_id')) {
+
+                    $splitTransaction = $container->get('model.transaction')
+                        ->findOrFail($splitTransactionId);
+
+                    $splitTransaction->amount -= $transaction->amount;
+
+                    $splitTransaction->save();
+                }
 
                 // redirect
                 return $response->withRedirect( $container->get('router')->pathFor('transactions') );
