@@ -103,17 +103,20 @@ class Transaction extends Base
 
     public function scopeWhereQuery($baseQuery, $query=[])
     {
-        if (!empty(@$query['month'])) {
+        // set date range from start_date/end_date, otherwise from month if given
+        if (!is_null(@$query['start_date']) or !is_null(@$query['end_date'])) {
+
+            if ($startDate = @$query['start_date']) {
+                $baseQuery->where('purchased_at', '>=', $startDate);
+            }
+
+            if ($endDate = @$query['end_date']) {
+                $baseQuery->where('purchased_at', '<=', $endDate);
+            }
+
+        } elseif (!empty(@$query['month'])) {
             $startEndDates = Utils::getStartEndDateByMonth($query['month']);
             $baseQuery->whereBetween('purchased_at', $startEndDates);
-        }
-
-        if (!empty(@$query['start_date'])) {
-            $baseQuery->where('purchased_at', '>=', $query['start_date']);
-        }
-
-        if (!empty(@$query['end_date'])) {
-            $baseQuery->where('purchased_at', '<=', $query['end_date']);
         }
 
         if (!empty(@$query['fund'])) {

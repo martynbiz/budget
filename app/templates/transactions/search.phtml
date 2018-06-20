@@ -9,7 +9,7 @@ $this->layout('layouts/main', [
 
 <?php $this->section('breadcrumbs') ?>
     <li>
-        <span class="show-for-sr">Current: </span> Transactions
+        <span class="show-for-sr">Current: </span> Transactions: search
     </li>
 <?php $this->replace() ?>
 
@@ -24,22 +24,6 @@ $this->layout('layouts/main', [
             </a>
         </div>
     </div>
-
-    <form class="" action="" method="get">
-        <div class="rows">
-            <div class="small-12 medium-12 columns">
-                <h3>Advanced search</h3>
-
-                <label>Start date</label>
-                <input type="text" name="start_date" value="<?= @$this->query['start_date'] ?>" />
-
-                <label>End date</label>
-                <input type="text" name="end_date" value="<?= @$this->query['end_date'] ?>" />
-
-                <button class="button primary" type="submit">Search</button>
-            </div>
-        </div>
-    </form>
 
     <div class="row">
         <div class="small-12 medium-12 columns">
@@ -87,18 +71,3 @@ $this->layout('layouts/main', [
         </div>
     </div>
 <?php $this->replace() ?>
-
-<?php $this->section('scripts') ?>
-    <script>
-
-    // init the datepicker
-    $(function() {
-        $("input[name='start_date']").datepicker({
-            dateFormat: "yyyy-mm-dd"
-        });
-        $("input[name='end_date']").datepicker({
-            dateFormat: "yyyy-mm-dd"
-        });
-    });
-    </script>
-<?php $this->append() ?>

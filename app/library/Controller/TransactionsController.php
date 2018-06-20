@@ -23,7 +23,12 @@ class TransactionsController extends BaseController
             'dir' => -1,
         ], $request->getQueryParams());
 
-        if (!isset($query['month'])) $query['month'] = date('Y-m');
+        // if (!isset($query['month'])) $query['month'] = date('Y-m');
+
+        // if nothing given for a month/date, set to this month
+        if (!isset($query['start_date']) and !isset($query['end_date']) and !isset($query['month'])) {
+            $query['month'] = date('Y-m');
+        }
 
         $page = (int)$query['page'];
         $limit = (int)$request->getQueryParam('limit', 20);
