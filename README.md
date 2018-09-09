@@ -164,11 +164,31 @@ When writing new tests, some custom controller assertions have been added:
 ```php
 $this->assertQuery('form#register', (string)$response->getBody());
 $this->assertQueryCount('ul.errors li', 3, (string)$response->getBody());
+
+## API
+
+Login
+
+```
+curl -d "email=info@example.com&password=secure" -X POST http://budget.vagrant/api/session/login
 ```
 
-## Translations
+Get transactions
 
-*_link
-*_button
-*_label
-*_text
+Fund param is required
+
+```
+curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1
+```
+
+```
+curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&month=2018-06
+```
+
+```
+curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&start=10&limit=10
+```
+
+```
+curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&order_by=category&order_dir=desc
+```

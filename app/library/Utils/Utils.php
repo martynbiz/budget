@@ -12,9 +12,7 @@ class Utils
     /**
      * Generate a start and end datetime for using in queries from
      * Usage: list($startDate, $endDate) = Utils::getStartEndDateByMonth($month);
-     * @param string $message Custom message when validation fails
-     * @param User $model This will be used to query the db
-     * @return Validator
+     * @param string $month YYYY-MM
      */
     public static function getStartEndDateByMonth($month)
     {

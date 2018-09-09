@@ -2,6 +2,7 @@
 namespace App\Controller\Api;
 
 use App\Validator;
+use App\Utils;
 
 class TransactionsController extends ApiController
 {
@@ -11,6 +12,13 @@ class TransactionsController extends ApiController
 
         $page = (int)$request->getQueryParam('page', 1);
         $limit = (int)$request->getQueryParam('limit', 20);
+        $orderBy = $request->getQueryParam('order_by', "purchased_at");
+        $orderDir = $request->getQueryParam('order_dir', "desc");
+
+        // query columns
+        $month = $request->getQueryParam('month');
+        $category = $request->getQueryParam('category');
+
         $start = ($page-1) * $limit;
 
         // check that this fund belongs to user
@@ -19,15 +27,21 @@ class TransactionsController extends ApiController
             return $this->handleError( 'Fund not found', HTTP_BAD_REQUEST );
         }
 
-        // get paginated rows
-        $transactions = $currentUser->transactions()
+        $query = $currentUser->transactions()
             ->where('fund_id', $fundId)
             ->with('fund')
             ->with('tags')
             ->with('category')
+            ->orderBy($orderBy, $orderDir)
             ->skip($start)
-            ->take($limit)
-            ->get();
+            ->take($limit);
+
+        if ($month) {
+            $query->whereBetween('purchased_at', Utils::getStartEndDateByMonth($month) );
+        }
+
+        // get paginated rows
+        $transactions = $query->get();
 
         return $this->renderJSON( $transactions->toArray() );
     }
