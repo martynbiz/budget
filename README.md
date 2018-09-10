@@ -5,10 +5,9 @@ Personal budget management software written in Slim 3 framework.
 ## Install the Application
 
 ```
-$ git clone ... budget
+$ git clone https://github.com/martynbiz/budget.git budget
 $ cd budget
 $ composer install
-$ chgrp?
 ```
 
 Create the phinx config file:
@@ -60,7 +59,7 @@ $ bower install
 
 ## Assets
 
-To make Gulp run everytime a scss/css/js file is saved:
+To make Gulp run every time a scss/css/js file changes:
 
 ```
 $ gulp
