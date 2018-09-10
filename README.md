@@ -98,6 +98,12 @@ $ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?f
 $ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&tag=1
 ```
 
+Create transaction
+
+```
+$ curl -H "Authorization: f41d0b...e3f" -d "fund=1&description=Hello+world" -X POST http://budget.vagrant/api/transactions/create
+```
+
 
 
 

@@ -109,7 +109,7 @@ $app->group('', function() use ($app, $container) { // attach middleware: Rememb
 
 
 /**
- * App routes
+ * Api routes
  * These require a token to be present as they don't rely on PHPSESSID
  */
 
