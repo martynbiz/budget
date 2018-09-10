@@ -30,17 +30,11 @@ class TransactionsController extends ApiController
 
         // apply filter queries
 
-        // bug: id is being populated with tag id?
         // If tag id is present, then we need to build the query a little differently
         // coz it's a many to many relationship,
         if ($tagId) {
             $tag = $currentUser->tags()->find((int)$tagId);
             $query = $tag->transactions();
-
-            // $query
-            //     ->join('tag_transaction', 'transactions.id', '=', 'tag_transaction.transaction_id')
-            //     ->join('tags', 'tag_transaction.tag_id', '=', 'tags.id')
-            //     ->where('tag_transaction.tag_id', (int)$tagId);
         } else {
             $query = $currentUser->transactions();
         }
