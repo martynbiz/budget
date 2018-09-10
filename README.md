@@ -175,20 +175,11 @@ curl -d "email=info@example.com&password=secure" -X POST http://budget.vagrant/a
 
 Get transactions
 
-Fund param is required
-
 ```
-curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1
-```
-
-```
-curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&month=2018-06
-```
-
-```
-curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&start=10&limit=10
-```
-
-```
-curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&order_by=category&order_dir=desc
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&month=2018-06
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&start=10&limit=10
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&order_by=category&order_dir=desc
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&category=1
+$ curl -H "Authorization: f41d0b...e3f" http://budget.vagrant/api/transactions?fund=1&tag=1
 ```

@@ -127,11 +127,7 @@ class Transaction extends Base
             $baseQuery->where('category_id', $query['category']);
         }
 
-        // TODO bug: click on view transactions (from tag), then click on trans - wrong id
         if (!empty(@$query['tag'])) {
-            // $baseQuery->join('tag_transaction', 'transactions.id', '=', 'tag_transaction.transaction_id')
-            //     ->where('tag_transaction.tag_id', (int)$query['tag']);
-
             $baseQuery
                 ->join('tag_transaction', 'transactions.id', '=', 'tag_transaction.transaction_id')
                 ->join('tags', 'tag_transaction.tag_id', '=', 'tags.id')
